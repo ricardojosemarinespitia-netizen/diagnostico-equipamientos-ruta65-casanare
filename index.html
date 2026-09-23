@@ -1,0 +1,272 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+
+<title>Diagnóstico de Equipamientos Casanare</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ink:#241a1a; --ink-soft:#5c4c4a; --paper:#faf6f1; --paper-raised:#fff;
+  --line:#e4d9cf; --accent:#a6192e; --accent-dark:#7e1322; --accent-soft:#f3d9dd;
+  --savanna:#8a8340; --savanna-soft:#eef0dc; --water:#2a6f7f; --water-soft:#dceef0;
+  --amber:#c17a1f; --amber-soft:#f6e6cc; --plum:#6b3a6b; --plum-soft:#efe0ef;
+  --slate:#3d5a80; --slate-soft:#dfe7f1;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Public Sans",system-ui,sans-serif;line-height:1.5}
+h1,h2,.num{font-family:"Fraunces",Georgia,serif;text-wrap:balance}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+@media(max-width:500px){.wrap{padding:0 16px}}
+header.cover{padding:48px 0 36px;border-bottom:1px solid var(--line)}
+.cover-grid{display:block}
+.loc-head{margin:30px 0 10px}
+.loc-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.loc-strip .card img{background:#faf6f1}
+.loc-strip figcaption b{color:var(--accent-dark);font-weight:600}
+@media(max-width:700px){.loc-strip{grid-template-columns:1fr;max-width:420px}}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.75rem;color:var(--accent);font-weight:600}
+header.cover h1{font-size:clamp(2rem,4.4vw,3.1rem);margin:.3em 0 .15em;font-weight:600;color:var(--accent-dark)}
+header.cover .sub{font-size:1.05rem;color:var(--ink-soft);max-width:620px;margin:0}
+.meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:24px;font-size:.88rem;color:var(--ink-soft)}
+.meta b{display:block;color:var(--ink);font-weight:600}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.toc a{font-size:.75rem;text-decoration:none;color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:var(--paper-raised)}
+.toc a:hover,.toc a:focus-visible{color:var(--accent-dark);border-color:var(--accent)}
+section.vur{padding:44px 0;border-bottom:1px solid var(--line);--c:var(--accent);--cs:var(--accent-soft)}
+.vur-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.num{font-size:2.9rem;-webkit-text-stroke:1.3px var(--c);color:transparent;font-weight:600;line-height:1}
+.vur-head h2{font-size:1.6rem;margin:0}
+.badge{margin-left:auto;display:inline-flex;background:var(--cs);color:var(--c);border-radius:999px;padding:4px 12px;font-size:.74rem;font-weight:600}
+.lede{max-width:75ch;color:var(--ink-soft);font-size:.98rem;margin:10px 0 22px}
+.grid-main{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-bottom:20px;align-items:start}
+@media(max-width:860px){.grid-main{grid-template-columns:1fr}}
+.card{background:var(--paper-raised);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:0}
+.card img{width:100%;display:block}
+.card figcaption{padding:8px 12px;font-size:.78rem;color:var(--ink-soft);border-top:1px solid var(--line)}
+.side{display:flex;flex-direction:column;gap:10px}
+.stat-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--paper-raised);border:1px solid var(--line);border-radius:8px;padding:11px 14px;display:flex;flex-direction:column;gap:2px}
+.tile .val{font-family:"Fraunces",serif;font-size:1.45rem;font-weight:700;color:var(--c);font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .who{font-size:.74rem;color:var(--ink-soft)}
+.tile.wide{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:12px}
+.tile.wide .val{font-size:1.25rem;white-space:nowrap}
+.notes{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.notes li{font-size:.84rem;color:var(--ink-soft);padding-left:14px;position:relative;line-height:1.4}
+.notes li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--c)}
+.subhead{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin:0 0 6px;font-weight:600}
+.chart .card img{background:#fff}
+footer{padding:36px 24px 56px;text-align:center;color:var(--ink-soft);font-size:.84rem}
+#t2,#t6{--c:var(--water);--cs:var(--water-soft)}
+#t3,#t7{--c:var(--amber);--cs:var(--amber-soft)}
+#t4{--c:var(--plum);--cs:var(--plum-soft)}
+#t5{--c:var(--slate);--cs:var(--slate-soft)}
+#t8{--c:var(--savanna);--cs:var(--savanna-soft);border-bottom:none}
+</style>
+
+<header class="cover">
+  <div class="wrap cover-grid">
+    <div>
+      <span class="eyebrow">Expediente Urbano · Universidad de Pamplona</span>
+      <h1>Diagnóstico de Equipamientos e Infraestructura</h1>
+      <p class="sub">Síntesis de ocho temas: equipamientos general, educativo, salud, social e institucional, transporte, vías y espacio público — corredor vial Ruta 65, seis municipios de Casanare.</p>
+      <div class="meta">
+        <span><b>Arq. responsable</b>Ricardo Marín</span>
+        <span><b>Docente</b>Cristhian García</span>
+        <span><b>Fecha</b>Septiembre 2026</span>
+      </div>
+      <nav class="toc" aria-label="Temas">
+        <a href="#t1">01 General</a><a href="#t2">02 Educación</a><a href="#t3">03 Salud</a><a href="#t4">04 Sociales</a><a href="#t5">05 Institucional</a><a href="#t6">06 Transporte</a><a href="#t7">07 Vías</a><a href="#t8">08 Espacio público</a>
+      </nav>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="subhead loc-head">Localización · de país a corredor</p>
+    <div class="loc-strip">
+      <figure class="card"><img src="mapas/ubicacion_colombia.png" alt="Mapa de Colombia con Casanare resaltado"><figcaption><b>01 · Colombia</b> — Casanare en la Orinoquía</figcaption></figure>
+      <figure class="card"><img src="mapas/ubicacion_casanare.png" alt="Mapa de Casanare con los seis municipios del corredor"><figcaption><b>02 · Casanare</b> — 6 de 19 municipios</figcaption></figure>
+      <figure class="card"><img src="mapas/ubicacion_corredor.png" alt="Mapa del corredor con cabeceras y Ruta 65"><figcaption><b>03 · Corredor</b> — cabeceras y Ruta 65 (INVIAS)</figcaption></figure>
+    </div>
+  </div>
+</header>
+
+<section class="vur" id="t1"><div class="wrap">
+  <div class="vur-head"><span class="num">01</span><h2>Equipamientos General</h2><span class="badge">Capa consolidada · 10 categorías</span></div>
+  <p class="lede">Yopal concentra el 54.8 % de los equipamientos del corredor (523 de 954), mientras Sabanalarga reúne apenas 30 y un único punto de salud.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/General.png" alt="Mapa de equipamientos consolidados del corredor"><figcaption>954 equipamientos en 10 categorías — Yopal, Aguazul, Monterrey, Sabanalarga, Tauramena, Villanueva</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">954</span><span class="who">Puntos tras deduplicar 1.049 registros brutos</span></div>
+        <div class="tile"><span class="val">54.8 %</span><span class="who">En Yopal (523 equipamientos)</span></div>
+        <div class="tile"><span class="val">52 %</span><span class="who">Deportivo (252) + educación (248)</span></div>
+        <div class="tile"><span class="val">30</span><span class="who">Sabanalarga, con 1 punto de salud</span></div>
+        <div class="tile wide"><span class="who">Avance del tema</span><span class="val">85.2 %</span></div>
+      </div>
+      <ul class="notes">
+        <li>Yopal tiene 95 de los 130 puntos de salud, el 87 % del abastecimiento y el 73 % de seguridad.</li>
+        <li>Educación rural con peso alto: Yopal 61 rurales frente a 79 urbanos; Tauramena 15 frente a 9.</li>
+        <li>Pendiente: campo ESTADO sin fuente; cementerios no encontrados.</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/General.png" alt="Gráficas de equipamientos por categoría y municipio"><figcaption>Equipamientos por categoría, municipio y distribución urbano/rural</figcaption></figure>
+</div></section>
+
+<section class="vur" id="t2"><div class="wrap">
+  <div class="vur-head"><span class="num">02</span><h2>Equipamientos Educativos</h2><span class="badge">Sedes · cobertura neta</span></div>
+  <p class="lede">Sabanalarga tiene la mayor dotación por niño en edad escolar pero la menor cobertura neta (75 %): allí el problema es de demanda o permanencia, no de infraestructura.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/Educacion.png" alt="Mapa de sedes educativas"><figcaption>Sedes educativas y educación superior en el corredor</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">270</span><span class="who">Sedes: 196 oficiales, 74 no oficiales</span></div>
+        <div class="tile"><span class="val">153 / 117</span><span class="who">Sedes rurales / urbanas</span></div>
+        <div class="tile"><span class="val">75.00 %</span><span class="who">Cobertura neta — Sabanalarga (la menor)</span></div>
+        <div class="tile"><span class="val">2.59</span><span class="who">Sedes/1.000 hab. 5–16 — Villanueva (la menor)</span></div>
+        <div class="tile wide"><span class="who">Educación superior (IES/SENA, OSM)</span><span class="val">23 puntos</span></div>
+      </div>
+      <ul class="notes">
+        <li>Cobertura espacial urbana a 500 m de una sede ≥ 91 % en todos los municipios con dato.</li>
+        <li>Yopal pasa de 168.427 (2018) a 198.423 habitantes (2026): +17.8 %.</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/Educacion.png" alt="Gráficas de educación"><figcaption>Sedes, dotación por población escolar y cobertura neta por municipio</figcaption></figure>
+</div></section>
+
+<section class="vur" id="t3"><div class="wrap">
+  <div class="vur-head"><span class="num">03</span><h2>Equipamientos de Salud</h2><span class="badge">IPS · camas · isócronas</span></div>
+  <p class="lede">La salud es el cuello de botella del corredor: en ningún municipio más del 11.5 % del área está a ≤30 min de una IPS, y Yopal concentra el 87 % de las camas.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/Salud.png" alt="Mapa de sedes IPS"><figcaption>Sedes IPS y accesibilidad a 30 minutos</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">157</span><span class="who">Sedes IPS: 127 privadas, 12 públicas, 18 sin dato</span></div>
+        <div class="tile"><span class="val">1.008</span><span class="who">Camas en Yopal, de 1.153 del corredor</span></div>
+        <div class="tile"><span class="val">0.36</span><span class="who">Camas/1.000 hab. — Villanueva</span></div>
+        <div class="tile"><span class="val">3.33 %</span><span class="who">Área a ≤30 min de IPS — Tauramena</span></div>
+        <div class="tile wide"><span class="who">Avance del tema</span><span class="val">91.7 %</span></div>
+      </div>
+      <ul class="notes">
+        <li>Villanueva (0.36) y Monterrey (0.50) están muy por debajo de la referencia de 1.5–2 camas por 1.000 hab.</li>
+        <li>Casanare: camas UCI de adultos pasaron de 17 a 26 entre 2017 y 2020.</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/Salud.png" alt="Gráficas de salud"><figcaption>Sedes, camas y accesibilidad por municipio</figcaption></figure>
+</div></section>
+
+<section class="vur" id="t4"><div class="wrap">
+  <div class="vur-head"><span class="num">04</span><h2>Equipamientos Sociales</h2><span class="badge">Cultura · deporte · bienestar</span></div>
+  <p class="lede">Yopal tiene la mayor cantidad absoluta pero la tasa per cápita más baja (10.39 por 10.000 hab.); los escenarios deportivos dominan con 253 en total.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/Sociales.png" alt="Mapa de equipamientos sociales"><figcaption>Bibliotecas, cultura, culto, deporte y bienestar</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">253</span><span class="who">Escenarios deportivos</span></div>
+        <div class="tile"><span class="val">3 de 3</span><span class="who">Museos del corredor, todos en Yopal</span></div>
+        <div class="tile"><span class="val">10.39</span><span class="who">Tasa/10.000 hab. — Yopal (la menor)</span></div>
+        <div class="tile"><span class="val">49.25</span><span class="who">Tasa/10.000 hab. — Sabanalarga</span></div>
+        <div class="tile wide"><span class="who">Municipios sin teatro</span><span class="val">3 de 6</span></div>
+      </div>
+      <ul class="notes">
+        <li>Monterrey, Sabanalarga y Villanueva no tienen teatro.</li>
+        <li>La tasa alta de Sabanalarga es efecto de su población pequeña.</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/Sociales.png" alt="Gráficas de equipamientos sociales"><figcaption>Equipamientos sociales por tipo y tasa por 10.000 habitantes</figcaption></figure>
+</div></section>
+
+<section class="vur" id="t5"><div class="wrap">
+  <div class="vur-head"><span class="num">05</span><h2>Equipamientos Institucionales</h2><span class="badge">Índice de presencia · 8 categorías</span></div>
+  <p class="lede">Yopal es el único municipio con las 8 categorías institucionales; Aguazul, segunda población del corredor, no tiene bomberos, notaría, Defensa Civil ni presencia militar mapeada.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/Institucional.png" alt="Mapa de equipamientos institucionales"><figcaption>Alcaldías, justicia, policía, bomberos, militar y terminales</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">1.00</span><span class="who">Índice — Yopal (8 categorías)</span></div>
+        <div class="tile"><span class="val">0.50</span><span class="who">Índice — Aguazul (4 categorías)</span></div>
+        <div class="tile"><span class="val">0.38</span><span class="who">Índice — Sabanalarga (3 categorías)</span></div>
+        <div class="tile"><span class="val">1</span><span class="who">Notaría georreferenciada en todo el corredor</span></div>
+        <div class="tile wide"><span class="who">Avance del tema</span><span class="val">82.8 %</span></div>
+      </div>
+      <ul class="notes">
+        <li>Sabanalarga solo tiene alcaldía, policía y terminal.</li>
+        <li>Villanueva y Tauramena comparten el segundo lugar (0.75, 6 categorías).</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/Institucional.png" alt="Gráficas institucionales"><figcaption>Presencia institucional por categoría y municipio</figcaption></figure>
+</div></section>
+
+<section class="vur" id="t6"><div class="wrap">
+  <div class="vur-head"><span class="num">06</span><h2>Transporte</h2><span class="badge">Siniestralidad ANSV 2016–2025</span></div>
+  <p class="lede">La accidentalidad cayó 67 % entre el pico de 2019 (419 siniestros) y 2025 (140); ningún tramo de 1 km resulta un hot spot significativo: la siniestralidad está dispersa a lo largo de la vía.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/Transporte.png" alt="Mapa de transporte y siniestralidad"><figcaption>Siniestros viales, terminales y aeródromos</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">2.753</span><span class="who">Siniestros: 637 con fallecidos, 2.116 con lesionados</span></div>
+        <div class="tile"><span class="val">57 %</span><span class="who">De los siniestros, en Yopal</span></div>
+        <div class="tile"><span class="val">−67 %</span><span class="who">De 419 (2019) a 140 (2025)</span></div>
+        <div class="tile"><span class="val">0 de 244</span><span class="who">Tramos de 1 km hot spot (Getis-Ord)</span></div>
+        <div class="tile wide"><span class="who">Aeródromos Aerocivil · terminales</span><span class="val">2 · 33</span></div>
+      </div>
+      <ul class="notes">
+        <li>Uno de cada 4.3 registros involucra un fallecido.</li>
+        <li>Distancias entre cabeceras: de 18.6 km (Monterrey–Tauramena) a 157.4 km (Yopal–Villanueva).</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/Transporte.png" alt="Gráficas de transporte"><figcaption>Serie anual de siniestros y víctimas por municipio</figcaption></figure>
+</div></section>
+
+<section class="vur" id="t7"><div class="wrap">
+  <div class="vur-head"><span class="num">07</span><h2>Vías</h2><span class="badge">Tránsito · V/C · estado vial</span></div>
+  <p class="lede">La Ruta 65 no está congestionada (V/C de 0.14 a 0.20, niveles de servicio A–B) pero sí es una vía de carga: 36.5 % de camiones en la estación 932.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/Vias.png" alt="Mapa vial"><figcaption>Red vial INVIAS, estado 2018, puentes y peaje</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">146.756</span><span class="who">Pico mensual peaje San Pedro, julio 2019</span></div>
+        <div class="tile"><span class="val">−66 %</span><span class="who">Caída COVID, abril 2020 (26.342)</span></div>
+        <div class="tile"><span class="val">36.5 %</span><span class="who">Camiones · 60.8 % autos · 2.7 % buses</span></div>
+        <div class="tile"><span class="val">0.20</span><span class="who">V/C Yopal–Paz de Ariporo (TPD 4.527)</span></div>
+        <div class="tile wide"><span class="who">Puentes · peajes en el área</span><span class="val">80 · 1</span></div>
+      </div>
+      <ul class="notes">
+        <li>Aguazul tiene el tramo más deteriorado: 6.6 km malos y 16.6 km regulares (INVIAS 2018).</li>
+        <li>Estado vial 2024 verificado: ninguna candidata sirve; se mantiene INVIAS 2018.</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/Vias.png" alt="Gráficas de vías"><figcaption>Serie del peaje San Pedro, composición vehicular y estado vial</figcaption></figure>
+</div></section>
+
+<section class="vur" id="t8"><div class="wrap">
+  <div class="vur-head"><span class="num">08</span><h2>Espacio Público</h2><span class="badge">EPE · accesibilidad 300/500 m</span></div>
+  <p class="lede">Cuatro de seis municipios no alcanzan el mínimo de 15 m²/hab; Yopal, la ciudad principal, tiene el mayor déficit con 3.29 m²/hab, apenas el 21.9 % del estándar.</p>
+  <div class="grid-main">
+    <figure class="card"><img src="mapas/EspacioPublico.png" alt="Mapa de espacio público"><figcaption>Parques, rondas hídricas, escenarios y áreas de influencia</figcaption></figure>
+    <div class="side">
+      <div class="stat-list">
+        <div class="tile"><span class="val">3.29</span><span class="who">m²/hab conservador — Yopal (21.9 % del estándar)</span></div>
+        <div class="tile"><span class="val">4 de 6</span><span class="who">Municipios bajo 15 m²/hab</span></div>
+        <div class="tile"><span class="val">51.69 %</span><span class="who">Área urbana a 500 m — Aguazul (la peor)</span></div>
+        <div class="tile"><span class="val">1.189.1 ha</span><span class="who">Parques · ronda hídrica 141.9 ha</span></div>
+        <div class="tile wide"><span class="who">Avance del tema</span><span class="val">80.4 %</span></div>
+      </div>
+      <ul class="notes">
+        <li>Bajo el estándar: Yopal (3.3), Villanueva (4.8), Aguazul (7.7) y Tauramena (11.0).</li>
+        <li>Accesibilidad calculada sobre área, no población, con distancia euclidiana.</li>
+      </ul>
+    </div>
+  </div>
+  <figure class="card chart"><img src="graficas/EspacioPublico.png" alt="Gráficas de espacio público"><figcaption>EPE por municipio y accesibilidad a 300/500 m</figcaption></figure>
+</div></section>
+
+<footer>
+  Expediente Urbano · Corredor Ruta 65, 6 municipios de Casanare<br>
+  Arq. Ricardo Marín · Docente Cristhian García · Universidad de Pamplona, Facultad de Arquitectura
+</footer>
+
+</body></html>
