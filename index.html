@@ -332,8 +332,8 @@ html,body{max-width:100%;overflow-x:clip}
 /* ===== Animaciones de scroll repetibles (v2) =====
    Estado base SIEMPRE visible. El efecto es una animación adicional (.rv-play) que se
    añade cada vez que el bloque entra al viewport y se quita cuando sale del todo. */
-@keyframes rvIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.rv-play{animation:rvIn .55s cubic-bezier(.22,.61,.36,1) both;animation-delay:var(--d,0s)}
+@keyframes rvIn{from{opacity:0;transform:translateY(38px) scale(.97)}to{opacity:1;transform:none}}
+.rv-play{animation:rvIn .7s cubic-bezier(.22,.61,.36,1) both;animation-delay:var(--d,0s)}
 @media (prefers-reduced-motion: reduce){.rv-play{animation:none!important}}
 @media print{.rv-play{animation:none!important}}
 
