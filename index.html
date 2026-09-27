@@ -333,7 +333,9 @@ html,body{max-width:100%;overflow-x:clip}
    Estado base SIEMPRE visible. El efecto es una animación adicional (.rv-play) que se
    añade cada vez que el bloque entra al viewport y se quita cuando sale del todo. */
 @keyframes rvIn{from{opacity:0;transform:translateY(38px) scale(.97)}to{opacity:1;transform:none}}
+.rv-wait{opacity:0;transform:translateY(38px) scale(.97)}
 .rv-play{animation:rvIn .7s cubic-bezier(.22,.61,.36,1) both;animation-delay:var(--d,0s)}
+@media print{.rv-wait{opacity:1!important;transform:none!important}}
 @media (prefers-reduced-motion: reduce){.rv-play{animation:none!important}}
 @media print{.rv-play{animation:none!important}}
 
@@ -1384,23 +1386,29 @@ html,body{max-width:100%;overflow-x:clip}
       }
     });
   }
-  function enter(el){if(el.__in)return;el.__in=true;hideTips(el);el.classList.remove('rv-play');void el.offsetWidth;el.classList.add('rv-play');}
-  function leave(el){if(!el.__in)return;el.__in=false;el.classList.remove('rv-play');}
+  /* enter: solo cuando el bloque está BIEN dentro de la pantalla (no al tocar el borde),
+     y nunca durante un salto de navegación (scroll suave por ancla): se espera a que el scroll se asiente. */
+  function enter(el){if(el.__in)return;el.__in=true;hideTips(el);el.classList.remove('rv-play','rv-wait');void el.offsetWidth;el.classList.add('rv-play');}
+  function leave(el){if(!el.__in)return;el.__in=false;el.classList.remove('rv-play');el.classList.add('rv-wait');}
+  var jumping=false,jumpT=null,lastJY=-1;
   function check(){
-    var h=window.innerHeight;
+    var h=window.innerHeight,m=h*0.15;
     els.forEach(function(el){var r=el.getBoundingClientRect();
-      if(r.bottom>0&&r.top<h)enter(el);else if(r.bottom<=0||r.top>=h)leave(el);});
+      if(r.bottom<=0||r.top>=h){leave(el);return;}
+      if(!jumping&&r.top<h-m&&r.bottom>m)enter(el);});
   }
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(en){en.forEach(function(x){x.isIntersecting?enter(x.target):leave(x.target);});},{threshold:0,rootMargin:'0px'});
-    els.forEach(function(el){io.observe(el);});
-  }
-  var t=null;
-  function onScroll(){hideTips();clearTimeout(t);t=setTimeout(check,60);}
+  function startJump(){jumping=true;lastJY=-1;clearInterval(jumpT);
+    jumpT=setInterval(function(){if(window.scrollY===lastJY){clearInterval(jumpT);jumping=false;check();}lastJY=window.scrollY;},90);}
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href^="#"]');if(a&&a.getAttribute('href').length>1)startJump();},true);
+  window.addEventListener('hashchange',startJump);
+  /* estado inicial: lo que está fuera de pantalla queda oculto esperando su entrada (sin pestañeo) */
+  els.forEach(function(el){var r=el.getBoundingClientRect();if(r.bottom<=0||r.top>=window.innerHeight)el.classList.add('rv-wait');});
+  var raf=0;
+  function onScroll(){hideTips();if(!raf)raf=requestAnimationFrame(function(){raf=0;check();});}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll);
   window.addEventListener('load',check);
-  /* respaldo: detecta entradas/salidas aunque se pierdan eventos (saltos por ancla, pestaña throttled) */
+  /* respaldo: detecta cambios aunque se pierdan eventos (pestaña throttled) */
   var lastY=-1;setInterval(function(){if(window.scrollY!==lastY){lastY=window.scrollY;check();}},200);
   /* tooltip fantasma: ocultar al salir el puntero del panel o de la ventana */
   document.querySelectorAll('.chart-panel').forEach(function(p){
