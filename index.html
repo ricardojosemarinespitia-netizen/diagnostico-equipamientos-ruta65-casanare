@@ -329,14 +329,13 @@ html,body{max-width:100%;overflow-x:clip}
 .hero-brand .label{line-height:1.7}
 @media (max-width:600px){.hero-brand{flex-direction:column;align-items:flex-start}.hero-logos{border-right:0;padding-right:0}.hero-logos img{height:48px}.hero-logos img.logo-dep{height:42px}.hero-illus .hi-svg{padding:8px}}
 
-/* ===== Animaciones de scroll repetibles ===== */
-.js-rv .lamina .rv{opacity:0;transform:translateY(14px);transition:opacity .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1)}
-.js-rv .lamina.is-in .rv{opacity:1;transform:none}
-.js-rv .lamina.is-in .rv:nth-child(2){transition-delay:.06s}
-.js-rv .lamina.is-in .rv:nth-child(3){transition-delay:.12s}
-.js-rv .lamina.is-in .rv:nth-child(4){transition-delay:.18s}
-@media (prefers-reduced-motion: reduce){.js-rv .lamina .rv{opacity:1!important;transform:none!important;transition:none!important}}
-@media print{.js-rv .lamina .rv{opacity:1!important;transform:none!important}}
+/* ===== Animaciones de scroll repetibles (v2) =====
+   Estado base SIEMPRE visible. El efecto es una animación adicional (.rv-play) que se
+   añade cada vez que el bloque entra al viewport y se quita cuando sale del todo. */
+@keyframes rvIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.rv-play{animation:rvIn .55s cubic-bezier(.22,.61,.36,1) both;animation-delay:var(--d,0s)}
+@media (prefers-reduced-motion: reduce){.rv-play{animation:none!important}}
+@media print{.rv-play{animation:none!important}}
 
 /* ===== v9: HERO CLARO — lámina impresa (papel claro, tinta azul) ===== */
 .hero{background:var(--az-050);color:var(--az-900);border-top:10px solid var(--az-900)}
@@ -370,10 +369,6 @@ html,body{max-width:100%;overflow-x:clip}
 .hero-meta .label{color:var(--az-200)}
 
 /* ===== v9: animación granular por gráfica y por cifra (se repite en cada entrada) ===== */
-.js-rv .chart-panel,.js-rv .stat{opacity:0;transform:translateY(14px);transition:opacity .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1);transition-delay:0s}
-.js-rv .chart-panel.is-vis,.js-rv .stat.is-vis{opacity:1;transform:none;transition-delay:var(--d,0s)}
-@media (prefers-reduced-motion: reduce){.js-rv .chart-panel,.js-rv .stat{opacity:1!important;transform:none!important;transition:none!important}}
-@media print{.js-rv .chart-panel,.js-rv .stat{opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -1359,40 +1354,60 @@ html,body{max-width:100%;overflow-x:clip}
 })();
 </script>
 <script>
-/* Animaciones de scroll — FIX huecos en blanco:
-   antes se usaba IntersectionObserver con threshold y se volvía a ocultar al salir; en scroll
-   rápido los bloques que entraban y salían entre dos frames nunca recibían la clase y quedaban
-   en opacity:0 (huecos de 700-1000 px). Ahora: revelado por POSICIÓN en cada frame de scroll
-   (todo lo que ya está por encima del borde inferior del viewport se revela), una sola vez. */
+/* Animaciones de scroll REPETIBLES sin huecos:
+   - El bloque es visible por defecto (sin clase = opacity 1). Nunca depende del observer para verse.
+   - Al entrar al viewport (IO threshold 0 + chequeo por posición en scroll) se añade .rv-play
+     → fade/slide-in. Al salir por completo se quita, así la próxima entrada vuelve a animar.
+   - Tooltips de Chart.js: se ocultan al sacar el puntero del panel, en scroll y al reanimar. */
 (function(){
   if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  document.documentElement.classList.add('js-rv');
-  var sel='.lamina-head,.plate--map,.plate--chart,.notes-block,.notes,.cartela,.lamina-lede';
-  var secs=[].slice.call(document.querySelectorAll('section.lamina'));
-  secs.forEach(function(sec){sec.querySelectorAll(sel).forEach(function(el){el.classList.add('rv');});});
-  var items=[].slice.call(document.querySelectorAll('.lamina .chart-panel,.lamina .stat'));
-  items.forEach(function(el){
-    var sib=[].filter.call(el.parentNode.children,function(c){return c.classList.contains('chart-panel')||c.classList.contains('stat');});
-    el.style.setProperty('--d',(Math.min(sib.indexOf(el),4)*0.05)+'s');
+  var sel='.lamina-head,.plate--map,.notes-block,.notes,.cartela,.lamina-lede,.chart-panel,.stat';
+  var els=[].slice.call(document.querySelectorAll('section.lamina')).reduce(function(acc,sec){
+    return acc.concat([].slice.call(sec.querySelectorAll(sel)));},[]);
+  /* no animar un contenedor y su hijo a la vez (evita doble desplazamiento) */
+  els=els.filter(function(el){return !els.some(function(o){return o!==el&&o.contains(el);});});
+  els.forEach(function(el){
+    var sib=[].filter.call(el.parentNode.children,function(c){return els.indexOf(c)>=0;});
+    el.style.setProperty('--d',(Math.min(Math.max(sib.indexOf(el),0),4)*0.06)+'s');
+    el.__in=false;
   });
-  var pending=secs.map(function(el){return {el:el,cls:'is-in'};}).concat(items.map(function(el){return {el:el,cls:'is-vis'};}));
-  var last=0,trail=null;
-  function check(){
-    last=Date.now();
-    var lim=window.innerHeight*1.15;
-    pending=pending.filter(function(p){
-      if(p.el.getBoundingClientRect().top<lim){p.el.classList.add(p.cls);return false;}
-      return true;
+  function hideTips(root){
+    var ch=window.__charts;if(!ch)return;
+    Object.keys(ch).forEach(function(id){
+      var c=ch[id]&&ch[id].chart;if(!c)return;
+      if(root&&!root.contains(c.canvas))return;
+      var tt=c.tooltip;
+      if((tt&&(tt.getActiveElements().length||tt.opacity>0))||c.getActiveElements().length){
+        c.setActiveElements([]);
+        if(tt){tt.setActiveElements([],{x:0,y:0});tt.opacity=0;}
+        c.update('none');c.draw();
+      }
     });
-    if(!pending.length){window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);clearInterval(poll);}
   }
-  /* síncrono (sin rAF): funciona aunque la pestaña esté en segundo plano; la lista pendiente se vacía sola */
-  function onScroll(){check();clearTimeout(trail);trail=setTimeout(check,80);}
-  var poll=setInterval(check,250); /* red de seguridad: saltos por ancla o eventos perdidos */
+  function enter(el){if(el.__in)return;el.__in=true;hideTips(el);el.classList.remove('rv-play');void el.offsetWidth;el.classList.add('rv-play');}
+  function leave(el){if(!el.__in)return;el.__in=false;el.classList.remove('rv-play');}
+  function check(){
+    var h=window.innerHeight;
+    els.forEach(function(el){var r=el.getBoundingClientRect();
+      if(r.bottom>0&&r.top<h)enter(el);else if(r.bottom<=0||r.top>=h)leave(el);});
+  }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){x.isIntersecting?enter(x.target):leave(x.target);});},{threshold:0,rootMargin:'0px'});
+    els.forEach(function(el){io.observe(el);});
+  }
+  var t=null;
+  function onScroll(){hideTips();clearTimeout(t);t=setTimeout(check,60);}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll);
   window.addEventListener('load',check);
-  window.addEventListener('beforeprint',function(){pending.forEach(function(p){p.el.classList.add(p.cls);});pending=[];});
+  /* respaldo: detecta entradas/salidas aunque se pierdan eventos (saltos por ancla, pestaña throttled) */
+  var lastY=-1;setInterval(function(){if(window.scrollY!==lastY){lastY=window.scrollY;check();}},200);
+  /* tooltip fantasma: ocultar al salir el puntero del panel o de la ventana */
+  document.querySelectorAll('.chart-panel').forEach(function(p){
+    ['pointerleave','mouseleave'].forEach(function(ev){p.addEventListener(ev,function(){hideTips(p);});});
+  });
+  document.addEventListener('mouseleave',function(){hideTips();});
+  window.addEventListener('blur',function(){hideTips();});
   check();
 })();
 </script>
