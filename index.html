@@ -184,6 +184,8 @@ a{color:inherit}
 .plate-tag .code{font-family:var(--f-mono);font-size:.75rem;font-weight:600;color:var(--az-050);background:var(--ink);padding:2px 8px;letter-spacing:.08em}
 .plate-img{background:#F6FAFD;padding:calc(var(--u)*2);display:flex;align-items:center;justify-content:center;flex:1}
 .plate-img img{width:100%;height:auto}
+.loc-strip .plate-img img{aspect-ratio:1200/1500}
+.lamina .plate--map .plate-img img{aspect-ratio:4440/4920}
 .plate figcaption{padding:calc(var(--u)*1.25) calc(var(--u)*1.5);font-size:.8125rem;color:var(--ink-2);border-top:1px solid var(--rule);line-height:1.5}
 .plate figcaption b{color:var(--ink);font-weight:700;font-family:var(--f-mono);font-size:.8125rem}
 .plate--map .plate-img{overflow:hidden;cursor:zoom-in}
@@ -198,7 +200,10 @@ a{color:inherit}
 .loc-head h2,.lamina-title h2{font-family:var(--f-display);font-weight:800;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:var(--t-h2);line-height:1;margin:0;text-transform:uppercase;letter-spacing:-.005em;text-wrap:balance}
 .loc-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(var(--gutter) + 8px);margin-top:calc(var(--u)*2)}
 .loc-strip .plate:not(:last-child)::after{content:"";position:absolute;left:auto;right:-26px;top:50%;width:20px;height:1px;background:var(--accent)}
-@media (max-width:760px){.loc-strip{grid-template-columns:1fr}.loc-strip .plate::after{display:none}}
+@media (max-width:760px){.loc-strip{grid-template-columns:1fr}.loc-strip .plate::after,.loc-strip .plate:not(:last-child)::after{display:none}}
+/* FIX móvil: las cotas no pueden forzar ancho (causaban scroll horizontal y franja blanca junto al hero) */
+@media (max-width:700px){.dim{position:relative;z-index:0}.dim .dim-txt{white-space:normal;text-align:center;min-width:0;flex:0 1 auto}.loc .dim{margin-bottom:calc(var(--u)*4)}}
+html,body{max-width:100%;overflow-x:clip}
 
 /* =====================================================================
    LÁMINA
@@ -242,6 +247,10 @@ a{color:inherit}
 .stat--lead .label::before{content:"▸ "}
 .stat--wide{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;min-height:0}
 .stat--wide .stat-val{font-size:1.4rem;white-space:nowrap}
+.stat--wide{gap:calc(var(--u)*2)}
+.stat--wide .stat-val:first-child{order:0}
+.stat--wide .stat-val + .stat-lbl{flex:1;padding-left:calc(var(--u)*2);border-left:1px solid var(--rule)}
+.stat--wide .stat-lbl b{color:var(--ink);font-weight:700}
 
 /* Notas — numeración mono tipo llamada de plano */
 .notes-block > .label{display:flex;align-items:center;gap:8px;margin-bottom:calc(var(--u)*1.5);color:var(--ink)}
@@ -321,13 +330,50 @@ a{color:inherit}
 @media (max-width:600px){.hero-brand{flex-direction:column;align-items:flex-start}.hero-logos{border-right:0;padding-right:0}.hero-logos img{height:48px}.hero-logos img.logo-dep{height:42px}.hero-illus .hi-svg{padding:8px}}
 
 /* ===== Animaciones de scroll repetibles ===== */
-.js-rv .lamina .rv{opacity:0;transform:translateY(18px);transition:opacity .45s cubic-bezier(.22,.61,.36,1),transform .45s cubic-bezier(.22,.61,.36,1);will-change:opacity,transform}
+.js-rv .lamina .rv{opacity:0;transform:translateY(14px);transition:opacity .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1)}
 .js-rv .lamina.is-in .rv{opacity:1;transform:none}
 .js-rv .lamina.is-in .rv:nth-child(2){transition-delay:.06s}
 .js-rv .lamina.is-in .rv:nth-child(3){transition-delay:.12s}
 .js-rv .lamina.is-in .rv:nth-child(4){transition-delay:.18s}
 @media (prefers-reduced-motion: reduce){.js-rv .lamina .rv{opacity:1!important;transform:none!important;transition:none!important}}
 @media print{.js-rv .lamina .rv{opacity:1!important;transform:none!important}}
+
+/* ===== v9: HERO CLARO — lámina impresa (papel claro, tinta azul) ===== */
+.hero{background:var(--az-050);color:var(--az-900);border-top:10px solid var(--az-900)}
+.hero::before{background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M0 0h7M0 0v7M57 0h7M64 0v7M0 57v7M0 64h7M64 57v7M57 64h7' stroke='%234A7FA7' stroke-width='1.2' fill='none'/%3E%3C/svg%3E"),
+    linear-gradient(rgba(179,207,229,.7) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(179,207,229,.7) 1px,transparent 1px),
+    linear-gradient(rgba(179,207,229,.3) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(179,207,229,.3) 1px,transparent 1px);opacity:.6}
+.hero::after{border-color:var(--az-700);outline-color:rgba(74,127,167,.35)}
+.hero-coords,.hero-vert{color:var(--az-500)}
+.hero-top{border-bottom-color:var(--az-900)}
+.hero-top .label,.hero .label{color:var(--az-700)}
+.hero-logos{border-right-color:var(--az-200)}
+.hero-logos img.logo-dep{filter:none;opacity:1}
+.hero-orn .north{color:var(--az-900)} .hero-orn .coord{color:var(--az-700)}
+.hero-kicker{color:var(--az-700)}
+.hero h1,.hero h1 em{color:var(--az-900)}
+.hero-scale{color:var(--az-700)}
+.hero h1 em::after{background:linear-gradient(90deg,var(--az-900) 0 25%,transparent 25% 50%,var(--az-900) 50% 75%,transparent 75%);border-color:var(--az-900)}
+.hero-sub{color:var(--az-700);border-left:3px solid var(--az-900)}
+.hero-index{border-color:var(--az-200);background:#fff}
+.hero-index li{border-color:var(--az-200)}
+.hero-index a{color:var(--az-900)} .hero-index a span{color:var(--az-500)}
+.hero-index a:hover{background:var(--az-200)}
+.hero-illus{background:#fff;border-color:var(--az-200)}
+.hero-illus .hi-tag{background:var(--az-900);color:var(--az-050);border-bottom:0}
+.hero .dim--dark,.hero .dim--dark .dim-txt{color:var(--az-500)}
+/* cajetín inferior: único bloque sólido oscuro (ancla de marca) */
+.hero-meta{background:var(--az-900);border-color:var(--az-900)}
+.hero-meta .label{color:var(--az-200)}
+
+/* ===== v9: animación granular por gráfica y por cifra (se repite en cada entrada) ===== */
+.js-rv .chart-panel,.js-rv .stat{opacity:0;transform:translateY(14px);transition:opacity .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1);transition-delay:0s}
+.js-rv .chart-panel.is-vis,.js-rv .stat.is-vis{opacity:1;transform:none;transition-delay:var(--d,0s)}
+@media (prefers-reduced-motion: reduce){.js-rv .chart-panel,.js-rv .stat{opacity:1!important;transform:none!important;transition:none!important}}
+@media print{.js-rv .chart-panel,.js-rv .stat{opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -375,11 +421,11 @@ a{color:inherit}
       <stop offset="1" stop-color="#1A3D63" stop-opacity=".05"/>
     </linearGradient>
     <style>
-      .hc-lab{font:600 21px/1 'Archivo','Segoe UI',system-ui,sans-serif;fill:#F6FAFD;letter-spacing:.02em}
-      .hc-km{font:500 14px/1 'IBM Plex Mono',ui-monospace,'Consolas',monospace;fill:#B3CFE5;fill-opacity:.8;letter-spacing:.06em}
-      .hc-ab{display:none;font:700 46px/1 'Archivo','Segoe UI',system-ui,sans-serif;fill:#F6FAFD}
+      .hc-lab{font:600 21px/1 'Archivo','Segoe UI',system-ui,sans-serif;fill:#0A1931;letter-spacing:.02em}
+      .hc-km{font:500 14px/1 'IBM Plex Mono',ui-monospace,'Consolas',monospace;fill:#1A3D63;fill-opacity:.8;letter-spacing:.06em}
+      .hc-ab{display:none;font:700 46px/1 'Archivo','Segoe UI',system-ui,sans-serif;fill:#0A1931}
       @media (max-width:640px){.hc-lab,.hc-km,.hc-tag,.hc-sc{display:none}.hc-ab{display:inline}}
-      .hc-tag{font:600 14px/1 'IBM Plex Mono',ui-monospace,'Consolas',monospace;fill:#B3CFE5;letter-spacing:.14em}
+      .hc-tag{font:600 14px/1 'IBM Plex Mono',ui-monospace,'Consolas',monospace;fill:#1A3D63;letter-spacing:.14em}
     </style>
   </defs>
 
@@ -389,7 +435,7 @@ a{color:inherit}
 
   <!-- ===== PLANTA ===== -->
   <text class="hc-tag" x="60" y="44">PLANTA · CORREDOR RUTA 65</text>
-  <line x1="60" y1="54" x2="300" y2="54" stroke="#B3CFE5" stroke-opacity=".5"/>
+  <line x1="60" y1="54" x2="300" y2="54" stroke="#1A3D63" stroke-opacity=".5"/>
 
   <!-- ríos esquemáticos -->
   <g fill="none" stroke="#4A7FA7" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="2 5">
@@ -403,17 +449,17 @@ a{color:inherit}
         fill="none" stroke="#4A7FA7" stroke-opacity=".18" stroke-width="44" stroke-linecap="round"/>
   <!-- eje vial -->
   <path d="M110 220 C220 160 300 150 380 170 S560 230 640 200 S820 120 900 150 S1060 220 1110 190"
-        fill="none" stroke="#F6FAFD" stroke-width="4" stroke-linecap="round"/>
+        fill="none" stroke="#0A1931" stroke-width="4" stroke-linecap="round"/>
   <path d="M110 220 C220 160 300 150 380 170 S560 230 640 200 S820 120 900 150 S1060 220 1110 190"
-        fill="none" stroke="#0A1931" stroke-width="1.4" stroke-dasharray="10 10"/>
+        fill="none" stroke="#F6FAFD" stroke-width="1.4" stroke-dasharray="10 10"/>
 
   <!-- nodos: radio ~ población -->
-  <g stroke="#F6FAFD" stroke-width="2">
-    <circle cx="150" cy="200" r="30" fill="#B3CFE5" fill-opacity=".22"/>
-    <circle cx="150" cy="200" r="15" fill="#F6FAFD"/>
+  <g stroke="#0A1931" stroke-width="2">
+    <circle cx="150" cy="200" r="30" fill="#1A3D63" fill-opacity=".22"/>
+    <circle cx="150" cy="200" r="15" fill="#0A1931"/>
     <circle cx="340" cy="158" r="12" fill="#4A7FA7"/>
     <circle cx="560" cy="218" r="9"  fill="#4A7FA7"/>
-    <circle cx="740" cy="160" r="6"  fill="#B3CFE5"/>
+    <circle cx="740" cy="160" r="6"  fill="#1A3D63"/>
     <circle cx="900" cy="150" r="10" fill="#4A7FA7"/>
     <circle cx="1080" cy="206" r="10" fill="#4A7FA7"/>
   </g>
@@ -434,17 +480,17 @@ a{color:inherit}
   </g>
   <!-- norte -->
   <g transform="translate(1120 70)">
-    <circle r="22" fill="none" stroke="#B3CFE5" stroke-opacity=".6"/>
-    <path d="M0 -18 L7 8 L0 3 L-7 8Z" fill="#F6FAFD"/>
+    <circle r="22" fill="none" stroke="#1A3D63" stroke-opacity=".6"/>
+    <path d="M0 -18 L7 8 L0 3 L-7 8Z" fill="#0A1931"/>
     <text class="hc-tag" y="-28" text-anchor="middle">N</text>
   </g>
 
   <!-- ===== PERFIL LONGITUDINAL (REAL: SRTM 30 m muestreado c/2 km sobre la vía; ver DATOS_ELEVACION_REAL.md) ===== -->
   <text class="hc-tag" x="60" y="330">PERFIL LONGITUDINAL REAL · SRTM 30 m</text>
-  <line x1="60" y1="340" x2="420" y2="340" stroke="#B3CFE5" stroke-opacity=".5"/>
+  <line x1="60" y1="340" x2="420" y2="340" stroke="#1A3D63" stroke-opacity=".5"/>
   <text class="hc-km hc-sc" x="1120" y="330" text-anchor="end" style="font-size:12px">ESC. VERTICAL EXAGERADA ≈32× · 183.3 km DE VÍA</text>
   <!-- curvas de cota (m s.n.m.) -->
-  <g stroke="#B3CFE5" stroke-opacity=".22" stroke-dasharray="1 5">
+  <g stroke="#1A3D63" stroke-opacity=".22" stroke-dasharray="1 5">
     <line x1="100" y1="452.0" x2="1120" y2="452.0"/>
     <line x1="100" y1="434.0" x2="1120" y2="434.0"/>
     <line x1="100" y1="416.0" x2="1120" y2="416.0"/>
@@ -458,13 +504,13 @@ a{color:inherit}
     <text x="94" y="402.0">600</text>
     <text x="94" y="384.0">700</text>
   </g>
-  <line x1="100" y1="470" x2="1120" y2="470" stroke="#B3CFE5" stroke-opacity=".6"/>
+  <line x1="100" y1="470" x2="1120" y2="470" stroke="#1A3D63" stroke-opacity=".6"/>
   <text class="hc-km hc-sc" x="94" y="474" text-anchor="end" style="font-size:11px">200</text>
   <polygon points="100,470 100.0,445.3 111.2,445.0 122.6,447.1 135.0,449.8 146.2,452.0 159.7,453.1 171.7,453.1 185.6,451.6 196.9,452.5 210.6,453.6 221.9,454.2 233.1,455.6 244.8,455.4 256.2,454.7 267.9,450.9 280.5,449.8 292.7,448.9 306.1,446.4 317.8,445.2 329.0,449.7 340.6,453.6 352.1,455.8 363.8,455.2 375.1,459.9 386.2,454.3 398.0,455.6 409.2,452.5 420.5,450.2 431.7,436.3 444.2,420.9 455.6,426.6 467.2,423.9 479.2,422.5 490.7,414.2 501.8,400.2 513.1,383.8 524.6,398.5 536.1,427.0 547.7,398.5 559.1,399.4 570.6,371.4 582.2,377.7 593.8,390.4 605.7,402.9 617.1,412.6 628.2,422.7 639.8,426.3 651.0,430.6 663.5,432.0 674.7,433.6 687.9,430.6 699.5,427.5 710.9,435.4 722.9,441.0 734.2,445.7 745.9,445.0 758.0,443.0 769.2,422.1 780.4,415.5 791.6,440.3 803.4,447.7 814.5,449.1 825.8,444.1 837.5,445.0 849.2,426.3 860.3,413.7 871.5,422.5 883.5,421.9 894.9,413.7 906.1,426.3 917.8,445.0 929.1,443.2 940.4,448.6 951.6,448.6 962.7,442.6 973.8,416.7 985.1,420.5 996.4,446.2 1010.2,448.9 1021.5,448.8 1032.7,445.0 1049.3,433.1 1065.4,429.5 1077.2,428.6 1088.5,436.9 1102.0,450.7 1113.1,454.3 1120.0,454.0 1120,470" fill="url(#hc-fill)"/>
-  <polyline points="100.0,445.3 111.2,445.0 122.6,447.1 135.0,449.8 146.2,452.0 159.7,453.1 171.7,453.1 185.6,451.6 196.9,452.5 210.6,453.6 221.9,454.2 233.1,455.6 244.8,455.4 256.2,454.7 267.9,450.9 280.5,449.8 292.7,448.9 306.1,446.4 317.8,445.2 329.0,449.7 340.6,453.6 352.1,455.8 363.8,455.2 375.1,459.9 386.2,454.3 398.0,455.6 409.2,452.5 420.5,450.2 431.7,436.3 444.2,420.9 455.6,426.6 467.2,423.9 479.2,422.5 490.7,414.2 501.8,400.2 513.1,383.8 524.6,398.5 536.1,427.0 547.7,398.5 559.1,399.4 570.6,371.4 582.2,377.7 593.8,390.4 605.7,402.9 617.1,412.6 628.2,422.7 639.8,426.3 651.0,430.6 663.5,432.0 674.7,433.6 687.9,430.6 699.5,427.5 710.9,435.4 722.9,441.0 734.2,445.7 745.9,445.0 758.0,443.0 769.2,422.1 780.4,415.5 791.6,440.3 803.4,447.7 814.5,449.1 825.8,444.1 837.5,445.0 849.2,426.3 860.3,413.7 871.5,422.5 883.5,421.9 894.9,413.7 906.1,426.3 917.8,445.0 929.1,443.2 940.4,448.6 951.6,448.6 962.7,442.6 973.8,416.7 985.1,420.5 996.4,446.2 1010.2,448.9 1021.5,448.8 1032.7,445.0 1049.3,433.1 1065.4,429.5 1077.2,428.6 1088.5,436.9 1102.0,450.7 1113.1,454.3 1120.0,454.0" fill="none" stroke="#B3CFE5" stroke-width="2.5" stroke-linejoin="round"/>
+  <polyline points="100.0,445.3 111.2,445.0 122.6,447.1 135.0,449.8 146.2,452.0 159.7,453.1 171.7,453.1 185.6,451.6 196.9,452.5 210.6,453.6 221.9,454.2 233.1,455.6 244.8,455.4 256.2,454.7 267.9,450.9 280.5,449.8 292.7,448.9 306.1,446.4 317.8,445.2 329.0,449.7 340.6,453.6 352.1,455.8 363.8,455.2 375.1,459.9 386.2,454.3 398.0,455.6 409.2,452.5 420.5,450.2 431.7,436.3 444.2,420.9 455.6,426.6 467.2,423.9 479.2,422.5 490.7,414.2 501.8,400.2 513.1,383.8 524.6,398.5 536.1,427.0 547.7,398.5 559.1,399.4 570.6,371.4 582.2,377.7 593.8,390.4 605.7,402.9 617.1,412.6 628.2,422.7 639.8,426.3 651.0,430.6 663.5,432.0 674.7,433.6 687.9,430.6 699.5,427.5 710.9,435.4 722.9,441.0 734.2,445.7 745.9,445.0 758.0,443.0 769.2,422.1 780.4,415.5 791.6,440.3 803.4,447.7 814.5,449.1 825.8,444.1 837.5,445.0 849.2,426.3 860.3,413.7 871.5,422.5 883.5,421.9 894.9,413.7 906.1,426.3 917.8,445.0 929.1,443.2 940.4,448.6 951.6,448.6 962.7,442.6 973.8,416.7 985.1,420.5 996.4,446.2 1010.2,448.9 1021.5,448.8 1032.7,445.0 1049.3,433.1 1065.4,429.5 1077.2,428.6 1088.5,436.9 1102.0,450.7 1113.1,454.3 1120.0,454.0" fill="none" stroke="#1A3D63" stroke-width="2.5" stroke-linejoin="round"/>
   <text class="hc-km hc-sc" x="570.6" y="365.4" text-anchor="middle" style="font-size:11px">▲ 748 máx.</text>
   <!-- estaciones: cabeceras municipales -->
-  <g stroke="#B3CFE5" stroke-opacity=".55" stroke-dasharray="3 4">
+  <g stroke="#1A3D63" stroke-opacity=".55" stroke-dasharray="3 4">
     <line x1="100.0" y1="449.3" x2="100.0" y2="470"/>
     <line x1="250.0" y1="459.1" x2="250.0" y2="470"/>
     <line x1="471.5" y1="427.9" x2="471.5" y2="470"/>
@@ -472,7 +518,7 @@ a{color:inherit}
     <line x1="877.9" y1="424.9" x2="877.9" y2="470"/>
     <line x1="1120.0" y1="458.0" x2="1120.0" y2="470"/>
   </g>
-  <g fill="#F6FAFD">
+  <g fill="#0A1931">
     <path d="M100.0 443.3 l7 -12 h-14z"/>
     <path d="M250.0 453.1 l7 -12 h-14z"/>
     <path d="M471.5 421.9 l7 -12 h-14z"/>
@@ -502,7 +548,7 @@ a{color:inherit}
   </g>
   <!-- escala gráfica horizontal real: 0-20-40 km -->
   <g transform="translate(470 322)">
-    <rect width="111.3" height="5" fill="#F6FAFD"/><rect x="111.3" width="111.3" height="5" fill="#4A7FA7"/>
+    <rect width="111.3" height="5" fill="#0A1931"/><rect x="111.3" width="111.3" height="5" fill="#4A7FA7"/>
     <text class="hc-km hc-sc" x="0" y="20" text-anchor="middle" style="font-size:11px">0</text><text class="hc-km hc-sc" x="111.3" y="20" text-anchor="middle" style="font-size:11px">20</text><text class="hc-km hc-sc" x="222.6" y="20" text-anchor="middle" style="font-size:11px">40 km</text>
   </g>
 </svg></div>
@@ -548,17 +594,17 @@ a{color:inherit}
     <div class="loc-strip">
       <figure class="plate">
         <div class="plate-tag"><span class="label">Escala nacional</span><span class="code">L-01</span></div>
-        <div class="plate-img"><img src="mapas/ubicacion_colombia.png" alt="Mapa de Colombia con Casanare resaltado" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/ubicacion_colombia.png" width="1200" height="1500" alt="Mapa de Colombia con Casanare resaltado" loading="lazy"></div>
         <figcaption><b>Colombia</b> — Casanare en la Orinoquía</figcaption>
       </figure>
       <figure class="plate">
         <div class="plate-tag"><span class="label">Escala departamental</span><span class="code">L-02</span></div>
-        <div class="plate-img"><img src="mapas/ubicacion_casanare.png" alt="Mapa de Casanare con los seis municipios del corredor" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/ubicacion_casanare.png" width="1200" height="1500" alt="Mapa de Casanare con los seis municipios del corredor" loading="lazy"></div>
         <figcaption><b>Casanare</b> — 6 de 19 municipios</figcaption>
       </figure>
       <figure class="plate">
         <div class="plate-tag"><span class="label">Escala corredor</span><span class="code">L-03</span></div>
-        <div class="plate-img"><img src="mapas/ubicacion_corredor.png" alt="Mapa del corredor con cabeceras y Ruta 65" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/ubicacion_corredor.png" width="1200" height="1500" alt="Mapa del corredor con cabeceras y Ruta 65" loading="lazy"></div>
         <figcaption><b>Corredor</b> — cabeceras y Ruta 65 (INVIAS)</figcaption>
       </figure>
     </div>
@@ -583,7 +629,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Equipamientos consolidados</span><span class="code">M-01</span></div>
-        <div class="plate-img"><img src="mapas/General.png" alt="Mapa de equipamientos consolidados del corredor" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/General.png" width="4440" height="4920" alt="Mapa de equipamientos consolidados del corredor" loading="lazy"></div>
         <figcaption><b>954 equipamientos</b> en 10 categorías — Yopal, Aguazul, Monterrey, Sabanalarga, Tauramena, Villanueva</figcaption>
       </figure>
 
@@ -596,7 +642,7 @@ a{color:inherit}
           </div>
           <div class="stat"><span class="stat-val">954</span><span class="stat-lbl">Puntos tras deduplicar 1.049 registros brutos</span></div>
           <div class="stat"><span class="stat-val">52 %</span><span class="stat-lbl">Deportivo (252) + educación (248)</span></div>
-          <div class="stat stat--wide"><span class="stat-lbl">Sabanalarga, con 1 punto de salud</span><span class="stat-val">30</span></div>
+          <div class="stat stat--wide"><span class="stat-val">30</span><span class="stat-lbl">Equipamientos en Sabanalarga — el mínimo del corredor, con solo <b>1 punto de salud</b></span></div>
         </div>
         <div class="notes-block">
           <span class="label">Hallazgos</span>
@@ -654,7 +700,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Sedes educativas</span><span class="code">M-02</span></div>
-        <div class="plate-img"><img src="mapas/Educacion.png" alt="Mapa de sedes educativas" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Educacion.png" width="4440" height="4920" alt="Mapa de sedes educativas" loading="lazy"></div>
         <figcaption>Sedes educativas y educación superior en el corredor</figcaption>
       </figure>
 
@@ -727,7 +773,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Sedes IPS</span><span class="code">M-03</span></div>
-        <div class="plate-img"><img src="mapas/Salud.png" alt="Mapa de sedes IPS" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Salud.png" width="4440" height="4920" alt="Mapa de sedes IPS" loading="lazy"></div>
         <figcaption>Sedes IPS y accesibilidad a 30 minutos</figcaption>
       </figure>
 
@@ -797,7 +843,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Equipamientos sociales</span><span class="code">M-04</span></div>
-        <div class="plate-img"><img src="mapas/Sociales.png" alt="Mapa de equipamientos sociales" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Sociales.png" width="4440" height="4920" alt="Mapa de equipamientos sociales" loading="lazy"></div>
         <figcaption>Bibliotecas, cultura, culto, deporte y bienestar</figcaption>
       </figure>
 
@@ -868,7 +914,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Equipamientos institucionales</span><span class="code">M-05</span></div>
-        <div class="plate-img"><img src="mapas/Institucional.png" alt="Mapa de equipamientos institucionales" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Institucional.png" width="4440" height="4920" alt="Mapa de equipamientos institucionales" loading="lazy"></div>
         <figcaption>Alcaldías, justicia, policía, bomberos, militar y terminales</figcaption>
       </figure>
 
@@ -938,7 +984,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Transporte y siniestralidad</span><span class="code">M-06</span></div>
-        <div class="plate-img"><img src="mapas/Transporte.png" alt="Mapa de transporte y siniestralidad" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Transporte.png" width="4440" height="4920" alt="Mapa de transporte y siniestralidad" loading="lazy"></div>
         <figcaption>Siniestros viales, terminales y aeródromos</figcaption>
       </figure>
 
@@ -968,7 +1014,7 @@ a{color:inherit}
         <div class="plate-charts" data-set="transporte">
         <div class="chart-panel"><h3 class="chart-title">Siniestros viales por año (2016-2025)</h3><div class="chart-box"><canvas id="c-t1" role="img" aria-label="Siniestros viales por año (2016-2025)"></canvas></div></div>
         <div class="chart-panel"><h3 class="chart-title">Fallecidos y lesionados por municipio (2016-2025)</h3><div class="chart-box"><canvas id="c-t2" role="img" aria-label="Fallecidos y lesionados por municipio (2016-2025)"></canvas></div></div>
-        <div class="chart-panel"><h3 class="chart-title">Siniestros por gravedad. n=2.753 (ANSV 2016-2026)</h3><div class="chart-box"><canvas id="c-t3" role="img" aria-label="Siniestros por gravedad. n=2.753 (ANSV 2016-2026)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Siniestros por gravedad. n=2.753 (ANSV 2016-2025)</h3><div class="chart-box"><canvas id="c-t3" role="img" aria-label="Siniestros por gravedad. n=2.753 (ANSV 2016-2025)"></canvas></div></div>
         <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Distancia vial entre cabeceras municipales (red INVÍAS)</h3><div class="chart-box"><canvas id="c-t4" role="img" aria-label="Distancia vial entre cabeceras municipales (red INVÍAS)"></canvas></div></div>
         </div>
         <figcaption>Serie anual de siniestros y víctimas por municipio</figcaption>
@@ -1009,7 +1055,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Red vial</span><span class="code">M-07</span></div>
-        <div class="plate-img"><img src="mapas/Vias.png" alt="Mapa vial" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Vias.png" width="4440" height="4920" alt="Mapa vial" loading="lazy"></div>
         <figcaption>Red vial INVIAS, estado 2018, puentes y peaje</figcaption>
       </figure>
 
@@ -1080,7 +1126,7 @@ a{color:inherit}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Espacio público</span><span class="code">M-08</span></div>
-        <div class="plate-img"><img src="mapas/EspacioPublico.png" alt="Mapa de espacio público" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/EspacioPublico.png" width="4440" height="4920" alt="Mapa de espacio público" loading="lazy"></div>
         <figcaption>Parques, rondas hídricas, escenarios y áreas de influencia</figcaption>
       </figure>
 
@@ -1235,7 +1281,7 @@ a{color:inherit}
   /* 02 Educación */
   var e=DATA.educacion;
   bar('c-e1',e.mun,[ds('Sedes',e.sedes,C.d)],'N.° de sedes',{dec:0});
-  bar('c-e2',e.mun,[ds('Cobertura neta',e.cob,C.a),refLine('100 %',100,e.mun.length,C.b)],'Cobertura neta (%)',{suf:' %',legend:true,y:{max:110}});
+  bar('c-e2',e.mun,[ds('Cobertura neta',e.cob,C.a),refLine('100 %',100,e.mun.length,C.d)],'Cobertura neta (%)',{suf:' %',legend:true,y:{max:100}});
   bar('c-e3',e.mun,[ds('Habitantes 5-16 años',e.pob,C.m)],'Habitantes 5-16 años',{dec:0});
   pie('c-e4',e.sector,[C.a,C.b],' sedes');
   pie('c-e5',e.zona,[C.d,C.m],' sedes');
@@ -1286,6 +1332,21 @@ a{color:inherit}
   bar('c-p3',p.mun,[ds('Banda 300 m',p.a300,C.m),ds('Banda 500 m',p.a500,C.d)],'% área urbana cubierta',{suf:' %',y:{max:100}});
   bar('c-p4',p.mun,[ds('EP de tránsito',p.km,C.a)],'km',{suf:' km'});
 
+  /* FIX contraste (WCAG 1.4.11, ≥3:1 para gráficos): toda serie cuyo color efectivo sobre el
+     fondo #F6FAFD quede <4.5:1 (AA) recibe borde fino #0A1931 (barras/sectores, y su cuadro de leyenda);
+     las líneas <3:1 pasan a #4A7FA7 punteado. Solo colores de la paleta oficial. */
+  function lum(r,g,b){return [r,g,b].map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);}).reduce(function(a,v,i){return a+v*[.2126,.7152,.0722][i];},0);}
+  function eff(c){if(typeof c!=='string')return null;var m=c.match(/rgba\((\d+),(\d+),(\d+),([\d.]+)\)/),r,g,b,a=1;
+    if(m){r=+m[1];g=+m[2];b=+m[3];a=+m[4];}else if(c[0]==='#'){var n=parseInt(c.slice(1),16);r=n>>16&255;g=n>>8&255;b=n&255;}else return null;
+    return [r*a+246*(1-a),g*a+250*(1-a),b*a+253*(1-a)];}
+  function low(c,th){th=th||4.5;var e=eff(c);if(!e)return false;var L1=lum(246,250,253),L2=lum(e[0],e[1],e[2]);return (Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05)<th;}
+  Object.keys(made).forEach(function(id){var cfg=made[id].cfg;(cfg.data.datasets||[]).forEach(function(d){
+    var t=d.type||cfg.type;
+    if(t==='line'){ if(low(d.borderColor,3)){d.borderColor=C.m;d.borderDash=[5,3];d.backgroundColor=d.fill?d.backgroundColor:C.m;} return; }
+    if(Array.isArray(d.backgroundColor)){ if(d.backgroundColor.some(low)){d.borderColor=C.d;d.borderWidth=1;} }
+    else if(low(d.backgroundColor)){d.borderColor=C.d;d.borderWidth=1;}
+  });});
+
   /* Render diferido: cada gráfica anima al entrar en pantalla */
   var ids=Object.keys(made);
   function draw(id){if(!made[id]||made[id].chart)return;made[id].chart=new Chart(made[id].el,made[id].cfg);}
@@ -1298,21 +1359,41 @@ a{color:inherit}
 })();
 </script>
 <script>
-/* Animaciones de scroll: se re-disparan cada vez que una lámina entra al viewport (ambas direcciones) */
+/* Animaciones de scroll — FIX huecos en blanco:
+   antes se usaba IntersectionObserver con threshold y se volvía a ocultar al salir; en scroll
+   rápido los bloques que entraban y salían entre dos frames nunca recibían la clase y quedaban
+   en opacity:0 (huecos de 700-1000 px). Ahora: revelado por POSICIÓN en cada frame de scroll
+   (todo lo que ya está por encima del borde inferior del viewport se revela), una sola vez. */
 (function(){
-  if(!('IntersectionObserver' in window))return;
   if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   document.documentElement.classList.add('js-rv');
-  var sel='.lamina-head,.plate--map,.plate--chart,.stat--lead,.stats,.notes-block,.notes,.cartela,.lamina-lede';
-  var secs=document.querySelectorAll('section.lamina');
+  var sel='.lamina-head,.plate--map,.plate--chart,.notes-block,.notes,.cartela,.lamina-lede';
+  var secs=[].slice.call(document.querySelectorAll('section.lamina'));
   secs.forEach(function(sec){sec.querySelectorAll(sel).forEach(function(el){el.classList.add('rv');});});
-  var io=new IntersectionObserver(function(es){
-    es.forEach(function(e){
-      if(e.isIntersecting){e.target.classList.add('is-in');}
-      else{e.target.classList.remove('is-in');}
+  var items=[].slice.call(document.querySelectorAll('.lamina .chart-panel,.lamina .stat'));
+  items.forEach(function(el){
+    var sib=[].filter.call(el.parentNode.children,function(c){return c.classList.contains('chart-panel')||c.classList.contains('stat');});
+    el.style.setProperty('--d',(Math.min(sib.indexOf(el),4)*0.05)+'s');
+  });
+  var pending=secs.map(function(el){return {el:el,cls:'is-in'};}).concat(items.map(function(el){return {el:el,cls:'is-vis'};}));
+  var last=0,trail=null;
+  function check(){
+    last=Date.now();
+    var lim=window.innerHeight*1.15;
+    pending=pending.filter(function(p){
+      if(p.el.getBoundingClientRect().top<lim){p.el.classList.add(p.cls);return false;}
+      return true;
     });
-  },{threshold:0.12});
-  secs.forEach(function(s){io.observe(s);});
+    if(!pending.length){window.removeEventListener('scroll',onScroll);window.removeEventListener('resize',onScroll);clearInterval(poll);}
+  }
+  /* síncrono (sin rAF): funciona aunque la pestaña esté en segundo plano; la lista pendiente se vacía sola */
+  function onScroll(){check();clearTimeout(trail);trail=setTimeout(check,80);}
+  var poll=setInterval(check,250); /* red de seguridad: saltos por ancla o eventos perdidos */
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  window.addEventListener('load',check);
+  window.addEventListener('beforeprint',function(){pending.forEach(function(p){p.el.classList.add(p.cls);});pending=[];});
+  check();
 })();
 </script>
 </body>
