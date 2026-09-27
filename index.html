@@ -1,4 +1,47 @@
 <!doctype html>
+<!--
+=====================================================================
+ DECISIONES DE DISEÑO · V3 ORNAMENTADO (lámina técnica de arquitectura)
+=====================================================================
+ TIPOGRAFÍA (2 familias, Google Fonts)
+  · ARCHIVO (variable, ejes wdth 62–125 y wght 100–900). Grotesca de
+    origen hemerográfico/técnico. Se usa EXPANDIDA (wdth 125) y en
+    peso 800–900 y MAYÚSCULAS para títulos: reproduce la rotulación
+    de cajetín y títulos de plano (letra de normógrafo ancha). En
+    peso 400 y ancho normal es el texto corrido: neutro y legible.
+  · IBM PLEX MONO. Monoespaciada real para TODO lo que en un plano
+    va rotulado como dato: códigos de lámina (PL.01 / RUTA65-CAS),
+    cifras, cotas, coordenadas, etiquetas de casillas, numeración de
+    notas. Cifras tabulares por construcción.
+  · Se descarta Fraunces (serif editorial) y Manrope (sans de landing).
+
+ ORNAMENTACIÓN ARQUITECTÓNICA (todo SVG/CSS inline, sin imágenes)
+  1. Portada: papel milimetrado de mesa de dibujo — retícula menor
+     8 px, mayor 64 px, y cruces de registro en cada intersección
+     mayor (SVG en data-URI). Marco de lámina con doble línea,
+     coordenadas de borde A–H / 1–6 como en un plano, flecha de norte
+     grande, escala gráfica decorativa, rótulo vertical 90° y cajetín.
+  2. Líneas de cota (dimension lines) con flechas/ticks oblicuos a 45°
+     y texto de cota centrado: reemplazan el <hr> de Localización y
+     separan cuerpo/cajetín en cada lámina.
+  3. Cajetín real (title block) al pie de cada lámina: PROYECTO, TEMA,
+     LÁMINA, ESCALA, FECHA, DIBUJÓ, REVISÓ y código de plano grande.
+     ESCALA = "S.E. (ver mapa)" porque la escala real está en cada mapa;
+     no se inventa ningún dato.
+  4. Código de lámina técnico en la cabecera: "PL.01 / RUTA65-CAS" en
+     recuadro con subdivisión, en lugar del número grande suelto.
+  5. Norte ornamental (flecha con N) en la cabecera de cada lámina,
+     SOLO en zona de texto; nunca sobre los mapas (que tienen el suyo).
+  6. Marcas de registro/crop en las 4 esquinas de cada plate
+     (mapas y gráficas) + cruz de centrado en el marco.
+  7. Rótulo vertical (writing-mode) en el margen izquierdo de cada
+     lámina: "PROYECTO 01 · CORREDOR RUTA 65 · PL.0X".
+  8. Barra de secciones con códigos mono y títulos en Archivo ancho.
+ PALETA: solo #0A1931 #1A3D63 #4A7FA7 #B3CFE5 #F6FAFD (y sus rgba).
+ CONTENIDO: cifras, notas, imágenes, ids t1..t8 y loc-strip intactos.
+ No hay Chart.js en la base (gráficas son PNG): nada que ajustar.
+=====================================================================
+-->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -6,230 +49,285 @@
 <title>Diagnóstico Corredor Ruta 65</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 /* =====================================================================
-   SISTEMA DE DISEÑO · LÁMINAS DIAGNÓSTICO CORREDOR RUTA 65
-   Paleta FIJA (no agregar hex): #0A1931 #1A3D63 #4A7FA7 #B3CFE5 #F6FAFD
-   Tipografía: Fraunces (display: títulos, números de lámina, cifras)
-               Manrope  (cuerpo, notas, etiquetas, pies)
-   Retícula: 12 col · gutter 24px · marco 40px (20px móvil) · base 8px
+   SISTEMA V3 · LÁMINA TÉCNICA — ver comentario DECISIONES arriba
+   Paleta FIJA: #0A1931 #1A3D63 #4A7FA7 #B3CFE5 #F6FAFD
    ===================================================================== */
 :root{
-  /* Paleta oficial — únicos colores permitidos */
-  --az-900:#0A1931;   /* tinta / fondos profundos */
-  --az-700:#1A3D63;   /* texto secundario / paneles */
-  --az-500:#4A7FA7;   /* líneas de cota / acento único */
-  --az-200:#B3CFE5;   /* bordes, veladuras */
-  --az-050:#F6FAFD;   /* papel */
-
-  /* Roles semánticos (modo claro) */
-  --bg:var(--az-050);
-  --paper:#F6FAFD;
-  --ink:var(--az-900);
-  --ink-2:var(--az-700);
-  --rule:var(--az-200);
-  --accent:var(--az-500);
-  --panel-a:var(--az-700);
-  --panel-b:var(--az-900);
-  --on-panel:var(--az-050);
-
-  /* Retícula y ritmo */
-  --u:8px;                 /* unidad base vertical */
-  --frame:40px;            /* marco exterior de lámina */
-  --gutter:24px;
-  --maxw:1280px;
-
-  /* Tipografía */
-  --f-display:"Fraunces",Georgia,"Times New Roman",serif;
-  --f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --t-hero:clamp(2.5rem,5.6vw,4.5rem);   /* 40–72px */
-  --t-h2:clamp(1.75rem,3vw,2.5rem);      /* 28–40px */
-  --t-num:clamp(2.5rem,4.5vw,3.5rem);    /* 40–56px nº lámina */
-  --t-stat:2rem;                          /* 32px cifra */
-  --t-stat-lead:3rem;                     /* 48px cifra principal */
-  --t-lede:1.125rem;                      /* 18px */
-  --t-body:1rem;                          /* 16px */
-  --t-small:.875rem;                      /* 14px */
-  --t-label:.6875rem;                     /* 11px etiquetas en versalitas */
+  --az-900:#0A1931; --az-700:#1A3D63; --az-500:#4A7FA7; --az-200:#B3CFE5; --az-050:#F6FAFD;
+  --bg:var(--az-050); --paper:#F6FAFD; --ink:var(--az-900); --ink-2:var(--az-700);
+  --rule:var(--az-200); --accent:var(--az-500); --on-panel:var(--az-050);
+  --u:8px; --frame:56px; --gutter:24px; --maxw:1280px;
+  --f-display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --f-body:"Archivo",system-ui,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --t-hero:clamp(2.6rem,7vw,6rem);
+  --t-h2:clamp(1.6rem,2.8vw,2.4rem);
+  --t-stat:1.75rem; --t-stat-lead:2.75rem;
+  --t-lede:1.0625rem; --t-body:1rem; --t-small:.875rem; --t-label:.6875rem;
   color-scheme:light;
 }
-@media (max-width:640px){ :root{ --frame:20px; --gutter:16px; } }
-
+@media (max-width:640px){:root{--frame:20px;--gutter:16px}}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:64px}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:var(--t-body);line-height:1.55;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
-
-/* ---------- Utilidades ---------- */
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--frame)}
-.grid12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter);row-gap:calc(var(--u)*3)}
-.label{font-family:var(--f-body);font-size:var(--t-label);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.label{font-family:var(--f-mono);font-size:var(--t-label);font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:var(--f-mono)}
 
-/* Línea de cota: regla fina con remates verticales, lenguaje de plano */
-.cota{position:relative;height:1px;background:var(--accent);margin:0}
-.cota::before,.cota::after{content:"";position:absolute;top:-4px;width:1px;height:9px;background:var(--accent)}
-.cota::before{left:0}.cota::after{right:0}
+/* ---------- LÍNEA DE COTA (dimension line) ---------- */
+.dim{display:flex;align-items:center;gap:10px;color:var(--accent);margin:calc(var(--u)*3) 0;font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase}
+.dim svg{flex:0 0 auto;width:14px;height:22px;overflow:visible}
+.dim .dim-line{flex:1;height:1px;background:currentColor;position:relative}
+.dim .dim-txt{white-space:nowrap;padding:0 6px;color:var(--ink-2)}
+.dim--dark{color:var(--az-200)} .dim--dark .dim-txt{color:var(--az-200)}
+
+/* ---------- NORTE ornamental ---------- */
+.north{display:inline-flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink)}
+.north svg{width:34px;height:46px}
+.north span{font-family:var(--f-mono);font-size:.625rem;letter-spacing:.2em}
 
 /* =====================================================================
-   PORTADA / HERO
+   PORTADA — mesa de dibujo
    ===================================================================== */
-.hero{background:linear-gradient(160deg,var(--az-700) 0%,var(--az-900) 70%);color:var(--on-panel);position:relative;overflow:hidden}
-/* retícula técnica de fondo: líneas finas en az-500, muy veladas */
-.hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;
-  background-image:linear-gradient(var(--az-500) 1px,transparent 1px),linear-gradient(90deg,var(--az-500) 1px,transparent 1px);
-  background-size:calc(var(--u)*8) calc(var(--u)*8)}
-.hero .wrap{position:relative;padding-top:calc(var(--u)*6);padding-bottom:calc(var(--u)*6)}
+.hero{background:var(--az-900);color:var(--on-panel);position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M0 0h7M0 0v7M57 0h7M64 0v7M0 57v7M0 64h7M64 57v7M57 64h7' stroke='%23B3CFE5' stroke-width='1.2' fill='none'/%3E%3C/svg%3E"),
+    linear-gradient(rgba(74,127,167,.55) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,127,167,.55) 1px,transparent 1px),
+    linear-gradient(rgba(74,127,167,.18) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,127,167,.18) 1px,transparent 1px);
+  background-size:64px 64px,64px 64px,64px 64px,8px 8px,8px 8px;
+  background-position:-4px -4px,0 0,0 0,0 0,0 0;opacity:.5}
+.hero::after{content:"";position:absolute;inset:18px;border:1px solid var(--az-500);outline:1px solid rgba(74,127,167,.45);outline-offset:-7px;pointer-events:none}
+.hero .wrap{position:relative;padding-top:calc(var(--u)*7);padding-bottom:calc(var(--u)*7)}
+/* coordenadas de borde de plano */
+.hero-coords{position:absolute;inset:18px;pointer-events:none;font-family:var(--f-mono);font-size:.625rem;color:var(--az-500)}
+.hero-coords .row{position:absolute;left:0;right:0;display:flex;justify-content:space-around}
+.hero-coords .row.t{top:-1px;transform:translateY(-100%)} .hero-coords .row.b{bottom:-1px;transform:translateY(100%)}
+.hero-coords .col{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-around}
+.hero-coords .col.l{left:-12px} .hero-coords .col.r{right:-12px}
+.hero-vert{position:absolute;right:30px;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.3em;color:var(--az-500);text-transform:uppercase;white-space:nowrap}
 .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--gutter);padding-bottom:calc(var(--u)*2);border-bottom:1px solid var(--az-500)}
 .hero-top .label{color:var(--az-200)}
-.hero-body{padding:calc(var(--u)*10) 0 calc(var(--u)*8)}
+.hero-body{padding:calc(var(--u)*8) 0 calc(var(--u)*6);display:grid;grid-template-columns:1fr auto;gap:calc(var(--u)*4);align-items:start}
+.hero-body > *{grid-column:1}
+.hero-orn{grid-column:2!important;grid-row:1 / span 3;display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3);padding-top:calc(var(--u)*1)}
+.hero-orn .north{color:var(--az-050)} .hero-orn .north svg{width:64px;height:88px}
+.hero-orn .coord{font-family:var(--f-mono);font-size:.625rem;color:var(--az-200);letter-spacing:.1em;text-align:center;line-height:1.7}
 .hero-kicker{color:var(--az-200);margin:0 0 calc(var(--u)*3)}
-.hero h1{font-family:var(--f-display);font-weight:300;font-size:var(--t-hero);line-height:1.02;letter-spacing:-.02em;margin:0;max-width:14ch;font-variation-settings:"opsz" 144}
-.hero h1 em{font-style:normal;font-weight:600;display:block}
-.hero-sub{font-size:var(--t-lede);line-height:1.55;color:var(--az-200);max-width:56ch;margin:calc(var(--u)*4) 0 0}
-.hero-meta{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gutter);padding-top:calc(var(--u)*3);border-top:1px solid var(--az-500)}
-.hero-meta div{display:flex;flex-direction:column;gap:var(--u)}
-.hero-meta .label{color:var(--az-200)}
-.hero-meta b{font-weight:600;font-size:var(--t-body);color:var(--az-050)}
-@media (max-width:760px){.hero-meta{grid-template-columns:1fr 1fr;row-gap:calc(var(--u)*3)}.hero-body{padding:calc(var(--u)*6) 0}}
-
-/* Índice de láminas (en portada) */
-.hero-index{list-style:none;margin:calc(var(--u)*6) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--az-500)}
-.hero-index li{border-bottom:1px solid var(--az-500)}
-.hero-index a{display:flex;gap:calc(var(--u)*1.5);align-items:baseline;padding:calc(var(--u)*1.5) var(--u) calc(var(--u)*1.5) 0;text-decoration:none;color:var(--az-050);font-size:var(--t-small);transition:color .2s,padding .2s}
-.hero-index a span{font-family:var(--f-display);font-size:1.25rem;color:var(--az-200);min-width:2ch}
-.hero-index a:hover{color:var(--az-200);padding-left:var(--u)}
-@media (max-width:760px){.hero-index{grid-template-columns:1fr 1fr}}
+.hero-kicker::before{content:"⌖ ";color:var(--az-500)}
+.hero h1{font-family:var(--f-display);font-weight:300;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:var(--t-hero);line-height:.92;letter-spacing:-.01em;margin:0;text-transform:uppercase}
+.hero h1 em{font-style:normal;font-weight:900;display:block;color:var(--az-050);-webkit-text-stroke:0}
+.hero h1 em::after{content:"";display:block;height:6px;width:100%;max-width:9.5ch;margin-top:14px;
+  background:linear-gradient(90deg,var(--az-050) 0 25%,transparent 25% 50%,var(--az-050) 50% 75%,transparent 75%) ;border:1px solid var(--az-050)}
+.hero-scale{font-family:var(--f-mono);font-size:.625rem;color:var(--az-200);display:flex;gap:0;margin-top:6px;max-width:9.5ch;font-size:clamp(.55rem,1vw,.65rem)}
+.hero-sub{font-size:var(--t-lede);line-height:1.6;color:var(--az-200);max-width:60ch;margin:calc(var(--u)*4) 0 0;border-left:1px solid var(--az-500);padding-left:calc(var(--u)*2)}
+.hero-index{list-style:none;margin:calc(var(--u)*5) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--az-500)}
+.hero-index li{border-right:1px solid var(--az-500);border-bottom:1px solid var(--az-500);margin-bottom:-1px}
+.hero-index li:nth-child(4n){border-right:0}
+.hero-index a{display:flex;flex-direction:column;gap:4px;align-items:flex-start;padding:calc(var(--u)*1.5);text-decoration:none;color:var(--az-050);font-size:var(--t-small);font-weight:600;text-transform:uppercase;letter-spacing:.04em;transition:background .2s}
+.hero-index a span{font-family:var(--f-mono);font-size:.75rem;color:var(--az-200);font-weight:400}
+.hero-index a span::before{content:"PL."}
+.hero-index a:hover{background:rgba(74,127,167,.3)}
+/* cajetín de portada */
+.hero-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;border:1px solid var(--az-200);background:rgba(10,25,49,.85)}
+.hero-meta div{display:flex;flex-direction:column;gap:6px;padding:calc(var(--u)*1.5) calc(var(--u)*2);border-right:1px solid var(--az-500)}
+.hero-meta div:last-child{border-right:0;background:var(--az-050);color:var(--az-900);justify-content:center}
+.hero-meta .label{color:var(--az-200);font-size:.625rem}
+.hero-meta b{font-weight:700;font-size:var(--t-body);color:var(--az-050);text-transform:uppercase;letter-spacing:.02em}
+.hero-meta .hm-code{font-family:var(--f-mono);font-weight:600;font-size:.9rem;letter-spacing:.06em;color:var(--az-900)}
+.hero-meta .hm-code small{display:block;font-weight:400;font-size:.625rem;color:var(--az-700);letter-spacing:.14em}
+@media (max-width:860px){.hero-meta{grid-template-columns:1fr 1fr}.hero-meta div{border-bottom:1px solid var(--az-500)}.hero-body{grid-template-columns:1fr}.hero-orn{display:none!important}.hero-index{grid-template-columns:1fr 1fr}.hero-index li:nth-child(2n){border-right:0}.hero-vert,.hero-coords{display:none}}
 
 /* =====================================================================
-   BARRA DE NAVEGACIÓN PERSISTENTE (numeración viva)
+   BARRA DE SECCIONES
    ===================================================================== */
-.sheetbar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule)}
-.sheetbar .wrap{display:flex;align-items:center;gap:calc(var(--u)*2);height:56px}
-.sheetbar-title{font-family:var(--f-display);font-weight:600;font-size:1rem;white-space:nowrap;color:var(--ink)}
-.sheetbar nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.sheetbar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:2px solid var(--ink)}
+.sheetbar .wrap{display:flex;align-items:center;gap:calc(var(--u)*2);height:52px}
+.sheetbar-title{font-family:var(--f-display);font-weight:800;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:.875rem;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.sheetbar nav{display:flex;gap:0;margin-left:auto;overflow-x:auto;scrollbar-width:none;border-left:1px solid var(--rule)}
 .sheetbar nav::-webkit-scrollbar{display:none}
-.sheetbar nav a{font-family:var(--f-display);font-size:.9375rem;text-decoration:none;color:var(--ink-2);padding:6px 10px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
-.sheetbar nav a:hover{color:var(--ink)}
-.sheetbar nav a[aria-current="true"]{color:var(--ink);border-bottom-color:var(--accent)}
-.sheetbar-count{font-family:var(--f-display);font-size:.9375rem;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
-@media (max-width:640px){.sheetbar-title{display:none}.sheetbar-count{display:none}}
+.sheetbar nav a{font-family:var(--f-mono);font-size:.8125rem;text-decoration:none;color:var(--ink-2);padding:6px 10px;border-right:1px solid var(--rule);border-bottom:2px solid transparent;white-space:nowrap}
+.sheetbar nav a:hover{color:var(--ink);background:rgba(179,207,229,.35)}
+.sheetbar nav a[aria-current="true"]{color:var(--az-050);background:var(--ink)}
+.sheetbar-count{font-family:var(--f-mono);font-size:.8125rem;color:var(--ink);white-space:nowrap;border:1px solid var(--ink);padding:3px 8px}
+.sheetbar-count::before{content:"PL. "}
+@media (max-width:640px){.sheetbar-title,.sheetbar-count{display:none}}
 
 /* =====================================================================
-   LOCALIZACIÓN (loc-strip) — contenido fijo, no modificar
+   PLATES — marco con marcas de registro en 4 esquinas
    ===================================================================== */
-.loc{padding:calc(var(--u)*10) 0 calc(var(--u)*8)}
-.loc-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--gutter);margin-bottom:calc(var(--u)*3)}
-.loc-head h2{font-family:var(--f-display);font-weight:500;font-size:var(--t-h2);line-height:1.1;margin:0;letter-spacing:-.01em}
-.loc-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gutter);margin-top:calc(var(--u)*4);counter-reset:loc}
-.loc-strip .plate{position:relative}
-.loc-strip .plate:not(:last-child)::after{content:"→";position:absolute;right:calc(var(--gutter) * -1);top:50%;width:var(--gutter);text-align:center;color:var(--accent);font-size:1rem;transform:translateY(-50%)}
-@media (max-width:760px){.loc-strip{grid-template-columns:1fr}.loc-strip .plate::after{display:none}}
-
-/* =====================================================================
-   PLATE — marco de imagen (mapa / gráfica). La imagen NO se altera.
-   ===================================================================== */
-.plate{margin:0;background:var(--paper);border:1px solid var(--rule);display:flex;flex-direction:column;position:relative}
-/* marcas de esquina tipo registro de impresión */
-.plate::before{content:"";position:absolute;inset:-5px;pointer-events:none;
+.plate{margin:0;background:var(--paper);border:1px solid var(--ink);display:flex;flex-direction:column;position:relative}
+.plate::before{content:"";position:absolute;inset:-9px;pointer-events:none;
   background:
-    linear-gradient(var(--az-500),var(--az-500)) top left/10px 1px no-repeat,
-    linear-gradient(var(--az-500),var(--az-500)) top left/1px 10px no-repeat,
-    linear-gradient(var(--az-500),var(--az-500)) bottom right/10px 1px no-repeat,
-    linear-gradient(var(--az-500),var(--az-500)) bottom right/1px 10px no-repeat}
-.plate-tag{display:flex;justify-content:space-between;align-items:center;gap:var(--u);padding:var(--u) calc(var(--u)*2);border-bottom:1px solid var(--rule)}
-.plate-tag .label{color:var(--ink-2)}
-.plate-tag .code{font-family:var(--f-display);font-size:.875rem;color:var(--accent);font-variant-numeric:tabular-nums}
+    linear-gradient(var(--az-500),var(--az-500)) top left/14px 1px no-repeat,
+    linear-gradient(var(--az-500),var(--az-500)) top left/1px 14px no-repeat,
+    linear-gradient(var(--az-500),var(--az-500)) top right/14px 1px no-repeat,
+    linear-gradient(var(--az-500),var(--az-500)) top right/1px 14px no-repeat,
+    linear-gradient(var(--az-500),var(--az-500)) bottom left/14px 1px no-repeat,
+    linear-gradient(var(--az-500),var(--az-500)) bottom left/1px 14px no-repeat,
+    linear-gradient(var(--az-500),var(--az-500)) bottom right/14px 1px no-repeat,
+    linear-gradient(var(--az-500),var(--az-500)) bottom right/1px 14px no-repeat}
+/* cruz de centrado en el borde superior */
+.plate::after{content:"";position:absolute;top:-12px;left:50%;width:1px;height:9px;background:var(--az-500);box-shadow:0 0 0 0 transparent}
+.plate-tag{display:flex;justify-content:space-between;align-items:center;gap:var(--u);padding:6px calc(var(--u)*1.5);border-bottom:1px solid var(--ink);background:var(--paper)}
+.plate-tag .label{color:var(--ink)}
+.plate-tag .code{font-family:var(--f-mono);font-size:.75rem;font-weight:600;color:var(--az-050);background:var(--ink);padding:2px 8px;letter-spacing:.08em}
 .plate-img{background:#F6FAFD;padding:calc(var(--u)*2);display:flex;align-items:center;justify-content:center;flex:1}
 .plate-img img{width:100%;height:auto}
-.plate figcaption{padding:calc(var(--u)*1.5) calc(var(--u)*2);font-size:var(--t-small);color:var(--ink-2);border-top:1px solid var(--rule);line-height:1.5}
-.plate figcaption b{color:var(--ink);font-weight:700}
-/* zoom al pasar el cursor: invita a leer el mapa */
+.plate figcaption{padding:calc(var(--u)*1.25) calc(var(--u)*1.5);font-size:.8125rem;color:var(--ink-2);border-top:1px solid var(--rule);line-height:1.5}
+.plate figcaption b{color:var(--ink);font-weight:700;font-family:var(--f-mono);font-size:.8125rem}
 .plate--map .plate-img{overflow:hidden;cursor:zoom-in}
 .plate--map .plate-img img{transition:transform .5s ease}
 .plate--map:hover .plate-img img{transform:scale(1.02)}
 
 /* =====================================================================
-   LÁMINA TEMÁTICA
+   LOCALIZACIÓN
    ===================================================================== */
-.lamina{padding:calc(var(--u)*10) 0 calc(var(--u)*8);border-top:1px solid var(--rule)}
-.lamina:nth-of-type(even){background:linear-gradient(180deg,rgba(179,207,229,.18),rgba(179,207,229,0) 40%)}
+.loc{padding:calc(var(--u)*10) 0 calc(var(--u)*8);position:relative}
+.loc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--gutter)}
+.loc-head h2,.lamina-title h2{font-family:var(--f-display);font-weight:800;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:var(--t-h2);line-height:1;margin:0;text-transform:uppercase;letter-spacing:-.005em;text-wrap:balance}
+.loc-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:calc(var(--gutter) + 8px);margin-top:calc(var(--u)*2)}
+.loc-strip .plate:not(:last-child)::after{content:"";position:absolute;left:auto;right:-26px;top:50%;width:20px;height:1px;background:var(--accent)}
+@media (max-width:760px){.loc-strip{grid-template-columns:1fr}.loc-strip .plate::after{display:none}}
 
-/* Cabecera de lámina: título arriba-izq · número abajo-der */
-.lamina-head{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter);align-items:end;padding-bottom:calc(var(--u)*3);margin-bottom:calc(var(--u)*5);border-bottom:1px solid var(--ink)}
-.lamina-title{grid-column:1/span 9}
+/* =====================================================================
+   LÁMINA
+   ===================================================================== */
+.lamina{padding:calc(var(--u)*10) 0 calc(var(--u)*8);border-top:2px solid var(--ink);position:relative}
+.lamina:nth-of-type(even){background:linear-gradient(180deg,rgba(179,207,229,.2),rgba(179,207,229,0) 40%)}
+/* rótulo vertical en el margen (anotación de plano impreso) */
+.margin-note{position:absolute;left:14px;top:calc(var(--u)*10);writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--f-mono);font-size:.625rem;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);white-space:nowrap;border-left:1px solid var(--rule);padding-left:6px}
+@media (max-width:760px){.margin-note{display:none}}
+
+.lamina-head{display:grid;grid-template-columns:1fr auto auto;column-gap:calc(var(--gutter)*1.5);align-items:end;padding-bottom:calc(var(--u)*3);border-bottom:2px solid var(--ink);position:relative}
+.lamina-head::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--ink)}
 .lamina-title .label{display:block;margin-bottom:calc(var(--u)*1.5);color:var(--accent)}
-.lamina-title h2{font-family:var(--f-display);font-weight:500;font-size:var(--t-h2);line-height:1.08;letter-spacing:-.01em;margin:0;text-wrap:balance}
-.lamina-lede{font-size:var(--t-lede);line-height:1.55;color:var(--ink-2);max-width:62ch;margin:calc(var(--u)*2) 0 0;text-wrap:pretty}
-.lamina-num{grid-column:10/span 3;justify-self:end;text-align:right;font-family:var(--f-display);font-weight:300;font-size:var(--t-num);line-height:.9;color:var(--ink);font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 144;white-space:nowrap}
-.lamina-num small{font-size:.42em;color:var(--accent);font-weight:500;margin-left:.15em;vertical-align:.95em}
-@media (max-width:760px){.lamina-title{grid-column:1/-1}.lamina-num{grid-column:1/-1;justify-self:start;text-align:left;order:-1;margin-bottom:calc(var(--u)*2)}}
+.lamina-lede{font-size:var(--t-lede);line-height:1.6;color:var(--ink-2);max-width:64ch;margin:calc(var(--u)*2) 0 0;text-wrap:pretty}
+.lamina-head .north{align-self:end;margin-bottom:4px}
+/* código de lámina: mini-cajetín */
+.lamina-num{display:grid;grid-template-columns:auto auto;border:1.5px solid var(--ink);font-family:var(--f-mono);white-space:nowrap;align-self:end}
+.lamina-num .ln-k{grid-column:1/-1;font-size:.5625rem;letter-spacing:.2em;padding:3px 8px;border-bottom:1px solid var(--ink);color:var(--ink-2)}
+.lamina-num .ln-n{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:clamp(2.2rem,4vw,3.25rem);line-height:1;padding:6px 10px;background:var(--ink);color:var(--az-050)}
+.lamina-num .ln-c{display:flex;flex-direction:column;justify-content:center;padding:4px 10px;font-size:.75rem;line-height:1.5}
+.lamina-num .ln-c b{font-weight:600}
+.lamina-num .ln-c span{color:var(--accent)}
+@media (max-width:760px){.lamina-head{grid-template-columns:1fr auto}.lamina-title{grid-column:1/-1;order:2;margin-top:16px}.lamina-head .north{order:1}}
 
-/* Cuerpo: mapa 8 col · lateral 4 col · gráfica 12 col */
-.lamina-body{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter);row-gap:calc(var(--u)*4);align-items:start}
+.lamina-body{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gutter);row-gap:calc(var(--u)*5);align-items:start;margin-top:calc(var(--u)*6)}
 .lamina-body > .plate--map{grid-column:1/span 8}
 .lamina-side{grid-column:9/span 4;display:flex;flex-direction:column;gap:calc(var(--u)*3)}
 .lamina-body > .plate--chart{grid-column:1/-1}
 @media (max-width:960px){.lamina-body > .plate--map,.lamina-side{grid-column:1/-1}}
 
-/* Cifras */
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
-.stat{background:var(--paper);padding:calc(var(--u)*2);display:flex;flex-direction:column;gap:calc(var(--u)*.5);min-height:calc(var(--u)*13)}
-.stat-val{font-family:var(--f-display);font-weight:600;font-size:var(--t-stat);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
-.stat-lbl{font-size:var(--t-small);line-height:1.4;color:var(--ink-2)}
-/* Cifra principal: la ÚNICA con acento por lámina (panel profundo) */
-.stat--lead{grid-column:1/-1;background:linear-gradient(150deg,var(--panel-a),var(--panel-b));color:var(--on-panel);padding:calc(var(--u)*3)}
+/* Cifras — celdas de tabla técnica */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ink);border:1px solid var(--ink)}
+.stat{background:var(--paper);padding:calc(var(--u)*1.5) calc(var(--u)*2);display:flex;flex-direction:column;gap:6px;min-height:calc(var(--u)*12);position:relative}
+.stat-val{font-family:var(--f-mono);font-weight:600;font-size:var(--t-stat);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat-lbl{font-size:.8125rem;line-height:1.4;color:var(--ink-2)}
+.stat--lead{grid-column:1/-1;background:var(--ink);color:var(--on-panel);padding:calc(var(--u)*2.5);
+  background-image:linear-gradient(rgba(74,127,167,.25) 1px,transparent 1px),linear-gradient(90deg,rgba(74,127,167,.25) 1px,transparent 1px);background-size:16px 16px}
 .stat--lead .stat-val{font-size:var(--t-stat-lead);color:var(--az-050);font-weight:500}
 .stat--lead .stat-lbl{color:var(--az-200)}
-.stat--lead .label{color:var(--az-200);margin-bottom:var(--u)}
-/* Cifra ancha (fila completa, etiqueta y valor en línea) */
+.stat--lead .label{color:var(--az-200);margin-bottom:4px}
+.stat--lead .label::before{content:"▸ "}
 .stat--wide{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;min-height:0}
-.stat--wide .stat-val{font-size:1.5rem;white-space:nowrap}
+.stat--wide .stat-val{font-size:1.4rem;white-space:nowrap}
 
-/* Notas / hallazgos */
-.notes-block .label{display:block;margin-bottom:calc(var(--u)*1.5)}
-.notes{list-style:none;margin:0;padding:0;counter-reset:nota;border-top:1px solid var(--rule)}
-.notes li{counter-increment:nota;display:grid;grid-template-columns:3ch 1fr;gap:var(--u);padding:calc(var(--u)*1.5) 0;border-bottom:1px solid var(--rule);font-size:var(--t-small);line-height:1.5;color:var(--ink-2)}
-.notes li::before{content:counter(nota,decimal-leading-zero);font-family:var(--f-display);color:var(--accent);font-variant-numeric:tabular-nums}
+/* Notas — numeración mono tipo llamada de plano */
+.notes-block > .label{display:flex;align-items:center;gap:8px;margin-bottom:calc(var(--u)*1.5);color:var(--ink)}
+.notes-block > .label::after{content:"";flex:1;height:1px;background:var(--ink)}
+.notes{list-style:none;margin:0;padding:0;counter-reset:nota}
+.notes li{counter-increment:nota;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:calc(var(--u)*1.25) 0;border-bottom:1px dashed var(--rule);font-size:var(--t-small);line-height:1.5;color:var(--ink-2)}
+.notes li::before{content:counter(nota,decimal-leading-zero);font-family:var(--f-mono);font-size:.6875rem;color:var(--ink);border:1px solid var(--ink);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
 
-/* Cartela (title block) al pie de cada lámina */
-.cartela{display:grid;grid-template-columns:2fr 1fr 1fr auto;margin-top:calc(var(--u)*5);border:1px solid var(--ink);font-size:var(--t-small)}
-.cartela > div{padding:var(--u) calc(var(--u)*1.5);border-right:1px solid var(--ink);display:flex;flex-direction:column;gap:2px;min-width:0}
-.cartela > div:last-child{border-right:0;background:var(--ink);color:var(--az-050);justify-content:center;align-items:center;padding:var(--u) calc(var(--u)*2.5)}
-.cartela .label{font-size:.625rem}
-.cartela b{font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cartela .cart-num{font-family:var(--f-display);font-size:1.5rem;line-height:1;font-variant-numeric:tabular-nums}
-.cartela .cart-num small{font-size:.6em;color:var(--az-200)}
-@media (max-width:640px){.cartela{grid-template-columns:1fr auto}.cartela > div:nth-child(2),.cartela > div:nth-child(3){display:none}}
+/* =====================================================================
+   CAJETÍN (title block) — cuadrícula tipo plano
+   ===================================================================== */
+.cartela{display:grid;grid-template-columns:1.6fr 1.6fr 1fr 1fr 1fr auto;grid-template-rows:auto auto;border:2px solid var(--ink);font-size:var(--t-small);background:var(--paper);position:relative}
+.cartela > div{padding:6px 10px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;flex-direction:column;gap:2px;min-width:0}
+.cartela .label{font-size:.5625rem;letter-spacing:.16em}
+.cartela b{font-weight:700;color:var(--ink);white-space:normal;line-height:1.25;text-transform:uppercase;font-size:.8125rem;letter-spacing:.02em}
+.cartela b.m{font-family:var(--f-mono);font-weight:500;text-transform:none}
+.cartela .c-proy{grid-row:1/span 2;justify-content:center;gap:6px}
+.cartela .c-proy b{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:1.05rem;white-space:normal;line-height:1.1}
+.cartela .c-code{grid-column:6;grid-row:1/span 2;border-right:0;border-bottom:0;background:var(--ink);color:var(--az-050);justify-content:center;align-items:flex-start;padding:8px 18px}
+.cartela .c-code .label{color:var(--az-200)}
+.cartela .cart-num{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-variation-settings:"wdth" 125;font-size:2.25rem;line-height:1}
+.cartela .cart-num small{font-family:var(--f-mono);font-weight:400;font-size:.4em;color:var(--az-200);margin-left:4px}
+.cartela .c-sub{font-family:var(--f-mono);font-size:.625rem;color:var(--az-200);letter-spacing:.1em}
+.cartela > div:nth-child(n+7){border-bottom:0}
+@media (max-width:760px){.cartela{grid-template-columns:1fr 1fr}.cartela .c-proy,.cartela .c-code{grid-row:auto;grid-column:1/-1}.cartela > div{border-bottom:1px solid var(--ink)!important}}
 
-/* Placeholder (solo en el esqueleto; los agentes lo reemplazan) */
-.ph{border:1px dashed var(--az-500);background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(179,207,229,.25) 10px 11px);min-height:calc(var(--u)*24);display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(var(--u)*3);color:var(--ink-2);font-size:var(--t-small)}
-.ph b{display:block;font-family:var(--f-display);font-size:1.5rem;color:var(--ink);font-weight:500;margin-bottom:var(--u)}
+.ph{border:1px dashed var(--az-500);min-height:calc(var(--u)*24);display:flex;align-items:center;justify-content:center;padding:24px;color:var(--ink-2);font-size:var(--t-small)}
 
 /* =====================================================================
    PIE
    ===================================================================== */
-.footer{background:var(--az-900);color:var(--az-200);padding:calc(var(--u)*8) 0 calc(var(--u)*6);font-size:var(--t-small)}
+.footer{background:var(--az-900);color:var(--az-200);padding:calc(var(--u)*8) 0 calc(var(--u)*6);font-size:var(--t-small);position:relative}
+.footer::before{content:"";position:absolute;inset:0;opacity:.35;pointer-events:none;background-image:linear-gradient(rgba(74,127,167,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(74,127,167,.5) 1px,transparent 1px);background-size:64px 64px}
+.footer .wrap{position:relative}
 .footer-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gutter);align-items:end}
 .footer-brand{grid-column:1/span 6}
-.footer-brand p{font-family:var(--f-display);font-weight:300;font-size:1.75rem;line-height:1.15;color:var(--az-050);margin:0 0 calc(var(--u)*2)}
-.footer-cols{grid-column:7/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter)}
-.footer-cols div{display:flex;flex-direction:column;gap:var(--u)}
+.footer-brand p{font-family:var(--f-display);font-weight:800;font-stretch:125%;font-variation-settings:"wdth" 125;text-transform:uppercase;font-size:1.5rem;line-height:1.1;color:var(--az-050);margin:8px 0 0}
+.footer-cols{grid-column:7/-1;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--az-500)}
+.footer-cols div{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-right:1px solid var(--az-500)}
+.footer-cols div:last-child{border-right:0}
 .footer-cols .label{color:var(--az-500)}
-.footer-cols b{font-weight:600;color:var(--az-050)}
-.footer-rule{grid-column:1/-1;margin-top:calc(var(--u)*4);padding-top:calc(var(--u)*2);border-top:1px solid var(--az-700);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--u)}
-@media (max-width:860px){.footer-brand,.footer-cols{grid-column:1/-1}.footer-cols{grid-template-columns:1fr 1fr}}
+.footer-cols b{font-weight:700;color:var(--az-050);text-transform:uppercase;font-size:.8125rem}
+.footer-rule{grid-column:1/-1;margin-top:calc(var(--u)*3);padding-top:calc(var(--u)*2);border-top:1px solid var(--az-700);display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--u);font-family:var(--f-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase}
+@media (max-width:860px){.footer-brand,.footer-cols{grid-column:1/-1}.footer-cols{grid-template-columns:1fr}}
+@media print{.sheetbar{display:none}.lamina{break-before:page;padding-top:0}.hero,.footer,.stat--lead,.cartela .c-code{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+/* ---------- Gráficas interactivas (Chart.js) dentro de .plate--chart ---------- */
+.plate-charts{background:#F6FAFD;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background-color:var(--rule);flex:1}
+.plate-charts[data-set="educacion"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.chart-panel{background:var(--paper);padding:calc(var(--u)*2) calc(var(--u)*2) calc(var(--u)*1.5);display:flex;flex-direction:column;gap:var(--u);min-width:0}
+.chart-title{font-family:var(--f-body);font-size:var(--t-small);font-weight:700;line-height:1.35;color:var(--ink);margin:0;text-wrap:balance}
+.chart-box{position:relative;height:280px;width:100%}
+.chart-panel--tall .chart-box{height:340px}
+.chart-panel--matrix,.plate-charts[data-set="institucional"] .chart-panel--matrix + .chart-panel{grid-column:1/-1}
+.chart-matrix{overflow-x:auto}
+.chart-matrix table{border-collapse:collapse;width:100%;font-size:.75rem;font-variant-numeric:tabular-nums}
+.chart-matrix th{font-weight:600;color:var(--ink-2);padding:6px 4px;text-align:center;vertical-align:bottom;line-height:1.2}
+.chart-matrix th:first-child{text-align:left}
+.chart-matrix td{border:1px solid var(--rule);text-align:center;padding:8px 4px;color:var(--ink-2);transition:outline-color .15s}
+.chart-matrix td.on{background:var(--az-900);color:var(--az-050);font-weight:700}
+.chart-matrix td.on:hover,.chart-matrix td.off:hover{outline:2px solid var(--accent);outline-offset:-2px}
+.chart-matrix tbody th{text-align:left;color:var(--ink);white-space:nowrap}
+@media (max-width:960px){.plate-charts[data-set="educacion"]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.plate-charts,.plate-charts[data-set="educacion"]{grid-template-columns:1fr}.chart-box{height:260px}.chart-panel--tall .chart-box{height:320px}}
+.plate--chart .plate-charts{border-top:1px solid var(--rule)}
+.chart-title{font-family:var(--f-mono);font-size:.75rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.chart-matrix table{font-family:var(--f-mono)}
+/* hero: ilustración + logos */
+.hero-illus{margin:0 0 calc(var(--u)*6);border:1px solid var(--az-500);background:rgba(10,25,49,.55);position:relative}
+.hero-illus .hi-tag{display:flex;justify-content:space-between;gap:12px;padding:6px 12px;border-bottom:1px solid var(--az-500);font-family:var(--f-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--az-200)}
+.hero-illus .hi-svg{padding:calc(var(--u)*2) calc(var(--u)*3)}
+.hero-illus svg{max-height:440px}
+.hero-brand{display:flex;align-items:center;gap:calc(var(--u)*2)}
+.hero-logos{display:flex;align-items:center;gap:14px;padding-right:calc(var(--u)*2);border-right:1px solid var(--az-500)}
+.hero-logos img{display:block;height:64px;width:auto}
+.hero-logos img.logo-dep{height:56px;filter:brightness(0) invert(1);opacity:.95}
+.hero-brand .label{line-height:1.7}
+@media (max-width:600px){.hero-brand{flex-direction:column;align-items:flex-start}.hero-logos{border-right:0;padding-right:0}.hero-logos img{height:48px}.hero-logos img.logo-dep{height:42px}.hero-illus .hi-svg{padding:8px}}
 
-/* Impresión: cada lámina en su página */
-@media print{
-  .sheetbar{display:none}
-  .lamina{break-before:page;padding-top:0}
-  .hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-}
+/* ===== Animaciones de scroll repetibles ===== */
+.js-rv .lamina .rv{opacity:0;transform:translateY(18px);transition:opacity .45s cubic-bezier(.22,.61,.36,1),transform .45s cubic-bezier(.22,.61,.36,1);will-change:opacity,transform}
+.js-rv .lamina.is-in .rv{opacity:1;transform:none}
+.js-rv .lamina.is-in .rv:nth-child(2){transition-delay:.06s}
+.js-rv .lamina.is-in .rv:nth-child(3){transition-delay:.12s}
+.js-rv .lamina.is-in .rv:nth-child(4){transition-delay:.18s}
+@media (prefers-reduced-motion: reduce){.js-rv .lamina .rv{opacity:1!important;transform:none!important;transition:none!important}}
+@media print{.js-rv .lamina .rv{opacity:1!important;transform:none!important}}
 </style>
 </head>
 <body>
@@ -238,12 +336,14 @@ a{color:inherit}
      HERO / PORTADA — contenido final. NO MODIFICAR (Agente líder).
      ===================================================================== -->
 <header class="hero" id="portada">
+<div class="hero-coords" aria-hidden="true"><div class="row t"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="row b"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="col l"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span></div><div class="col r"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span></div></div><div class="hero-vert" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · Casanare · PL.00 Portada</div>
   <div class="wrap">
     <div class="hero-top">
-      <span class="label">Universidad de Pamplona · Facultad de Arquitectura</span>
+      <div class="hero-brand"><div class="hero-logos"><img src="logos/logo_unipamplona.svg" alt="Escudo Universidad de Pamplona"><img class="logo-dep" src="logos/logo_departamento_arquitectura_diseno.png" alt="Departamento de Arquitectura y Diseño"></div><span class="label">Universidad de Pamplona<br>Facultad de Ingenierías y Arquitectura</span></div>
       <span class="label">Taller VIII · 2026</span>
     </div>
     <div class="hero-body">
+      <div class="hero-orn" aria-hidden="true"><div class="north"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div><div class="coord">CASANARE · CO<br>ORINOQUÍA<br>—<br>PL.00</div></div>
       <p class="label hero-kicker">Diagnóstico urbano-regional · Casanare, Colombia</p>
       <h1>Corredor <em>Ruta 65</em></h1>
       <p class="hero-sub">Diagnóstico de equipamientos e infraestructura en ocho láminas: equipamientos general, educativo, salud, social e institucional, transporte, vías y espacio público — Yopal, Aguazul, Monterrey, Sabanalarga, Tauramena y Villanueva.</p>
@@ -258,11 +358,131 @@ a{color:inherit}
         <li><a href="#t8"><span>08</span>Espacio público</a></li>
       </ol>
     </div>
+    <figure class="hero-illus">
+      <div class="hi-tag"><span>Planta esquemática + perfil longitudinal · Ruta 65</span><span>Fig. 00 · S.E.</span></div>
+      <div class="hi-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="hc-t hc-d" style="width:100%;height:auto;display:block">
+  <title id="hc-t">Corredor Ruta 65 — Casanare</title>
+  <desc id="hc-d">Plano esquemático y perfil longitudinal del corredor Ruta 65 que conecta Yopal, Aguazul, Monterrey, Sabanalarga, Tauramena y Villanueva.</desc>
+  <defs>
+    <pattern id="hc-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#4A7FA7" stroke-opacity=".16" stroke-width="1"/>
+    </pattern>
+    <pattern id="hc-grid-l" width="200" height="200" patternUnits="userSpaceOnUse">
+      <path d="M200 0H0V200" fill="none" stroke="#4A7FA7" stroke-opacity=".3" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="hc-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A7FA7" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#1A3D63" stop-opacity=".05"/>
+    </linearGradient>
+    <style>
+      .hc-lab{font:600 21px/1 'Archivo','Segoe UI',system-ui,sans-serif;fill:#F6FAFD;letter-spacing:.02em}
+      .hc-km{font:500 14px/1 'IBM Plex Mono',ui-monospace,'Consolas',monospace;fill:#B3CFE5;fill-opacity:.8;letter-spacing:.06em}
+      .hc-ab{display:none;font:700 46px/1 'Archivo','Segoe UI',system-ui,sans-serif;fill:#F6FAFD}
+      @media (max-width:640px){.hc-lab,.hc-km,.hc-tag,.hc-sc{display:none}.hc-ab{display:inline}}
+      .hc-tag{font:600 14px/1 'IBM Plex Mono',ui-monospace,'Consolas',monospace;fill:#B3CFE5;letter-spacing:.14em}
+    </style>
+  </defs>
+
+  <!-- retícula -->
+  <rect width="1200" height="520" fill="url(#hc-grid)"/>
+  <rect width="1200" height="520" fill="url(#hc-grid-l)"/>
+
+  <!-- ===== PLANTA ===== -->
+  <text class="hc-tag" x="60" y="44">PLANTA · CORREDOR RUTA 65</text>
+  <line x1="60" y1="54" x2="300" y2="54" stroke="#B3CFE5" stroke-opacity=".5"/>
+
+  <!-- ríos esquemáticos -->
+  <g fill="none" stroke="#4A7FA7" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="2 5">
+    <path d="M250 60 C270 140 230 220 300 300"/>
+    <path d="M560 60 C590 150 540 230 600 300"/>
+    <path d="M880 60 C850 140 910 220 870 300"/>
+  </g>
+
+  <!-- buffer del corredor -->
+  <path d="M110 220 C220 160 300 150 380 170 S560 230 640 200 S820 120 900 150 S1060 220 1110 190"
+        fill="none" stroke="#4A7FA7" stroke-opacity=".18" stroke-width="44" stroke-linecap="round"/>
+  <!-- eje vial -->
+  <path d="M110 220 C220 160 300 150 380 170 S560 230 640 200 S820 120 900 150 S1060 220 1110 190"
+        fill="none" stroke="#F6FAFD" stroke-width="4" stroke-linecap="round"/>
+  <path d="M110 220 C220 160 300 150 380 170 S560 230 640 200 S820 120 900 150 S1060 220 1110 190"
+        fill="none" stroke="#0A1931" stroke-width="1.4" stroke-dasharray="10 10"/>
+
+  <!-- nodos: radio ~ población -->
+  <g stroke="#F6FAFD" stroke-width="2">
+    <circle cx="150" cy="200" r="30" fill="#B3CFE5" fill-opacity=".22"/>
+    <circle cx="150" cy="200" r="15" fill="#F6FAFD"/>
+    <circle cx="340" cy="158" r="12" fill="#4A7FA7"/>
+    <circle cx="560" cy="218" r="9"  fill="#4A7FA7"/>
+    <circle cx="740" cy="160" r="6"  fill="#B3CFE5"/>
+    <circle cx="900" cy="150" r="10" fill="#4A7FA7"/>
+    <circle cx="1080" cy="206" r="10" fill="#4A7FA7"/>
+  </g>
+  <!-- rótulos -->
+  <g text-anchor="middle">
+    <text class="hc-lab" x="150" y="262" style="font-size:22px">YOPAL</text>
+    <text class="hc-lab" x="340" y="128">AGUAZUL</text>
+    <text class="hc-lab" x="560" y="258">MONTERREY</text>
+    <text class="hc-lab" x="720" y="200">SABANALARGA</text>
+    <text class="hc-lab" x="905" y="116">TAURAMENA</text>
+    <text class="hc-lab" x="1080" y="246">VILLANUEVA</text>
+  </g>
+
+  <g class="hc-ab-g" text-anchor="middle">
+    <text class="hc-ab" x="150" y="290">YOP</text><text class="hc-ab" x="340" y="118">AGZ</text>
+    <text class="hc-ab" x="560" y="290">MTY</text><text class="hc-ab" x="720" y="120">SBL</text>
+    <text class="hc-ab" x="900" y="265">TAU</text><text class="hc-ab" x="1080" y="290">VNV</text>
+  </g>
+  <!-- norte -->
+  <g transform="translate(1120 70)">
+    <circle r="22" fill="none" stroke="#B3CFE5" stroke-opacity=".6"/>
+    <path d="M0 -18 L7 8 L0 3 L-7 8Z" fill="#F6FAFD"/>
+    <text class="hc-tag" y="-28" text-anchor="middle">N</text>
+  </g>
+
+  <!-- ===== PERFIL LONGITUDINAL ===== -->
+  <text class="hc-tag" x="60" y="330">PERFIL LONGITUDINAL · PIEDEMONTE → LLANO</text>
+  <line x1="60" y1="340" x2="420" y2="340" stroke="#B3CFE5" stroke-opacity=".5"/>
+  <!-- cota base -->
+  <line x1="100" y1="470" x2="1120" y2="470" stroke="#B3CFE5" stroke-opacity=".6"/>
+  <!-- terreno -->
+  <path d="M100 470 L100 380 C130 370 150 392 180 388 S250 368 300 382 S360 400 420 395 S500 360 560 378 S640 410 700 400 S760 372 800 386 S880 410 920 402 S1000 420 1060 414 S1100 420 1120 422 L1120 470Z"
+        fill="url(#hc-fill)"/>
+  <path d="M100 380 C130 370 150 392 180 388 S250 368 300 382 S360 400 420 395 S500 360 560 378 S640 410 700 400 S760 372 800 386 S880 410 920 402 S1000 420 1060 414 S1100 420 1120 422"
+        fill="none" stroke="#B3CFE5" stroke-width="2.5"/>
+  <!-- estaciones -->
+  <g stroke="#B3CFE5" stroke-opacity=".55" stroke-dasharray="3 4">
+    <line x1="150" y1="384" x2="150" y2="470"/>
+    <line x1="340" y1="390" x2="340" y2="470"/>
+    <line x1="560" y1="378" x2="560" y2="470"/>
+    <line x1="740" y1="393" x2="740" y2="470"/>
+    <line x1="900" y1="400" x2="900" y2="470"/>
+    <line x1="1080" y1="416" x2="1080" y2="470"/>
+  </g>
+  <g fill="#F6FAFD">
+    <path d="M150 376 l7 -12 h-14z"/><path d="M340 382 l7 -12 h-14z"/>
+    <path d="M560 370 l7 -12 h-14z"/><path d="M740 385 l7 -12 h-14z"/>
+    <path d="M900 392 l7 -12 h-14z"/><path d="M1080 408 l7 -12 h-14z"/>
+  </g>
+  <g text-anchor="middle">
+    <text class="hc-km" x="150" y="492">YOP</text><text class="hc-km" x="340" y="492">AGZ</text>
+    <text class="hc-km" x="560" y="492">MTY</text><text class="hc-km" x="740" y="492">SBL</text>
+    <text class="hc-km" x="900" y="492">TAU</text><text class="hc-km" x="1080" y="492">VNV</text>
+  </g>
+  <!-- escala gráfica -->
+  <g transform="translate(100 506)">
+    <rect width="60" height="5" fill="#F6FAFD"/><rect x="60" width="60" height="5" fill="#4A7FA7"/>
+    <rect x="120" width="60" height="5" fill="#F6FAFD"/>
+  </g>
+  <text class="hc-km hc-sc" x="290" y="512">ESQUEMÁTICO · SIN ESCALA</text>
+</svg></div>
+    </figure>
+    <div class="dim dim--dark" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Cajetín · Proyecto 01</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
     <div class="hero-meta">
       <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
       <div><span class="label">Docente</span><b>Cristhian García</b></div>
       <div><span class="label">Ámbito</span><b>6 municipios · Casanare</b></div>
       <div><span class="label">Fecha</span><b>Septiembre 2026</b></div>
+      <div aria-hidden="true"><span class="hm-code"><small>CÓDIGO</small>RUTA65-CAS<br><small>PL.00 / 08</small></span></div>
     </div>
   </div>
 </header>
@@ -284,6 +504,7 @@ a{color:inherit}
      LOC_STRIP_INICIO — Localización. Contenido final. NO MODIFICAR.
      ===================================================================== -->
 <section class="loc" id="loc" aria-labelledby="loc-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.00 Localización</span>
   <div class="wrap">
     <div class="loc-head">
       <div>
@@ -292,7 +513,7 @@ a{color:inherit}
       </div>
       <span class="label">Escala regional → local</span>
     </div>
-    <hr class="cota">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">3 escalas · nacional → departamental → corredor</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
     <div class="loc-strip">
       <figure class="plate">
         <div class="plate-tag"><span class="label">Escala nacional</span><span class="code">L-01</span></div>
@@ -316,6 +537,7 @@ a{color:inherit}
 
 <!-- SECCION_1_GENERAL_INICIO -->
 <section class="lamina" id="t1" aria-labelledby="t1-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.01 · Equipamientos General</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -323,7 +545,8 @@ a{color:inherit}
         <h2 id="t1-h">Equipamientos General</h2>
         <p class="lamina-lede">Yopal concentra el 54.8 % de los equipamientos del corredor (523 de 954), mientras Sabanalarga reúne apenas 30 y un único punto de salud.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 1 de 8">01<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 1 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">01</span><span class="ln-c"><b>PL.01</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -356,16 +579,28 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · Distribución</span><span class="code">G-01</span></div>
-        <div class="plate-img"><img src="graficas/General.png" alt="Gráficas de equipamientos por categoría y municipio" loading="lazy"></div>
+        <div class="plate-charts" data-set="general">
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Equipamientos por municipio y categoría</h3><div class="chart-box"><canvas id="c-g1" role="img" aria-label="Equipamientos por municipio y categoría"></canvas></div></div>
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Composición por categoría (n=954)</h3><div class="chart-box"><canvas id="c-g2" role="img" aria-label="Composición por categoría (n=954)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Equipamientos: urbano vs rural (por municipio)</h3><div class="chart-box"><canvas id="c-g3" role="img" aria-label="Equipamientos: urbano vs rural (por municipio)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Equipamientos por 1.000 hab vs. promedio del corredor</h3><div class="chart-box"><canvas id="c-g4" role="img" aria-label="Equipamientos por 1.000 hab vs. promedio del corredor"></canvas></div></div>
+        </div>
         <figcaption>Equipamientos por categoría, municipio y distribución urbano/rural</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.01</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Equipamientos General</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">01<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.01 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">01<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -373,6 +608,7 @@ a{color:inherit}
 
 <!-- SECCION_2_EDUCATIVO_INICIO -->
 <section class="lamina" id="t2" aria-labelledby="t2-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.02 · Equipamientos Educativos</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -380,7 +616,8 @@ a{color:inherit}
         <h2 id="t2-h">Equipamientos Educativos</h2>
         <p class="lamina-lede">Sabanalarga tiene la mayor dotación por niño en edad escolar pero la menor cobertura neta (75 %): allí el problema es de demanda o permanencia, no de infraestructura.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 2 de 8">02<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 2 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">02</span><span class="ln-c"><b>PL.02</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -413,16 +650,30 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · Cobertura</span><span class="code">G-02</span></div>
-        <div class="plate-img"><img src="graficas/Educacion.png" alt="Gráficas de educación" loading="lazy"></div>
+        <div class="plate-charts" data-set="educacion">
+        <div class="chart-panel"><h3 class="chart-title">Sedes educativas por municipio</h3><div class="chart-box"><canvas id="c-e1" role="img" aria-label="Sedes educativas por municipio"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Cobertura neta educativa por municipio (2024)</h3><div class="chart-box"><canvas id="c-e2" role="img" aria-label="Cobertura neta educativa por municipio (2024)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Población en edad escolar (5-16 años) por municipio (2024)</h3><div class="chart-box"><canvas id="c-e3" role="img" aria-label="Población en edad escolar (5-16 años) por municipio (2024)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Sedes educativas por sector (n=270)</h3><div class="chart-box"><canvas id="c-e4" role="img" aria-label="Sedes educativas por sector (n=270)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Sedes educativas por zona (n=270)</h3><div class="chart-box"><canvas id="c-e5" role="img" aria-label="Sedes educativas por zona (n=270)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Población total anual por municipio (2018-2026, proyecciones DANE)</h3><div class="chart-box"><canvas id="c-e6" role="img" aria-label="Población total anual por municipio (2018-2026, proyecciones DANE)"></canvas></div></div>
+        </div>
         <figcaption>Sedes, dotación por población escolar y cobertura neta por municipio</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.02</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Equipamientos Educativos</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">02<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.02 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">02<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -430,6 +681,7 @@ a{color:inherit}
 
 <!-- SECCION_3_SALUD_INICIO -->
 <section class="lamina" id="t3" aria-labelledby="t3-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.03 · Equipamientos de Salud</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -437,7 +689,8 @@ a{color:inherit}
         <h2 id="t3-h">Equipamientos de Salud</h2>
         <p class="lamina-lede">La salud es el cuello de botella del corredor: en ningún municipio más del 11.5 % del área está a ≤30 min de una IPS, y Yopal concentra el 87 % de las camas.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 3 de 8">03<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 3 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">03</span><span class="ln-c"><b>PL.03</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -469,16 +722,28 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · Sedes y camas</span><span class="code">G-03</span></div>
-        <div class="plate-img"><img src="graficas/Salud.png" alt="Gráficas de salud" loading="lazy"></div>
+        <div class="plate-charts" data-set="salud">
+        <div class="chart-panel"><h3 class="chart-title">Suficiencia de la red de salud por municipio (2026)</h3><div class="chart-box"><canvas id="c-s1" role="img" aria-label="Suficiencia de la red de salud por municipio (2026)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Área municipal con acceso ≤30 min a cualquier IPS (%)</h3><div class="chart-box"><canvas id="c-s2" role="img" aria-label="Área municipal con acceso ≤30 min a cualquier IPS (%)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Naturaleza jurídica de las sedes IPS (n=157)</h3><div class="chart-box"><canvas id="c-s3" role="img" aria-label="Naturaleza jurídica de las sedes IPS (n=157)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Capacidad instalada en salud — Casanare (depto.), 2017-2022</h3><div class="chart-box"><canvas id="c-s4" role="img" aria-label="Capacidad instalada en salud — Casanare (depto.), 2017-2022"></canvas></div></div>
+        </div>
         <figcaption>Sedes, camas y accesibilidad por municipio</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.03</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Equipamientos de Salud</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">03<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.03 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">03<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -486,6 +751,7 @@ a{color:inherit}
 
 <!-- SECCION_4_SOCIAL_INICIO -->
 <section class="lamina" id="t4" aria-labelledby="t4-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.04 · Equipamientos Sociales</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -493,7 +759,8 @@ a{color:inherit}
         <h2 id="t4-h">Equipamientos Sociales</h2>
         <p class="lamina-lede">Yopal tiene la mayor cantidad absoluta pero la tasa per cápita más baja (10.39 por 10.000 hab.); los escenarios deportivos dominan con 253 en total.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 4 de 8">04<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 4 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">04</span><span class="ln-c"><b>PL.04</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -526,16 +793,28 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · Por tipo y tasa</span><span class="code">G-04</span></div>
-        <div class="plate-img"><img src="graficas/Sociales.png" alt="Gráficas de equipamientos sociales" loading="lazy"></div>
+        <div class="plate-charts" data-set="sociales">
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Conteo de equipamientos por categoría y municipio</h3><div class="chart-box"><canvas id="c-o1" role="img" aria-label="Conteo de equipamientos por categoría y municipio"></canvas></div></div>
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Equipamientos sociales por cada 10.000 hab (total)</h3><div class="chart-box"><canvas id="c-o2" role="img" aria-label="Equipamientos sociales por cada 10.000 hab (total)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Composición por categoría (% del total, N=340)</h3><div class="chart-box"><canvas id="c-o3" role="img" aria-label="Composición por categoría (% del total, N=340)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Bienestar social: georreferenciado vs. registro oficial sin coordenadas</h3><div class="chart-box"><canvas id="c-o4" role="img" aria-label="Bienestar social: georreferenciado vs. registro oficial sin coordenadas"></canvas></div></div>
+        </div>
         <figcaption>Equipamientos sociales por tipo y tasa por 10.000 habitantes</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.04</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Equipamientos Sociales</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">04<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.04 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">04<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -543,6 +822,7 @@ a{color:inherit}
 
 <!-- SECCION_5_INSTITUCIONAL_INICIO -->
 <section class="lamina" id="t5" aria-labelledby="t5-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.05 · Equipamientos Institucionales</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -550,7 +830,8 @@ a{color:inherit}
         <h2 id="t5-h">Equipamientos Institucionales</h2>
         <p class="lamina-lede">Yopal es el único municipio con las 8 categorías institucionales; Aguazul, segunda población del corredor, no tiene bomberos, notaría, Defensa Civil ni presencia militar mapeada.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 5 de 8">05<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 5 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">05</span><span class="ln-c"><b>PL.05</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -582,16 +863,28 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · Presencia institucional</span><span class="code">G-05</span></div>
-        <div class="plate-img"><img src="graficas/Institucional.png" alt="Gráficas institucionales" loading="lazy"></div>
+        <div class="plate-charts" data-set="institucional">
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Equipamientos por municipio y tipo (apilado)</h3><div class="chart-box"><canvas id="c-i1" role="img" aria-label="Equipamientos por municipio y tipo (apilado)"></canvas></div></div>
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Composición por tipo — total corredor (n=131)</h3><div class="chart-box"><canvas id="c-i2" role="img" aria-label="Composición por tipo — total corredor (n=131)"></canvas></div></div>
+        <div class="chart-panel chart-panel--matrix"><h3 class="chart-title">Matriz de presencia/ausencia por tipo</h3><div class="chart-matrix" id="c-i3"></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Índice de presencia por municipio (8 categorías)</h3><div class="chart-box"><canvas id="c-i4" role="img" aria-label="Índice de presencia por municipio (8 categorías)"></canvas></div></div>
+        </div>
         <figcaption>Presencia institucional por categoría y municipio</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.05</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Equipamientos Institucionales</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">05<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.05 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">05<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -599,6 +892,7 @@ a{color:inherit}
 
 <!-- SECCION_6_TRANSPORTE_INICIO -->
 <section class="lamina" id="t6" aria-labelledby="t6-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.06 · Transporte</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -606,7 +900,8 @@ a{color:inherit}
         <h2 id="t6-h">Transporte</h2>
         <p class="lamina-lede">La accidentalidad cayó 67 % entre el pico de 2019 (419 siniestros) y 2025 (140); ningún tramo de 1 km resulta un hot spot significativo: la siniestralidad está dispersa a lo largo de la vía.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 6 de 8">06<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 6 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">06</span><span class="ln-c"><b>PL.06</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -639,16 +934,28 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · Serie anual</span><span class="code">G-06</span></div>
-        <div class="plate-img"><img src="graficas/Transporte.png" alt="Gráficas de transporte" loading="lazy"></div>
+        <div class="plate-charts" data-set="transporte">
+        <div class="chart-panel"><h3 class="chart-title">Siniestros viales por año (2016-2025)</h3><div class="chart-box"><canvas id="c-t1" role="img" aria-label="Siniestros viales por año (2016-2025)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Fallecidos y lesionados por municipio (2016-2025)</h3><div class="chart-box"><canvas id="c-t2" role="img" aria-label="Fallecidos y lesionados por municipio (2016-2025)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Siniestros por gravedad. n=2.753 (ANSV 2016-2026)</h3><div class="chart-box"><canvas id="c-t3" role="img" aria-label="Siniestros por gravedad. n=2.753 (ANSV 2016-2026)"></canvas></div></div>
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Distancia vial entre cabeceras municipales (red INVÍAS)</h3><div class="chart-box"><canvas id="c-t4" role="img" aria-label="Distancia vial entre cabeceras municipales (red INVÍAS)"></canvas></div></div>
+        </div>
         <figcaption>Serie anual de siniestros y víctimas por municipio</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.06</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Transporte</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">06<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.06 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">06<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -656,6 +963,7 @@ a{color:inherit}
 
 <!-- SECCION_7_VIAS_INICIO -->
 <section class="lamina" id="t7" aria-labelledby="t7-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.07 · Vías</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -663,7 +971,8 @@ a{color:inherit}
         <h2 id="t7-h">Vías</h2>
         <p class="lamina-lede">La Ruta 65 no está congestionada (V/C de 0.14 a 0.20, niveles de servicio A–B) pero sí es una vía de carga: 36.5 % de camiones en la estación 932.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 7 de 8">07<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 7 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">07</span><span class="ln-c"><b>PL.07</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -696,16 +1005,28 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · Tránsito y estado</span><span class="code">G-07</span></div>
-        <div class="plate-img"><img src="graficas/Vias.png" alt="Gráficas de vías" loading="lazy"></div>
+        <div class="plate-charts" data-set="vias">
+        <div class="chart-panel"><h3 class="chart-title">Tráfico mensual total — Peaje San Pedro (todas las categorías)</h3><div class="chart-box"><canvas id="c-v1" role="img" aria-label="Tráfico mensual total — Peaje San Pedro (todas las categorías)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Composición vehicular — Estación TPD 932 Yopal-Araguaney (TPD = 4.527 veh/día)</h3><div class="chart-box"><canvas id="c-v2" role="img" aria-label="Composición vehicular — Estación TPD 932 Yopal-Araguaney (TPD = 4.527 veh/día)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Km de red por estado y municipio (INVÍAS 2018)</h3><div class="chart-box"><canvas id="c-v3" role="img" aria-label="Km de red por estado y municipio (INVÍAS 2018)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Relación Volumen/Capacidad (V/C) y Nivel de Servicio</h3><div class="chart-box"><canvas id="c-v4" role="img" aria-label="Relación Volumen/Capacidad (V/C) y Nivel de Servicio"></canvas></div></div>
+        </div>
         <figcaption>Serie del peaje San Pedro, composición vehicular y estado vial</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.07</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Vías</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">07<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.07 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">07<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -713,6 +1034,7 @@ a{color:inherit}
 
 <!-- SECCION_8_ESPACIO_PUBLICO_INICIO -->
 <section class="lamina" id="t8" aria-labelledby="t8-h">
+  <span class="margin-note" aria-hidden="true">Proyecto 01 · Corredor Ruta 65 · PL.08 · Espacio Público</span>
   <div class="wrap">
     <header class="lamina-head">
       <div class="lamina-title">
@@ -720,7 +1042,8 @@ a{color:inherit}
         <h2 id="t8-h">Espacio Público</h2>
         <p class="lamina-lede">Cuatro de seis municipios no alcanzan el mínimo de 15 m²/hab; Yopal, la ciudad principal, tiene el mayor déficit con 3.29 m²/hab, apenas el 21.9 % del estándar.</p>
       </div>
-      <div class="lamina-num" aria-label="Lámina 8 de 8">08<small>/08</small></div>
+      <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
+      <div class="lamina-num" aria-label="Lámina 8 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">08</span><span class="ln-c"><b>PL.08</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
     </header>
 
     <div class="lamina-body">
@@ -752,16 +1075,28 @@ a{color:inherit}
 
       <figure class="plate plate--chart">
         <div class="plate-tag"><span class="label">Gráfica · EPE y accesibilidad</span><span class="code">G-08</span></div>
-        <div class="plate-img"><img src="graficas/EspacioPublico.png" alt="Gráficas de espacio público" loading="lazy"></div>
+        <div class="plate-charts" data-set="ep">
+        <div class="chart-panel"><h3 class="chart-title">EPE por municipio (bruto vs conservador) · escala log</h3><div class="chart-box"><canvas id="c-p1" role="img" aria-label="EPE por municipio (bruto vs conservador) · escala log"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Área de espacio público por función (6 municipios, ha)</h3><div class="chart-box"><canvas id="c-p2" role="img" aria-label="Área de espacio público por función (6 municipios, ha)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Accesibilidad a EP efectivo (300/500 m)</h3><div class="chart-box"><canvas id="c-p3" role="img" aria-label="Accesibilidad a EP efectivo (300/500 m)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Espacio público de tránsito (andenes/senderos, km)</h3><div class="chart-box"><canvas id="c-p4" role="img" aria-label="Espacio público de tránsito (andenes/senderos, km)"></canvas></div></div>
+        </div>
         <figcaption>EPE por municipio y accesibilidad a 300/500 m</figcaption>
       </figure>
     </div>
 
-    <div class="cartela">
+    <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.08</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
+    <div class="cartela" aria-label="Cajetín de la lámina">
+      <div class="c-proy"><span class="label">Proyecto</span><b>Corredor Ruta 65</b><span class="label">Diagnóstico · Casanare</span></div>
       <div><span class="label">Tema</span><b>Espacio Público</b></div>
-      <div><span class="label">Estudiante</span><b>Ricardo Marín</b></div>
-      <div><span class="label">Docente</span><b>Cristhian García</b></div>
-      <div><span class="cart-num">08<small>/08</small></span></div>
+      <div><span class="label">Lámina</span><b class="m">PL.08 / 08</b></div>
+      <div><span class="label">Escala</span><b class="m">S.E. (ver mapa)</b></div>
+      <div><span class="label">Fecha</span><b class="m">SEP · 2026</b></div>
+      <div class="c-code"><span class="label">Plano</span><span class="cart-num">08<small>/08</small></span><span class="c-sub">RUTA65-CAS</span></div>
+      <div><span class="label">Taller</span><b>Taller VIII</b></div>
+      <div><span class="label">Dibujó</span><b>Ricardo Marín</b></div>
+      <div><span class="label">Revisó</span><b>Cristhian García</b></div>
+      <div><span class="label">Institución</span><b>U. de Pamplona</b></div>
     </div>
   </div>
 </section>
@@ -782,7 +1117,7 @@ a{color:inherit}
       <div><span class="label">Institución</span><b>Universidad de Pamplona</b></div>
     </div>
     <div class="footer-rule">
-      <span>Facultad de Arquitectura · Taller VIII</span>
+      <span>Facultad de Ingenierías y Arquitectura · Taller VIII</span>
       <span>Septiembre 2026 · 08 láminas</span>
     </div>
   </div>
@@ -804,6 +1139,149 @@ a{color:inherit}
     });
   },{rootMargin:'-45% 0px -50% 0px'});
   ids.forEach(function(id){var el=document.getElementById(id);if(el)io.observe(el)});
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+/* Gráficas interactivas — datos tomados sin modificar de los CSV GRAFICAS_*_datos.csv
+   de ENTREGA_25_SEP_2026 (ver hacer_graficas.py de cada carpeta). */
+(function(){
+  if(!window.Chart) return;
+  var DATA = {"general": {"mun": ["Yopal", "Aguazul", "Villanueva", "Tauramena", "Monterrey", "Sabanalarga"], "cats": ["ABASTECIMIENTO", "BIENESTAR", "CULTO", "CULTURAL", "DEPORTIVO", "EDUCACION", "INSTITUCIONAL", "SALUD", "SEGURIDAD", "TRANSPORTE"], "stack": {"ABASTECIMIENTO": [27, 1, 1, 2, 0, 0], "BIENESTAR": [34, 15, 20, 11, 13, 3], "CULTO": [15, 4, 2, 1, 2, 2], "CULTURAL": [24, 7, 10, 5, 3, 5], "DEPORTIVO": [119, 33, 38, 41, 13, 8], "EDUCACION": [140, 48, 16, 24, 12, 8], "INSTITUCIONAL": [26, 5, 2, 3, 6, 1], "SALUD": [95, 9, 11, 5, 9, 1], "SEGURIDAD": [30, 1, 4, 3, 2, 1], "TRANSPORTE": [13, 10, 6, 1, 2, 1]}, "comp": [["DEPORTIVO", 252], ["EDUCACION", 248], ["SALUD", 130], ["BIENESTAR", 96], ["CULTURAL", 54], ["INSTITUCIONAL", 43], ["SEGURIDAD", 41], ["TRANSPORTE", 33], ["ABASTECIMIENTO", 31], ["CULTO", 26]], "total": 954, "urb": [428, 80, 85, 67, 46, 23], "rur": [95, 53, 25, 29, 16, 7], "tasa": [1.9, 2.06, 1.23, 1.66, 1.89, 3.94], "prom": 2.11}, "educacion": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "sedes": [143, 51, 14, 13, 28, 21], "cob": [97.77, 89.82, 84.08, 75.0, 92.61, 95.81], "pob": [36954, 8111, 3776, 744, 5726, 8112], "sector": [["Oficial", 196], ["No oficial", 74]], "zona": [["Rural", 153], ["Urbana", 117]], "anios": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], "serie": {"Yopal": [168427, 173316, 178549, 182573, 185962, 189187, 192468, 195600, 198423], "Aguazul": [36916, 37507, 38174, 38537, 38790, 38978, 39218, 39364, 39480], "Monterrey": [17521, 17858, 18215, 18428, 18576, 18706, 18836, 18955, 19042], "Sabanalarga": [3634, 3678, 3735, 3786, 3783, 3811, 3836, 3855, 3882], "Tauramena": [23525, 24050, 24635, 25009, 25334, 25625, 25904, 26170, 26371], "Villanueva": [35313, 36416, 37579, 38521, 39322, 40090, 40889, 41658, 42337]}}, "salud": {"mun": ["Yopal", "Tauramena", "Aguazul", "Sabanalarga", "Monterrey", "Villanueva"], "sedes": [5.97, 1.81, 2.36, 2.39, 5.0, 2.9], "camas": [5.06, 2.1, 1.37, 0.95, 0.5, 0.36], "accMun": ["Sabanalarga", "Villanueva", "Yopal", "Monterrey", "Aguazul", "Tauramena"], "acc": [11.44, 10.93, 9.78, 9.14, 8.1, 3.33], "nat": [["Privada", 127], ["Sin dato", 18], ["Pública", 12]], "anios": ["2017", "2018", "2019", "2020", "2022"], "serie": [["Camas adultos", [260, 287, 283, 274, 335]], ["Camas UCI adulto", [17, 17, 17, 26, 0]], ["Camas obstetricia", [50, 64, 63, 67, 0]], ["Salas de quirófano", [15, 16, 16, 15, 0]]]}, "sociales": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "cats": ["BIBLIOTECA", "CENTRO_CULT", "CULTO", "DEPORTIVO", "MUSEO", "TEATRO"], "stack": {"BIBLIOTECA": [8, 1, 2, 2, 2, 3], "CENTRO_CULT": [8, 5, 2, 3, 2, 7], "CULTO": [15, 4, 2, 2, 1, 2], "DEPORTIVO": [120, 33, 13, 8, 41, 38], "MUSEO": [3, 0, 0, 0, 0, 0], "TEATRO": [9, 2, 0, 0, 2, 0]}, "tasa": [10.386, 13.456, 12.814, 49.245, 22.11, 15.759], "comp": [["DEPORTIVO", 253], ["CENTRO_CULT", 27], ["CULTO", 26], ["BIBLIOTECA", 18], ["TEATRO", 13], ["MUSEO", 3]], "total": 340, "geo": [34, 15, 13, 4, 11, 20], "ofi": [1, 0, 0, 0, 0, 0]}, "institucional": {"mun": ["Yopal", "Villanueva", "Tauramena", "Monterrey", "Aguazul", "Sabanalarga"], "tipos": ["Alcaldías", "Notarías", "Fiscalías / justicia", "Policía", "Bomberos", "Defensa Civil / Cruz Roja", "Militar", "Terminales transporte"], "mat": [[1, 1, 24, 11, 1, 3, 28, 13], [1, 0, 1, 1, 2, 1, 0, 6], [3, 0, 1, 1, 1, 0, 1, 1], [1, 0, 5, 1, 1, 0, 0, 2], [2, 0, 3, 1, 0, 0, 0, 10], [1, 0, 0, 1, 0, 0, 0, 1]], "tot": [["Alcaldías", 9], ["Notarías", 1], ["Fiscalías / justicia", 34], ["Policía", 16], ["Bomberos", 5], ["Defensa Civil / Cruz Roja", 4], ["Militar", 29], ["Terminales transporte", 33]], "idx": [1.0, 0.75, 0.75, 0.625, 0.5, 0.375], "ncat": [8, 6, 6, 5, 4, 3]}, "transporte": {"anios": ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"], "sin": [368, 395, 334, 419, 236, 193, 285, 173, 157, 140], "mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "fal": [346, 107, 48, 11, 44, 72], "les": [1190, 347, 106, 14, 226, 189], "grav": [["Lesionado", 2116], ["Fallecido", 637]], "od": [["Monterrey - Tauramena", 18.57], ["Sabanalarga - Villanueva", 37.83], ["Monterrey - Sabanalarga", 40.84], ["Yopal - Aguazul", 42.13], ["Aguazul - Tauramena", 42.27], ["Monterrey - Villanueva", 54.44], ["Sabanalarga - Tauramena", 59.42], ["Aguazul - Monterrey", 60.84], ["Tauramena - Villanueva", 73.01], ["Yopal - Tauramena", 84.39], ["Aguazul - Sabanalarga", 101.68], ["Yopal - Monterrey", 102.96], ["Aguazul - Villanueva", 115.27], ["Yopal - Sabanalarga", 143.81], ["Yopal - Villanueva", 157.4]]}, "vias": {"lab": ["sep 2015", "oct 2015", "nov 2015", "dic 2015", "ene 2016", "feb 2016", "mar 2016", "abr 2016", "may 2016", "jun 2016", "jul 2016", "ago 2016", "sep 2016", "oct 2016", "nov 2016", "dic 2016", "ene 2017", "feb 2017", "mar 2017", "abr 2017", "may 2017", "jun 2017", "jul 2017", "ago 2017", "sep 2017", "oct 2017", "nov 2017", "dic 2017", "ene 2018", "feb 2018", "mar 2018", "abr 2018", "may 2018", "jun 2018", "jul 2018", "ago 2018", "sep 2018", "oct 2018", "nov 2018", "dic 2018", "ene 2019", "feb 2019", "mar 2019", "abr 2019", "may 2019", "jun 2019", "jul 2019", "ago 2019", "sep 2019", "oct 2019", "nov 2019", "dic 2019", "ene 2020", "feb 2020", "mar 2020", "abr 2020", "may 2020", "jun 2020", "jul 2020", "ago 2020", "sep 2020", "oct 2020", "nov 2020", "dic 2020", "ene 2021", "feb 2021", "mar 2021", "abr 2021", "may 2021", "jun 2021", "jul 2021", "ago 2021", "sep 2021", "oct 2021", "nov 2021", "dic 2021", "ene 2022", "feb 2022", "mar 2022", "abr 2022", "may 2022", "jun 2022", "jul 2022", "ago 2022", "sep 2022", "oct 2022", "nov 2022", "dic 2022", "ene 2023", "feb 2023", "mar 2023", "abr 2023", "may 2023", "jun 2023", "jul 2023", "ago 2023", "sep 2023", "oct 2023", "nov 2023", "dic 2023", "ene 2024", "feb 2024", "mar 2024", "abr 2024", "may 2024", "jun 2024", "jul 2024", "ago 2024", "sep 2024", "oct 2024", "nov 2024", "dic 2024", "ene 2025", "feb 2025", "mar 2025", "abr 2025", "may 2025", "jun 2025", "jul 2025", "ago 2025", "sep 2025", "oct 2025", "nov 2025", "dic 2025", "ene 2026", "feb 2026", "mar 2026", "abr 2026", "may 2026"], "traf": [59001, 79698, 75140, 85309, 84610, 65099, 73902, 65222, 67849, 69524, 70482, 73966, 66307, 72980, 71108, 82974, 83976, 63578, 72939, 76583, 76406, 75465, 75346, 83614, 81354, 77310, 75402, 87271, 86278, 66446, 75815, 71901, 76676, 76100, 80477, 87307, 77036, 79857, 78618, 90917, 92991, 69052, 79612, 82185, 86286, 128727, 146756, 140445, 108968, 84939, 72829, 79803, 77506, 57630, 49688, 26342, 32915, 36799, 43970, 43280, 49943, 52175, 52758, 61635, 60873, 48611, 54751, 50400, 30839, 50787, 55609, 61334, 55484, 61266, 71415, 83117, 85146, 59599, 69824, 76316, 78041, 80580, 86240, 85022, 78704, 86670, 82919, 95351, 100883, 76432, 83599, 83634, 79714, 83528, 119810, 117083, 94960, 93962, 91764, 108044, 110607, 78216, 89111, 87075, 91520, 94825, 104358, 104553, 91350, 98788, 94294, 104707, 113088, 83704, 92100, 99432, 91585, 86423, 87406, 99413, 112850, 106097, 92882, 105354, 31913, 74874, 88555, 85609, 86283], "comp": [["Autos", 60.83], ["Buses", 2.65], ["Camiones", 36.51]], "kmMun": ["Aguazul", "Yopal"], "km": {"Bueno": [4.35, 24.96], "Regular": [16.55, 10.84], "Malo": [6.59, 0.0]}, "vc": [["Tramo 65130", "Yopal - Paz de Ariporo", 4527.0, 0.201, "B"], ["Tramo 65110", "Barranca de Upía - Monterrey", 3138.9, 0.144, "A"]]}, "ep": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "bruto": [6.647, 195.725, 48.712, 272.569, 80.014, 14.797], "cons": [3.292, 7.679, 27.803, 62.854, 11.046, 4.771], "fun": [["Escenario", 68.86], ["Parque", 1189.13], ["Ronda hídrica", 141.9]], "a300": [58.52, 43.48, 46.83, 69.93, 78.69, 74.77], "a500": [75.68, 51.69, 67.68, 96.72, 86.57, 89.18], "km": [18.52, 3.85, 0.16, 0.68, 1.08, 2.19]}};
+  var C = {d:'#0A1931', a:'#1A3D63', m:'#4A7FA7', b:'#B3CFE5', p:'#F6FAFD'};
+  function rgba(h,a){var n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+  /* Serie categórica: solo tonos de la paleta oficial, con variantes de opacidad cuando hay >4 series */
+  var SERIE=[C.d,C.a,C.m,C.b,rgba(C.d,.55),rgba(C.a,.55),rgba(C.m,.55),rgba(C.d,.3),rgba(C.a,.3),rgba(C.m,.3)];
+  var fmt=function(v,d){return Number(v).toLocaleString('es-CO',{maximumFractionDigits:d==null?2:d,minimumFractionDigits:0});};
+
+  Chart.defaults.font.family='"IBM Plex Mono",ui-monospace,Consolas,monospace';
+  Chart.defaults.font.size=11;
+  Chart.defaults.color=C.a;
+  Chart.defaults.borderColor=rgba(C.b,.6);
+  Chart.defaults.animation.duration=700;
+  Chart.defaults.animation.easing='easeOutQuart';
+  Chart.defaults.maintainAspectRatio=false;
+  Chart.defaults.responsive=true;
+  Chart.defaults.plugins.legend.position='top';
+  Chart.defaults.plugins.legend.align='start';
+  Chart.defaults.plugins.legend.labels.boxWidth=10;
+  Chart.defaults.plugins.legend.labels.boxHeight=10;
+  Chart.defaults.plugins.legend.labels.padding=10;
+  Chart.defaults.plugins.tooltip.backgroundColor=C.d;
+  Chart.defaults.plugins.tooltip.titleColor=C.p;
+  Chart.defaults.plugins.tooltip.bodyColor=C.p;
+  Chart.defaults.plugins.tooltip.padding=10;
+  Chart.defaults.plugins.tooltip.cornerRadius=2;
+  Chart.defaults.plugins.tooltip.titleFont={weight:'700'};
+  Chart.defaults.elements.bar.borderRadius=1;
+  Chart.defaults.elements.line.tension=0.25;
+  Chart.defaults.elements.point.hoverRadius=5;
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) Chart.defaults.animation=false;
+
+  var grid={color:rgba(C.b,.55),drawTicks:false}, nogrid={display:false};
+  function axes(yTitle,o){o=o||{};return {
+    x:Object.assign({grid:nogrid,border:{color:C.b},ticks:{maxRotation:40,autoSkip:true,padding:6}},o.x||{}),
+    y:Object.assign({grid:grid,border:{display:false},beginAtZero:true,ticks:{padding:6,callback:function(v){return fmt(v);}},title:{display:!!yTitle,text:yTitle,color:C.a,font:{weight:'600'}}},o.y||{})};}
+  function tipSuffix(s,d){return {callbacks:{label:function(c){var v=c.parsed.y!=null&&c.chart.options.indexAxis!=='y'?c.parsed.y:c.parsed.x;return ' '+(c.dataset.label?c.dataset.label+': ':'')+fmt(v,d)+(s||'');}}};}
+  function pieTip(unit){return {callbacks:{label:function(c){var t=c.dataset.data.reduce(function(a,b){return a+b;},0);return ' '+c.label+': '+fmt(c.parsed,2)+(unit||'')+' ('+fmt(c.parsed/t*100,1)+' %)';}}};}
+  var pieLegend={position:'right',align:'center'};
+
+  var made={};
+  function mk(id,cfg){var el=document.getElementById(id);if(!el)return;made[id]={el:el,cfg:cfg};}
+  function bar(id,labels,ds,yT,o){o=o||{};mk(id,{type:'bar',data:{labels:labels,datasets:ds},options:{indexAxis:o.h?'y':'x',scales:o.scales||axes(yT,o),plugins:{legend:{display:ds.length>1||!!o.legend},tooltip:tipSuffix(o.suf,o.dec)}}});}
+  function stacked(id,labels,ds,yT){mk(id,{type:'bar',data:{labels:labels,datasets:ds},options:{scales:(function(){var a=axes(yT);a.x.stacked=true;a.y.stacked=true;return a;})(),interaction:{mode:'index',intersect:false},plugins:{tooltip:{callbacks:{footer:function(it){return 'Total: '+fmt(it.reduce(function(s,i){return s+i.parsed.y;},0),0);}}}}}});}
+  function pie(id,pairs,colors,unit){mk(id,{type:'doughnut',data:{labels:pairs.map(function(p){return p[0];}),datasets:[{data:pairs.map(function(p){return p[1];}),backgroundColor:colors,borderColor:C.p,borderWidth:2,hoverOffset:6}]},options:{cutout:'52%',plugins:{legend:pieLegend,tooltip:pieTip(unit)}}});}
+  function ds(label,data,color,extra){return Object.assign({label:label,data:data,backgroundColor:color,borderColor:color,maxBarThickness:42},extra||{});}
+  function refLine(label,val,n,color){return {type:'line',label:label,data:new Array(n).fill(val),borderColor:color,borderDash:[6,4],borderWidth:1.6,pointRadius:0,pointHoverRadius:0,fill:false,order:-1};}
+
+  /* 01 General */
+  var g=DATA.general;
+  stacked('c-g1',g.mun,g.cats.map(function(c,i){return ds(c.charAt(0)+c.slice(1).toLowerCase(),g.stack[c],SERIE[i],{borderColor:C.p,borderWidth:1,maxBarThickness:48});}),'N.° equipamientos');
+  pie('c-g2',g.comp.map(function(p){return [p[0].charAt(0)+p[0].slice(1).toLowerCase(),p[1]];}),g.comp.map(function(p){return SERIE[g.cats.indexOf(p[0])];}),' equip.');
+  bar('c-g3',g.mun,[ds('Urbano',g.urb,C.d),ds('Rural',g.rur,C.b)],'N.° equipamientos',{dec:0});
+  bar('c-g4',g.mun,[ds('Equip. / 1.000 hab',g.tasa,C.m,{borderColor:C.d,borderWidth:1}),refLine('Promedio corredor = '+fmt(g.prom),g.prom,g.mun.length,C.d)],'Equip. / 1.000 hab',{legend:true});
+
+  /* 02 Educación */
+  var e=DATA.educacion;
+  bar('c-e1',e.mun,[ds('Sedes',e.sedes,C.d)],'N.° de sedes',{dec:0});
+  bar('c-e2',e.mun,[ds('Cobertura neta',e.cob,C.a),refLine('100 %',100,e.mun.length,C.b)],'Cobertura neta (%)',{suf:' %',legend:true,y:{max:110}});
+  bar('c-e3',e.mun,[ds('Habitantes 5-16 años',e.pob,C.m)],'Habitantes 5-16 años',{dec:0});
+  pie('c-e4',e.sector,[C.a,C.b],' sedes');
+  pie('c-e5',e.zona,[C.d,C.m],' sedes');
+  mk('c-e6',{type:'line',data:{labels:e.anios,datasets:Object.keys(e.serie).map(function(m,i){return {label:m,data:e.serie[m],borderColor:SERIE[i],backgroundColor:SERIE[i],borderWidth:2,pointRadius:2.5};})},options:{interaction:{mode:'index',intersect:false},scales:axes('Población total',{y:{beginAtZero:false}}),plugins:{tooltip:tipSuffix(' hab',0)}}});
+
+  /* 03 Salud */
+  var s=DATA.salud;
+  bar('c-s1',s.mun,[ds('Sedes IPS / 10.000 hab',s.sedes,C.a),ds('Camas / 1.000 hab',s.camas,C.m)],'Índice');
+  bar('c-s2',s.accMun,[ds('Área ≤30 min',s.acc,C.d)],'% del área municipal',{suf:' %'});
+  var natC={'Privada':C.a,'Pública':C.d,'Sin dato':C.b};
+  pie('c-s3',s.nat,s.nat.map(function(p){return natC[p[0]]||C.b;}),' sedes');
+  mk('c-s4',{type:'line',data:{labels:s.anios,datasets:s.serie.map(function(r,i){return {label:r[0],data:r[1],borderColor:[C.d,C.a,C.m,C.b][i],backgroundColor:[C.d,C.a,C.m,C.b][i],borderWidth:2,pointRadius:3};})},options:{interaction:{mode:'index',intersect:false},scales:axes('Cantidad (Casanare, depto.)'),plugins:{tooltip:tipSuffix('',0)}}});
+
+  /* 04 Sociales */
+  var o=DATA.sociales;
+  stacked('c-o1',o.mun,o.cats.map(function(c,i){var l=c.replace('_CULT',' cultural').replace('_',' ');return ds(l.charAt(0)+l.slice(1).toLowerCase(),o.stack[c],SERIE[i],{borderColor:C.p,borderWidth:1,maxBarThickness:48});}),'N.° equipamientos');
+  bar('c-o2',o.mun,[ds('Tasa x 10.000 hab',o.tasa,C.m,{borderColor:C.d,borderWidth:1})],'Tasa x 10.000 hab',{dec:1});
+  pie('c-o3',o.comp.map(function(p){var l=p[0].replace('_CULT',' cultural');return [l.charAt(0)+l.slice(1).toLowerCase(),p[1]];}),o.comp.map(function(p){return SERIE[o.cats.indexOf(p[0])];}),' equip.');
+  bar('c-o4',o.mun,[ds('Georreferenciado (shapefile)',o.geo,C.d),ds('Oficial sin coordenadas',o.ofi,C.b,{borderColor:C.d,borderWidth:1})],'N.° registros',{dec:0});
+
+  /* 05 Institucional */
+  var n=DATA.institucional;
+  stacked('c-i1',n.mun,n.tipos.map(function(t,i){return ds(t,n.mat.map(function(r){return r[i];}),SERIE[i],{borderColor:C.p,borderWidth:1,maxBarThickness:48});}),'N.° de equipamientos');
+  pie('c-i2',n.tot.filter(function(p){return p[1]>0;}),n.tot.map(function(p,i){return [p,SERIE[i]];}).filter(function(x){return x[0][1]>0;}).map(function(x){return x[1];}),' equip.');
+  (function(){var el=document.getElementById('c-i3');if(!el)return;var h='<table><thead><tr><th scope="col">Municipio</th>'+n.tipos.map(function(t){return '<th scope="col">'+t+'</th>';}).join('')+'</tr></thead><tbody>';
+    n.mun.forEach(function(m,r){h+='<tr><th scope="row">'+m+'</th>'+n.mat[r].map(function(v,c){return '<td class="'+(v>0?'on':'off')+'" title="'+m+' · '+n.tipos[c]+': '+(v>0?v+' equipamiento(s)':'ausente')+'">'+(v>0?v:'—')+'</td>';}).join('')+'</tr>';});
+    el.innerHTML=h+'</tbody></table>';})();
+  mk('c-i4',{type:'bar',data:{labels:n.mun,datasets:[ds('Índice de presencia',n.idx,C.a,{borderColor:C.d,borderWidth:1})]},options:{indexAxis:'y',scales:{x:{grid:grid,border:{display:false},min:0,max:1,title:{display:true,text:'Índice de presencia institucional (0-1)',color:C.a,font:{weight:'600'}}},y:{grid:nogrid,border:{color:C.b}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' Índice: '+fmt(c.parsed.x,3)+' ('+n.ncat[c.dataIndex]+' de 8 categorías)';}}}}}});
+
+  /* 06 Transporte */
+  var t=DATA.transporte;
+  mk('c-t1',{type:'line',data:{labels:t.anios,datasets:[{label:'Siniestros',data:t.sin,borderColor:C.d,backgroundColor:rgba(C.m,.18),fill:true,borderWidth:2.4,pointRadius:4,pointBackgroundColor:C.d}]},options:{scales:axes('N.° de siniestros (ANSV)'),plugins:{legend:{display:false},tooltip:tipSuffix(' siniestros',0)}}});
+  bar('c-t2',t.mun,[ds('Fallecidos',t.fal,C.d),ds('Lesionados',t.les,C.m)],'N.° de víctimas',{dec:0});
+  pie('c-t3',t.grav,[C.m,C.d],' siniestros');
+  mk('c-t4',{type:'bar',data:{labels:t.od.map(function(p){return p[0];}),datasets:[ds('Distancia',t.od.map(function(p){return p[1];}),C.a,{maxBarThickness:16})]},options:{indexAxis:'y',scales:{x:{grid:grid,border:{display:false},beginAtZero:true,title:{display:true,text:'Distancia (km)',color:C.a,font:{weight:'600'}}},y:{grid:nogrid,border:{color:C.b},ticks:{autoSkip:false,font:{size:10}}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+fmt(c.parsed.x,2)+' km';}}}}}});
+
+  /* 07 Vías */
+  var v=DATA.vias;
+  mk('c-v1',{type:'line',data:{labels:v.lab,datasets:[{label:'Vehículos/mes',data:v.traf,borderColor:C.d,backgroundColor:rgba(C.m,.35),fill:true,borderWidth:1.6,pointRadius:0,pointHitRadius:6}]},options:{interaction:{mode:'index',intersect:false},scales:axes('Vehículos/mes',{x:{ticks:{maxTicksLimit:12,maxRotation:0,autoSkipPadding:18}}}),plugins:{legend:{display:false},tooltip:tipSuffix(' veh.',0)}}});
+  pie('c-v2',v.comp,[C.d,C.m,C.b],' %');
+  stacked('c-v3',v.kmMun,[ds('Bueno',v.km.Bueno,C.d,{borderColor:C.p,borderWidth:1}),ds('Regular',v.km.Regular,C.m,{borderColor:C.p,borderWidth:1}),ds('Malo',v.km.Malo,C.b,{borderColor:C.p,borderWidth:1})],'km de vía (INVÍAS 2018)');
+  mk('c-v4',{type:'bar',data:{labels:v.vc.map(function(r){return [r[0],r[1]];}),datasets:[ds('Relación V/C',v.vc.map(function(r){return r[3];}),v.vc.map(function(r){return r[3]<0.2?C.d:C.m;}),{maxBarThickness:90})]},options:{scales:axes('Relación V/C',{y:{max:Math.max.apply(null,v.vc.map(function(r){return r[3];}))*1.6},x:{ticks:{maxRotation:0}}}),plugins:{legend:{display:false},tooltip:{callbacks:{title:function(it){return v.vc[it[0].dataIndex][0]+' · '+v.vc[it[0].dataIndex][1];},label:function(c){var r=v.vc[c.dataIndex];return [' V/C: '+fmt(r[3],3),' Nivel de servicio: '+r[4],' TPD: '+fmt(r[2],1)+' veh/día'];}}}}}});
+
+  /* 08 Espacio público */
+  var p=DATA.ep;
+  mk('c-p1',{type:'bar',data:{labels:p.mun,datasets:[ds('EPE bruto',p.bruto,C.m),ds('EPE conservador (<5 ha)',p.cons,C.d),refLine('Estándar 15 m²/hab',15,p.mun.length,C.a)]},options:{scales:{x:{grid:nogrid,border:{color:C.b}},y:{type:'logarithmic',min:1,grid:grid,border:{display:false},title:{display:true,text:'m² / habitante (log)',color:C.a,font:{weight:'600'}},ticks:{callback:function(val){return [1,10,100,1000].indexOf(val)>=0?fmt(val):'';}}}},plugins:{tooltip:tipSuffix(' m²/hab',3)}}});
+  pie('c-p2',p.fun,[C.m,C.d,C.b],' ha');
+  bar('c-p3',p.mun,[ds('Banda 300 m',p.a300,C.m),ds('Banda 500 m',p.a500,C.d)],'% área urbana cubierta',{suf:' %',y:{max:100}});
+  bar('c-p4',p.mun,[ds('EP de tránsito',p.km,C.a)],'km',{suf:' km'});
+
+  /* Render diferido: cada gráfica anima al entrar en pantalla */
+  var ids=Object.keys(made);
+  function draw(id){if(!made[id]||made[id].chart)return;made[id].chart=new Chart(made[id].el,made[id].cfg);}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){draw(x.target.id);io.unobserve(x.target);}});},{rootMargin:'0px 0px -10% 0px'});
+    ids.forEach(function(id){io.observe(made[id].el);});
+  } else ids.forEach(draw);
+  window.addEventListener('beforeprint',function(){ids.forEach(draw);});
+  window.__charts=made;
+})();
+</script>
+<script>
+/* Animaciones de scroll: se re-disparan cada vez que una lámina entra al viewport (ambas direcciones) */
+(function(){
+  if(!('IntersectionObserver' in window))return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  document.documentElement.classList.add('js-rv');
+  var sel='.lamina-head,.plate--map,.plate--chart,.stat--lead,.stats,.notes-block,.notes,.cartela,.lamina-lede';
+  var secs=document.querySelectorAll('section.lamina');
+  secs.forEach(function(sec){sec.querySelectorAll(sel).forEach(function(el){el.classList.add('rv');});});
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('is-in');}
+      else{e.target.classList.remove('is-in');}
+    });
+  },{threshold:0.12});
+  secs.forEach(function(s){io.observe(s);});
 })();
 </script>
 </body>
