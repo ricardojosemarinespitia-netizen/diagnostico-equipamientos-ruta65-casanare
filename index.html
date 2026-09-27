@@ -1393,9 +1393,15 @@ html,body{max-width:100%;overflow-x:clip}
   var jumping=false,jumpT=null,lastJY=-1;
   function check(){
     var h=window.innerHeight,m=h*0.15;
+    /* MISMO criterio para entrar y salir: "bien visible" = dentro del margen del 15%.
+       En los extremos de la página (arriba del todo / abajo del todo) basta con estar en pantalla,
+       para que nada quede oculto de forma permanente si nunca puede llegar a esa zona. */
+    var y=window.scrollY||window.pageYOffset,H=document.documentElement.scrollHeight;
+    var atTop=y<=2,atBot=y+h>=H-2;
     els.forEach(function(el){var r=el.getBoundingClientRect();
-      if(r.bottom<=0||r.top>=h){leave(el);return;}
-      if(!jumping&&r.top<h-m&&r.bottom>m)enter(el);});
+      var onScr=r.bottom>0&&r.top<h;
+      var vis=(r.top<h-m&&r.bottom>m)||(onScr&&((atBot&&r.top>=h-m)||(atTop&&r.bottom<=m)));
+      if(!vis)leave(el);else if(!jumping)enter(el);});
   }
   function startJump(){jumping=true;lastJY=-1;clearInterval(jumpT);
     jumpT=setInterval(function(){if(window.scrollY===lastJY){clearInterval(jumpT);jumping=false;check();}lastJY=window.scrollY;},90);}
