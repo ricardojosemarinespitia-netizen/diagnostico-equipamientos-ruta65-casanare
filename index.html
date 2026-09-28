@@ -448,6 +448,11 @@ html,body{max-width:100%;overflow-x:clip}
 .rf-bib li{margin:0 0 10px;padding-left:2px;overflow-wrap:anywhere}
 .rf-bib a{font-family:var(--f-mono);font-size:.75rem}
 @media print{.refs-panel[hidden]{display:block!important}.refs-toggle{display:none}}
+/* Contraste AA (≥4,5:1) en texto pequeño sobre fondo claro: #4A7FA7 → #1A3D63 */
+.dim:not(.dim--dark),.dim:not(.dim--dark) .dim-txt,.lamina-title .label,.lamina-num .ln-c span,.margin-note,.hero-index a span,.hero-coords,.hero-vert{color:var(--az-700)}
+.chart-note{margin:6px 0 0;font-family:var(--f-mono);font-size:.6875rem;line-height:1.45;color:var(--az-700);overflow-wrap:anywhere}
+.glosario{margin:calc(var(--u)*2) 0 0;padding:10px 12px;border-left:2px solid var(--az-700);background:rgba(179,207,229,.2);font-family:var(--f-mono);font-size:.6875rem;line-height:1.55;color:var(--az-700);overflow-wrap:anywhere}
+.glosario b{color:var(--az-900)}
 </style>
 </head>
 <body>
@@ -694,7 +699,7 @@ html,body{max-width:100%;overflow-x:clip}
       <div class="lamina-title">
         <span class="label">Lámina 01 · Capa consolidada · 10 categorías</span>
         <h2 id="t1-h">Equipamientos General</h2>
-        <p class="lamina-lede">Yopal concentra el 54.8 % de los equipamientos del corredor (523 de 954), mientras Sabanalarga reúne apenas 30 y un único punto de salud.</p>
+        <p class="lamina-lede">Yopal concentra el 52,6 % de los equipamientos del corredor (462 de 879), mientras Sabanalarga reúne apenas 30 y una única sede de salud.</p>
       </div>
       <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
       <div class="lamina-num" aria-label="Lámina 1 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">01</span><span class="ln-c"><b>PL.01</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
@@ -703,25 +708,25 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Equipamientos consolidados</span><span class="code">M-01</span></div>
-        <div class="plate-img"><img src="mapas/General.png" width="4440" height="4920" alt="Mapa de equipamientos consolidados del corredor" loading="lazy"></div>
-        <figcaption><b>954 equipamientos</b> en 10 categorías — Yopal, Aguazul, Monterrey, Sabanalarga, Tauramena, Villanueva</figcaption>
+        <div class="plate-img"><img src="mapas/General.png?v=4" width="4440" height="4920" alt="Mapa de equipamientos consolidados del corredor" loading="lazy"></div>
+        <figcaption><b>879 equipamientos</b> (depurados) en 10 categorías — Yopal, Aguazul, Monterrey, Sabanalarga, Tauramena, Villanueva</figcaption>
       </figure>
 
       <aside class="lamina-side">
         <div class="stats">
           <div class="stat stat--lead">
             <span class="label">Cifra clave</span>
-            <span class="stat-val">54.8 %</span>
-            <span class="stat-lbl">De los equipamientos está en Yopal (523)</span>
+            <span class="stat-val">52,6 %</span>
+            <span class="stat-lbl">De los equipamientos está en Yopal (462 de 879)</span>
           </div>
-          <div class="stat"><span class="stat-val">954</span><span class="stat-lbl">Equipamientos en el corredor</span></div>
-          <div class="stat"><span class="stat-val">52 %</span><span class="stat-lbl">Deportivo (252) + educación (248)</span></div>
-          <div class="stat stat--wide"><span class="stat-val">30</span><span class="stat-lbl">Equipamientos en Sabanalarga — el mínimo del corredor, con solo <b>1 punto de salud</b></span></div>
+          <div class="stat"><span class="stat-val">879</span><span class="stat-lbl">Equipamientos en el corredor (depurados)</span></div>
+          <div class="stat"><span class="stat-val">56,9 %</span><span class="stat-lbl">De los 879 equipamientos son deportivos (252) o educativos (248)</span></div>
+          <div class="stat stat--wide"><span class="stat-val">30</span><span class="stat-lbl">Equipamientos en Sabanalarga — el mínimo del corredor, con solo <b>1 sede de salud</b></span></div>
         </div>
         <div class="notes-block">
           <span class="label">Hallazgos</span>
           <ul class="notes">
-            <li>Yopal tiene 95 de los 130 puntos de salud, el 87 % del abastecimiento y el 73 % de seguridad.</li>
+            <li>Yopal tiene 95 de los 130 equipamientos de salud del consolidado (73 %; la lámina 03 cuenta 119 de 157 sedes IPS del REPS), 17 de los 28 de seguridad (61 %) y 1 de las 4 plazas de mercado reales.</li>
             <li>Educación rural con peso alto: Yopal 61 rurales frente a 79 urbanos; Tauramena 15 frente a 9.</li>
             <li>Pendiente: campo ESTADO sin fuente; cementerios no encontrados.</li>
           </ul>
@@ -732,9 +737,9 @@ html,body{max-width:100%;overflow-x:clip}
         <div class="plate-tag"><span class="label">Gráfica · Distribución</span><span class="code">G-01</span></div>
         <div class="plate-charts" data-set="general">
         <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Equipamientos por municipio y categoría</h3><div class="chart-box"><canvas id="c-g1" role="img" aria-label="Equipamientos por municipio y categoría"></canvas></div></div>
-        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Composición por categoría (n=954)</h3><div class="chart-box"><canvas id="c-g2" role="img" aria-label="Composición por categoría (n=954)"></canvas></div></div>
-        <div class="chart-panel"><h3 class="chart-title">Equipamientos: urbano vs rural (por municipio)</h3><div class="chart-box"><canvas id="c-g3" role="img" aria-label="Equipamientos: urbano vs rural (por municipio)"></canvas></div></div>
-        <div class="chart-panel"><h3 class="chart-title">Equipamientos por 1.000 hab vs. promedio del corredor</h3><div class="chart-box"><canvas id="c-g4" role="img" aria-label="Equipamientos por 1.000 hab vs. promedio del corredor"></canvas></div></div>
+        <div class="chart-panel chart-panel--tall"><h3 class="chart-title">Composición por categoría (n=879)</h3><div class="chart-box"><canvas id="c-g2" role="img" aria-label="Composición por categoría (n=879)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Equipamientos: urbano vs. rural por municipio (consolidado antes de depurar, n=954)</h3><div class="chart-box"><canvas id="c-g3" role="img" aria-label="Equipamientos: urbano vs. rural por municipio (consolidado antes de depurar, n=954)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Equipamientos básicos (educación, salud, seguridad, institucional; n=482) por 1.000 hab. (pob. 2018) vs. media de los 6 municipios</h3><div class="chart-box"><canvas id="c-g4" role="img" aria-label="Equipamientos básicos por 1.000 hab. vs. media de los 6 municipios"></canvas></div></div>
         </div>
         <figcaption>Equipamientos por categoría, municipio y distribución urbano/rural</figcaption>
       </figure>
@@ -774,7 +779,7 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Sedes educativas</span><span class="code">M-02</span></div>
-        <div class="plate-img"><img src="mapas/Educacion.png" width="4440" height="4920" alt="Mapa de sedes educativas" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Educacion.png?v=4" width="4440" height="4920" alt="Mapa de sedes educativas" loading="lazy"></div>
         <figcaption>Sedes educativas y educación superior en el corredor</figcaption>
       </figure>
 
@@ -782,14 +787,14 @@ html,body{max-width:100%;overflow-x:clip}
         <div class="stats">
           <div class="stat stat--lead">
             <span class="label">Cifra clave</span>
-            <span class="stat-val">75.00 %</span>
-            <span class="stat-lbl">Cobertura neta — Sabanalarga (la menor)</span>
+            <span class="stat-val">75,0 %</span>
+            <span class="stat-lbl">Cobertura neta 2024 (% de niños de 5–16 años matriculados en el nivel que les corresponde) — Sabanalarga, la menor</span>
           </div>
-          <div class="stat"><span class="stat-val">270</span><span class="stat-lbl">Sedes: 196 oficiales, 74 no oficiales</span></div>
-          <div class="stat"><span class="stat-val">153 / 117</span><span class="stat-lbl">Sedes rurales / urbanas</span></div>
-          <div class="stat stat--wide"><span class="stat-lbl">Sedes/1.000 hab. 5–16 — Villanueva (la menor)</span><span class="stat-val">2.59</span></div>
-          <div class="stat stat--wide"><span class="stat-lbl">Educación superior (IES/SENA, OSM)</span><span class="stat-val">23 puntos</span></div>
-          <div class="stat stat--wide"><span class="stat-val">69.814</span><span class="stat-lbl">Alumnos matriculados en las sedes del corredor, <b>284 por sede</b> (246 de 270 sedes con dato; SISE 2023, 52 sedes 2019). Matrícula, no cupos: no hay capacidad instalada pública</span></div>
+          <div class="stat"><span class="stat-val">256</span><span class="stat-lbl">Sedes únicas: 186 oficiales, 70 no oficiales</span></div>
+          <div class="stat"><span class="stat-val">146 y 110</span><span class="stat-lbl">Sedes rurales (146) y urbanas (110)</span></div>
+          <div class="stat stat--wide"><span class="stat-lbl">Sedes educativas por cada 1.000 niños de 5 a 16 años — Villanueva (la menor, 2024)</span><span class="stat-val">2,59</span></div>
+          <div class="stat stat--wide"><span class="stat-lbl">Educación superior: instituciones distintas (universidades, institutos y SENA; OSM agrupa 23 puntos/edificios)</span><span class="stat-val">9</span></div>
+          <div class="stat stat--wide"><span class="stat-val">66.525</span><span class="stat-lbl">Alumnos matriculados en las sedes del corredor, <b>281 por sede</b> (237 de 256 sedes con dato; SISE 2023, 52 sedes 2019). Matrícula, no cupos: no hay capacidad instalada pública</span></div>
         </div>
         <div class="notes-block">
           <span class="label">Hallazgos</span>
@@ -806,8 +811,8 @@ html,body{max-width:100%;overflow-x:clip}
         <div class="chart-panel"><h3 class="chart-title">Sedes educativas por municipio</h3><div class="chart-box"><canvas id="c-e1" role="img" aria-label="Sedes educativas por municipio"></canvas></div></div>
         <div class="chart-panel"><h3 class="chart-title">Cobertura neta educativa por municipio (2024)</h3><div class="chart-box"><canvas id="c-e2" role="img" aria-label="Cobertura neta educativa por municipio (2024)"></canvas></div></div>
         <div class="chart-panel"><h3 class="chart-title">Población en edad escolar (5-16 años) por municipio (2024)</h3><div class="chart-box"><canvas id="c-e3" role="img" aria-label="Población en edad escolar (5-16 años) por municipio (2024)"></canvas></div></div>
-        <div class="chart-panel"><h3 class="chart-title">Sedes educativas por sector (n=270)</h3><div class="chart-box"><canvas id="c-e4" role="img" aria-label="Sedes educativas por sector (n=270)"></canvas></div></div>
-        <div class="chart-panel"><h3 class="chart-title">Sedes educativas por zona (n=270)</h3><div class="chart-box"><canvas id="c-e5" role="img" aria-label="Sedes educativas por zona (n=270)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Sedes educativas por sector (n=256)</h3><div class="chart-box"><canvas id="c-e4" role="img" aria-label="Sedes educativas por sector (n=256)"></canvas></div></div>
+        <div class="chart-panel"><h3 class="chart-title">Sedes educativas por zona (n=256)</h3><div class="chart-box"><canvas id="c-e5" role="img" aria-label="Sedes educativas por zona (n=256)"></canvas></div></div>
         <div class="chart-panel"><h3 class="chart-title">Población total anual por municipio (2018-2026, proyecciones DANE)</h3><div class="chart-box"><canvas id="c-e6" role="img" aria-label="Población total anual por municipio (2018-2026, proyecciones DANE)"></canvas></div></div>
         <div class="chart-panel" style="grid-column:1/-1"><h3 class="chart-title">Alumnos matriculados por sede, por municipio (SISE 2023/2019, sedes con dato)</h3><div class="chart-box"><canvas id="c-e7" role="img" aria-label="Alumnos matriculados por sede, por municipio"></canvas></div></div>
         </div>
@@ -840,7 +845,7 @@ html,body{max-width:100%;overflow-x:clip}
       <div class="lamina-title">
         <span class="label">Lámina 03 · IPS · camas · isócronas</span>
         <h2 id="t3-h">Equipamientos de Salud</h2>
-        <p class="lamina-lede">La salud es el cuello de botella del corredor: en ningún municipio más del 11.5 % del área está a ≤30 min de una IPS, y Yopal concentra el 87 % de las camas.</p>
+        <p class="lamina-lede">La salud es el cuello de botella del corredor: en ningún municipio más del 11,5 % del área (máx. Sabanalarga 11,44 %) está a ≤30 min en vehículo de una IPS, y Yopal concentra el 87 % de las camas.</p>
       </div>
       <div class="north" aria-hidden="true"><svg viewBox="0 0 34 46" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="17" cy="28" r="14"/><path d="M17 6 L24 34 L17 29 L10 34 Z" fill="currentColor" stroke="none" opacity=".15"/><path d="M17 6 L24 34 L17 29 Z" fill="currentColor"/><path d="M17 6 L10 34 L17 29 Z"/><path d="M17 12v32M3 28h28" stroke-width=".6" stroke-dasharray="2 2"/></svg><span>N</span></div>
       <div class="lamina-num" aria-label="Lámina 3 de 8"><span class="ln-k">LÁMINA · CÓDIGO</span><span class="ln-n">03</span><span class="ln-c"><b>PL.03</b><span>RUTA65-CAS</span><span>/ 08</span></span></div>
@@ -849,7 +854,7 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Sedes IPS</span><span class="code">M-03</span></div>
-        <div class="plate-img"><img src="mapas/Salud.png?v=3"width="4440" height="4920" alt="Mapa de sedes IPS" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Salud.png?v=4"width="4440" height="4920" alt="Mapa de sedes IPS" loading="lazy"></div>
         <figcaption>Sedes IPS y accesibilidad a 30 minutos</figcaption>
       </figure>
 
@@ -920,7 +925,7 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Equipamientos sociales</span><span class="code">M-04</span></div>
-        <div class="plate-img"><img src="mapas/Sociales.png?v=2" width="4440" height="4920" alt="Mapa de equipamientos sociales" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Sociales.png?v=4" width="4440" height="4920" alt="Mapa de equipamientos sociales" loading="lazy"></div>
         <figcaption>Bibliotecas, cultura, culto, deporte y bienestar</figcaption>
       </figure>
 
@@ -992,7 +997,7 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Equipamientos institucionales</span><span class="code">M-05</span></div>
-        <div class="plate-img"><img src="mapas/Institucional.png?v=2" width="4440" height="4920" alt="Mapa de equipamientos institucionales" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Institucional.png?v=4" width="4440" height="4920" alt="Mapa de equipamientos institucionales" loading="lazy"></div>
         <figcaption>Alcaldías, justicia, policía, bomberos y militar (por instalación); coropleta con 8 categorías</figcaption>
       </figure>
 
@@ -1063,7 +1068,7 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Transporte y siniestralidad</span><span class="code">M-06</span></div>
-        <div class="plate-img"><img src="mapas/Transporte.png" width="4440" height="4920" alt="Mapa de transporte y siniestralidad" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Transporte.png?v=4" width="4440" height="4920" alt="Mapa de transporte y siniestralidad" loading="lazy"></div>
         <figcaption>Siniestros viales, terminales y aeródromos</figcaption>
       </figure>
 
@@ -1134,7 +1139,7 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Red vial</span><span class="code">M-07</span></div>
-        <div class="plate-img"><img src="mapas/Vias.png?v=2"width="4440" height="4920" alt="Mapa vial" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/Vias.png?v=4"width="4440" height="4920" alt="Mapa vial" loading="lazy"></div>
         <figcaption>Red vial INVIAS, estado 2018, puentes y peaje</figcaption>
       </figure>
 
@@ -1205,7 +1210,7 @@ html,body{max-width:100%;overflow-x:clip}
     <div class="lamina-body">
       <figure class="plate plate--map">
         <div class="plate-tag"><span class="label">Mapa · Espacio público</span><span class="code">M-08</span></div>
-        <div class="plate-img"><img src="mapas/EspacioPublico.png" width="4440" height="4920" alt="Mapa de espacio público" loading="lazy"></div>
+        <div class="plate-img"><img src="mapas/EspacioPublico.png?v=4" width="4440" height="4920" alt="Mapa de espacio público" loading="lazy"></div>
         <figcaption>Parques, rondas hídricas, escenarios y áreas de influencia</figcaption>
       </figure>
 
@@ -1290,7 +1295,7 @@ html,body{max-width:100%;overflow-x:clip}
       <h3 class="refs-h3" id="rf-2">01 · Equipamientos General</h3>
       <div class="rf-scroll" role="region" tabindex="0" aria-label="Tabla de fuentes: 01 · Equipamientos General"><table class="rf-table">
         <thead><tr><th scope="col">Dato / capa</th><th scope="col">Fuente (organismo)</th><th scope="col">Documento o dataset (+ID)</th><th scope="col">Año</th><th scope="col">Enlace</th></tr></thead><tbody>
-        <tr><td>Mapa M-01 y c-g1, c-g2: 954 equipamientos en 10 categorías (1.049 brutos → deduplicación ≤50 m)</td><td>Elaboración propia (consolidación)</td><td>EQUIPAMIENTOS_CONSOLIDADO_Casanare6_FINAL.shp: une las capas de PL.02–PL.05 (MEN, MinSalud-REPS, MinCultura, ICBF, MinJusticia, OSM)</td><td class="rf-y">2026 (fuentes 2019–2026)</td><td class="rf-l"><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a></td></tr>
+        <tr><td>Mapa M-01 y c-g1, c-g2: 879 equipamientos en 10 categorías (954 tras deduplicación ≤50 m → 879 tras depurar registros mal clasificados: 31 no judiciales, 27 comercios etiquetados como plazas de mercado, 12 geometrías militares sobrantes, 1 parqueadero en policía, CASA FISCAL y 3 terminales duplicadas). c-g3 conserva el reparto urbano/rural del consolidado sin depurar (n=954); c-g4 usa 482 equipamientos básicos de 4 categorías</td><td>Elaboración propia (consolidación)</td><td>EQUIPAMIENTOS_CONSOLIDADO_Casanare6_FINAL.shp: une las capas de PL.02–PL.05 (MEN, MinSalud-REPS, MinCultura, ICBF, MinJusticia, OSM)</td><td class="rf-y">2026 (fuentes 2019–2026)</td><td class="rf-l"><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a></td></tr>
         <tr><td>Capa nacional de equipamientos (4.017 → 37 registros) y alcaldías SUIT/DAFP (centroide municipal)</td><td>Capa del proyecto / DAFP-SUIT</td><td>Equipamientos_Nacional.shp; alcaldías SUIT — URL original <span class="rf-nd">fuente no documentada</span></td><td class="rf-y">s. f.</td><td class="rf-l"><span class="rf-nd">sin enlace</span></td></tr>
         <tr><td>c-g3: urbano vs. rural; perímetro urbano</td><td>DANE (MGN) + catastro</td><td>PERIM_URB_Casanare6_v2.shp: cabeceras y centros poblados MGN + polígonos de avalúo catastral (fuente catastral <span class="rf-nd">fuente no documentada</span>)</td><td class="rf-y">MGN 2023</td><td class="rf-l"><a href="https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/" target="_blank" rel="noopener">Geoportal DANE · datos geoestadísticos (MGN)</a></td></tr>
         <tr><td>c-g4: equipamientos por 1.000 hab.</td><td>DANE</td><td>CNPV 2018 (población censada)</td><td class="rf-y">2018</td><td class="rf-l"><a href="https://www.dane.gov.co/index.php/estadisticas-por-tema/demografia-y-poblacion/censo-nacional-de-poblacion-y-vivenda-2018" target="_blank" rel="noopener">dane.gov.co · CNPV 2018</a></td></tr>
@@ -1299,11 +1304,11 @@ html,body{max-width:100%;overflow-x:clip}
       <h3 class="refs-h3" id="rf-3">02 · Equipamientos Educativos</h3>
       <div class="rf-scroll" role="region" tabindex="0" aria-label="Tabla de fuentes: 02 · Equipamientos Educativos"><table class="rf-table">
         <thead><tr><th scope="col">Dato / capa</th><th scope="col">Fuente (organismo)</th><th scope="col">Documento o dataset (+ID)</th><th scope="col">Año</th><th scope="col">Enlace</th></tr></thead><tbody>
-        <tr><td>Mapa M-02, c-e1, c-e4, c-e5: 270 sedes (196 oficiales / 74 no oficiales; 153 rurales / 117 urbanas)</td><td>Ministerio de Educación Nacional (MEN)</td><td>Sedes SISE 2023 (capa Sedes_Educativas_SISE_Corredor.shp; URL de descarga <span class="rf-nd">fuente no documentada</span>); respaldo MEN «MEN_SEDES_EDUCATIVAS_PREESCOLAR_BÁSICA_Y_MEDIA» (ID x5ay-984n) / DUE 2019</td><td class="rf-y">2023 (52 sedes con dato 2019)</td><td class="rf-l"><a href="https://www.datos.gov.co/d/x5ay-984n" target="_blank" rel="noopener">datos.gov.co/d/x5ay-984n</a></td></tr>
-        <tr><td>c-e2 y cifra clave: cobertura neta 2024 (Sabanalarga 75.00 %); c-e3: pob. 5–16 (2024)</td><td>MEN</td><td>MEN_ESTADISTICAS_EN_EDUCACION_EN_PREESCOLAR, BÁSICA Y MEDIA_POR_MUNICIPIO (ID nudc-7mev)</td><td class="rf-y">2024</td><td class="rf-l"><a href="https://www.datos.gov.co/d/nudc-7mev" target="_blank" rel="noopener">datos.gov.co/d/nudc-7mev</a></td></tr>
-        <tr><td>c-e7 y cifra 69.814 alumnos / 284 por sede (matrícula, no cupos)</td><td>MEN</td><td>Campo MATRICULA de las sedes SISE 2023 (y MEN 2019 en 52 sedes)</td><td class="rf-y">2023 / 2019</td><td class="rf-l"><a href="https://www.datos.gov.co/d/x5ay-984n" target="_blank" rel="noopener">datos.gov.co/d/x5ay-984n</a></td></tr>
-        <tr><td>Sedes/1.000 hab. 5–16 (Villanueva 2.59) y cobertura urbana a 500 m (≥ 91 %)</td><td>Elaboración propia</td><td>Indicador T2-I06: sedes SISE ÷ pob. 5–16 (nudc-7mev); buffers de 500 m sobre perímetro urbano MGN</td><td class="rf-y">2024 / 2026</td><td class="rf-l"><a href="https://www.datos.gov.co/d/nudc-7mev" target="_blank" rel="noopener">datos.gov.co/d/nudc-7mev</a><br><a href="https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/" target="_blank" rel="noopener">Geoportal DANE · datos geoestadísticos (MGN)</a></td></tr>
-        <tr><td>Educación superior: 23 puntos (IES/SENA)</td><td>OpenStreetMap contributors (© OpenStreetMap contributors, ODbL)</td><td>Educacion_Superior_OSM_Corredor.shp (Overpass API) + SENA_Centros_Corredor.shp (URL SENA <span class="rf-nd">fuente no documentada</span>)</td><td class="rf-y">2026</td><td class="rf-l"><a href="https://overpass-api.de/" target="_blank" rel="noopener">Overpass API</a><br><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a><br><a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">Licencia ODbL 1.0</a></td></tr>
+        <tr><td>Mapa M-02, c-e1, c-e4, c-e5: 256 sedes únicas (186 oficiales / 70 no oficiales; 146 rurales / 110 urbanas; se retiraron 14 registros con COD_SEDE repetido)</td><td>Ministerio de Educación Nacional (MEN)</td><td>Sedes SISE 2023 (capa Sedes_Educativas_SISE_Corredor.shp; URL de descarga <span class="rf-nd">fuente no documentada</span>); respaldo MEN «MEN_SEDES_EDUCATIVAS_PREESCOLAR_BÁSICA_Y_MEDIA» (ID x5ay-984n) / DUE 2019</td><td class="rf-y">2023 (52 sedes con dato 2019)</td><td class="rf-l"><a href="https://www.datos.gov.co/d/x5ay-984n" target="_blank" rel="noopener">datos.gov.co/d/x5ay-984n</a></td></tr>
+        <tr><td>c-e2 y cifra clave: cobertura neta 2024 (Sabanalarga 75,0 %); c-e3: pob. 5–16 (2024)</td><td>MEN</td><td>MEN_ESTADISTICAS_EN_EDUCACION_EN_PREESCOLAR, BÁSICA Y MEDIA_POR_MUNICIPIO (ID nudc-7mev)</td><td class="rf-y">2024</td><td class="rf-l"><a href="https://www.datos.gov.co/d/nudc-7mev" target="_blank" rel="noopener">datos.gov.co/d/nudc-7mev</a></td></tr>
+        <tr><td>c-e7 y cifra 66.525 alumnos / 281 por sede (237 sedes con dato) (matrícula, no cupos)</td><td>MEN</td><td>Campo MATRICULA de las sedes SISE 2023 (y MEN 2019 en 52 sedes)</td><td class="rf-y">2023 / 2019</td><td class="rf-l"><a href="https://www.datos.gov.co/d/x5ay-984n" target="_blank" rel="noopener">datos.gov.co/d/x5ay-984n</a></td></tr>
+        <tr><td>Sedes/1.000 hab. 5–16 (Villanueva 2,59) y cobertura urbana a 500 m (≥ 91 %)</td><td>Elaboración propia</td><td>Indicador T2-I06: sedes SISE ÷ pob. 5–16 (nudc-7mev); buffers de 500 m sobre perímetro urbano MGN</td><td class="rf-y">2024 / 2026</td><td class="rf-l"><a href="https://www.datos.gov.co/d/nudc-7mev" target="_blank" rel="noopener">datos.gov.co/d/nudc-7mev</a><br><a href="https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/" target="_blank" rel="noopener">Geoportal DANE · datos geoestadísticos (MGN)</a></td></tr>
+        <tr><td>Educación superior: 9 instituciones distintas (23 puntos OSM, varios son edificios del mismo campus; IES/SENA)</td><td>OpenStreetMap contributors (© OpenStreetMap contributors, ODbL)</td><td>Educacion_Superior_OSM_Corredor.shp (Overpass API) + SENA_Centros_Corredor.shp (URL SENA <span class="rf-nd">fuente no documentada</span>)</td><td class="rf-y">2026</td><td class="rf-l"><a href="https://overpass-api.de/" target="_blank" rel="noopener">Overpass API</a><br><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap contributors</a><br><a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">Licencia ODbL 1.0</a></td></tr>
         <tr><td>Contexto rural: modelo Escuela Nueva (sedes rurales multigrado)</td><td>MEN</td><td>Modelos Educativos Flexibles — Escuela Nueva</td><td class="rf-y">vigente</td><td class="rf-l"><a href="https://www.mineducacion.gov.co/portal/Preescolar-basica-y-media/Modelos-Educativos-Flexibles/340089:Escuela-Nueva" target="_blank" rel="noopener">MEN · Escuela Nueva</a></td></tr>
         <tr><td>c-e6: población total anual 2018–2026</td><td>DANE</td><td>Proyecciones PPED 2018-2042</td><td class="rf-y">2018–2026</td><td class="rf-l"><a href="https://www.dane.gov.co/files/censo2018/proyecciones-de-poblacion/Municipal/PPED-AreaSexoEdadMun-2018-2042_VP.xlsx" target="_blank" rel="noopener">PPED-AreaSexoEdadMun-2018-2042_VP.xlsx</a></td></tr>
       </tbody></table></div>
@@ -1423,7 +1428,7 @@ html,body{max-width:100%;overflow-x:clip}
    de ENTREGA_25_SEP_2026 (ver hacer_graficas.py de cada carpeta). */
 (function(){
   if(!window.Chart) return;
-  var DATA = {"general": {"mun": ["Yopal", "Aguazul", "Villanueva", "Tauramena", "Monterrey", "Sabanalarga"], "cats": ["ABASTECIMIENTO", "BIENESTAR", "CULTO", "CULTURAL", "DEPORTIVO", "EDUCACION", "INSTITUCIONAL", "SALUD", "SEGURIDAD", "TRANSPORTE"], "stack": {"ABASTECIMIENTO": [27, 1, 1, 2, 0, 0], "BIENESTAR": [34, 15, 20, 11, 13, 3], "CULTO": [15, 4, 2, 1, 2, 2], "CULTURAL": [24, 7, 10, 5, 3, 5], "DEPORTIVO": [119, 33, 38, 41, 13, 8], "EDUCACION": [140, 48, 16, 24, 12, 8], "INSTITUCIONAL": [26, 5, 2, 3, 6, 1], "SALUD": [95, 9, 11, 5, 9, 1], "SEGURIDAD": [30, 1, 4, 3, 2, 1], "TRANSPORTE": [13, 10, 6, 1, 2, 1]}, "comp": [["DEPORTIVO", 252], ["EDUCACION", 248], ["SALUD", 130], ["BIENESTAR", 96], ["CULTURAL", 54], ["INSTITUCIONAL", 43], ["SEGURIDAD", 41], ["TRANSPORTE", 33], ["ABASTECIMIENTO", 31], ["CULTO", 26]], "total": 954, "urb": [428, 80, 85, 67, 46, 23], "rur": [95, 53, 25, 29, 16, 7], "tasa": [1.9, 2.06, 1.23, 1.66, 1.89, 3.94], "prom": 2.11}, "educacion": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "sedes": [143, 51, 14, 13, 28, 21], "cob": [97.77, 89.82, 84.08, 75.0, 92.61, 95.81], "pob": [36954, 8111, 3776, 744, 5726, 8112], "sector": [["Oficial", 196], ["No oficial", 74]], "zona": [["Rural", 153], ["Urbana", 117]], "anios": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], "serie": {"Yopal": [168427, 173316, 178549, 182573, 185962, 189187, 192468, 195600, 198423], "Aguazul": [36916, 37507, 38174, 38537, 38790, 38978, 39218, 39364, 39480], "Monterrey": [17521, 17858, 18215, 18428, 18576, 18706, 18836, 18955, 19042], "Sabanalarga": [3634, 3678, 3735, 3786, 3783, 3811, 3836, 3855, 3882], "Tauramena": [23525, 24050, 24635, 25009, 25334, 25625, 25904, 26170, 26371], "Villanueva": [35313, 36416, 37579, 38521, 39322, 40090, 40889, 41658, 42337]}}, "salud": {"mun": ["Yopal", "Tauramena", "Aguazul", "Sabanalarga", "Monterrey", "Villanueva"], "sedes": [5.97, 1.81, 2.36, 2.39, 5.0, 2.9], "camas": [5.06, 2.1, 1.37, 0.95, 0.5, 0.36], "accMun": ["Sabanalarga", "Villanueva", "Yopal", "Monterrey", "Aguazul", "Tauramena"], "acc": [11.44, 10.93, 9.78, 9.14, 8.1, 3.33], "nat": [["Privada", 127], ["Sin dato", 18], ["Pública", 12]], "anios": ["2017", "2018", "2019", "2020", "2022"], "serie": [["Camas adultos", [260, 287, 283, 274, 335]], ["Camas UCI adulto", [17, 17, 17, 26, 0]], ["Camas obstetricia", [50, 64, 63, 67, 0]], ["Salas de quirófano", [15, 16, 16, 15, 0]]]}, "sociales": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "cats": ["BIBLIOTECA", "CENTRO_CULT", "CULTO", "DEPORTIVO", "MUSEO", "TEATRO"], "stack": {"BIBLIOTECA": [8, 1, 2, 2, 2, 3], "CENTRO_CULT": [8, 5, 2, 3, 2, 7], "CULTO": [15, 4, 2, 2, 1, 2], "DEPORTIVO": [120, 33, 13, 8, 41, 38], "MUSEO": [3, 0, 0, 0, 0, 0], "TEATRO": [9, 2, 0, 0, 2, 0]}, "tasa": [10.386, 13.456, 12.814, 49.245, 22.11, 15.759], "comp": [["DEPORTIVO", 253], ["CENTRO_CULT", 27], ["CULTO", 26], ["BIBLIOTECA", 18], ["TEATRO", 13], ["MUSEO", 3]], "total": 340, "geo": [34, 15, 13, 4, 11, 20], "ofi": [1, 0, 0, 0, 0, 0]}, "institucional": {"mun": ["Yopal", "Villanueva", "Tauramena", "Monterrey", "Aguazul", "Sabanalarga"], "tipos": ["Alcaldías", "Notarías", "Fiscalías / justicia", "Policía", "Bomberos", "Defensa Civil / Cruz Roja", "Militar", "Terminales terrestres"], "mat": [[1, 1, 3, 11, 1, 3, 3, 2], [1, 0, 0, 1, 2, 1, 0, 0], [3, 0, 0, 1, 1, 0, 1, 0], [1, 0, 0, 1, 1, 0, 0, 0], [2, 0, 0, 1, 0, 0, 0, 1], [1, 0, 0, 1, 0, 0, 0, 0]], "tot": [["Alcaldías", 9], ["Notarías", 1], ["Fiscalías / justicia", 3], ["Policía", 16], ["Bomberos", 5], ["Defensa Civil / Cruz Roja", 4], ["Militar", 4], ["Terminales terrestres", 3]], "idx": [1.0, 0.5, 0.5, 0.375, 0.375, 0.25], "ncat": [8, 4, 4, 3, 3, 2]}, "transporte": {"anios": ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"], "sin": [368, 395, 334, 419, 236, 193, 285, 173, 157, 140], "mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "fal": [346, 107, 48, 11, 44, 72], "les": [1190, 347, 106, 14, 226, 189], "grav": [["Lesionado", 2116], ["Fallecido", 637]], "od": [["Monterrey - Tauramena", 18.57], ["Sabanalarga - Villanueva", 37.83], ["Monterrey - Sabanalarga", 40.84], ["Yopal - Aguazul", 42.13], ["Aguazul - Tauramena", 42.27], ["Monterrey - Villanueva", 54.44], ["Sabanalarga - Tauramena", 59.42], ["Aguazul - Monterrey", 60.84], ["Tauramena - Villanueva", 73.01], ["Yopal - Tauramena", 84.39], ["Aguazul - Sabanalarga", 101.68], ["Yopal - Monterrey", 102.96], ["Aguazul - Villanueva", 115.27], ["Yopal - Sabanalarga", 143.81], ["Yopal - Villanueva", 157.4]]}, "vias": {"lab": ["sep 2015", "oct 2015", "nov 2015", "dic 2015", "ene 2016", "feb 2016", "mar 2016", "abr 2016", "may 2016", "jun 2016", "jul 2016", "ago 2016", "sep 2016", "oct 2016", "nov 2016", "dic 2016", "ene 2017", "feb 2017", "mar 2017", "abr 2017", "may 2017", "jun 2017", "jul 2017", "ago 2017", "sep 2017", "oct 2017", "nov 2017", "dic 2017", "ene 2018", "feb 2018", "mar 2018", "abr 2018", "may 2018", "jun 2018", "jul 2018", "ago 2018", "sep 2018", "oct 2018", "nov 2018", "dic 2018", "ene 2019", "feb 2019", "mar 2019", "abr 2019", "may 2019", "jun 2019", "jul 2019", "ago 2019", "sep 2019", "oct 2019", "nov 2019", "dic 2019", "ene 2020", "feb 2020", "mar 2020", "abr 2020", "may 2020", "jun 2020", "jul 2020", "ago 2020", "sep 2020", "oct 2020", "nov 2020", "dic 2020", "ene 2021", "feb 2021", "mar 2021", "abr 2021", "may 2021", "jun 2021", "jul 2021", "ago 2021", "sep 2021", "oct 2021", "nov 2021", "dic 2021", "ene 2022", "feb 2022", "mar 2022", "abr 2022", "may 2022", "jun 2022", "jul 2022", "ago 2022", "sep 2022", "oct 2022", "nov 2022", "dic 2022", "ene 2023", "feb 2023", "mar 2023", "abr 2023", "may 2023", "jun 2023", "jul 2023", "ago 2023", "sep 2023", "oct 2023", "nov 2023", "dic 2023", "ene 2024", "feb 2024", "mar 2024", "abr 2024", "may 2024", "jun 2024", "jul 2024", "ago 2024", "sep 2024", "oct 2024", "nov 2024", "dic 2024", "ene 2025", "feb 2025", "mar 2025", "abr 2025", "may 2025", "jun 2025", "jul 2025", "ago 2025", "sep 2025", "oct 2025", "nov 2025", "dic 2025", "ene 2026", "feb 2026", "mar 2026", "abr 2026", "may 2026"], "traf": [59001, 79698, 75140, 85309, 84610, 65099, 73902, 65222, 67849, 69524, 70482, 73966, 66307, 72980, 71108, 82974, 83976, 63578, 72939, 76583, 76406, 75465, 75346, 83614, 81354, 77310, 75402, 87271, 86278, 66446, 75815, 71901, 76676, 76100, 80477, 87307, 77036, 79857, 78618, 90917, 92991, 69052, 79612, 82185, 86286, 128727, 146756, 140445, 108968, 84939, 72829, 79803, 77506, 57630, 49688, 26342, 32915, 36799, 43970, 43280, 49943, 52175, 52758, 61635, 60873, 48611, 54751, 50400, 30839, 50787, 55609, 61334, 55484, 61266, 71415, 83117, 85146, 59599, 69824, 76316, 78041, 80580, 86240, 85022, 78704, 86670, 82919, 95351, 100883, 76432, 83599, 83634, 79714, 83528, 119810, 117083, 94960, 93962, 91764, 108044, 110607, 78216, 89111, 87075, 91520, 94825, 104358, 104553, 91350, 98788, 94294, 104707, 113088, 83704, 92100, 99432, 91585, 86423, 87406, 99413, 112850, 106097, 92882, 105354, 31913, 74874, 88555, 85609, 86283], "comp": [["Autos", 60.83], ["Buses", 2.65], ["Camiones", 36.51]], "kmMun": ["Aguazul", "Yopal"], "km": {"Bueno": [4.35, 24.96], "Regular": [16.55, 10.84], "Malo": [6.59, 0.0]}, "vc": [["Tramo 65130", "Yopal - Paz de Ariporo", 4527.0, 0.201, "B"], ["Tramo 65110", "Barranca de Upía - Monterrey", 3138.9, 0.144, "A"]]}, "ep": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "bruto": [6.647, 195.725, 48.712, 272.569, 80.014, 14.797], "cons": [3.292, 7.679, 27.803, 62.854, 11.046, 4.771], "fun": [["Escenario", 68.86], ["Parque", 1189.13], ["Ronda hídrica", 141.9]], "a300": [58.52, 43.48, 46.83, 69.93, 78.69, 74.77], "a500": [75.68, 51.69, 67.68, 96.72, 86.57, 89.18], "km": [18.52, 3.85, 0.16, 0.68, 1.08, 2.19]}};
+  var DATA = {"general": {"mun": ["Yopal", "Aguazul", "Villanueva", "Tauramena", "Monterrey", "Sabanalarga"], "cats": ["ABASTECIMIENTO", "BIENESTAR", "CULTO", "CULTURAL", "DEPORTIVO", "EDUCACION", "INSTITUCIONAL", "SALUD", "SEGURIDAD", "TRANSPORTE"], "stack": {"ABASTECIMIENTO": [1, 1, 1, 1, 0, 0], "BIENESTAR": [34, 15, 20, 11, 13, 3], "CULTO": [15, 4, 2, 1, 2, 2], "CULTURAL": [24, 7, 10, 5, 3, 5], "DEPORTIVO": [119, 33, 38, 41, 13, 8], "EDUCACION": [140, 48, 16, 24, 12, 8], "INSTITUCIONAL": [5, 2, 1, 1, 1, 1], "SALUD": [95, 9, 11, 5, 9, 1], "SEGURIDAD": [17, 1, 4, 3, 2, 1], "TRANSPORTE": [12, 8, 6, 1, 2, 1]}, "comp": [["DEPORTIVO", 252], ["EDUCACION", 248], ["SALUD", 130], ["BIENESTAR", 96], ["CULTURAL", 54], ["TRANSPORTE", 30], ["SEGURIDAD", 28], ["CULTO", 26], ["INSTITUCIONAL", 11], ["ABASTECIMIENTO", 4]], "total": 879, "urb": [428, 80, 85, 67, 46, 23], "rur": [95, 53, 25, 29, 16, 7], "tasa": [1.9, 2.06, 1.23, 1.66, 1.89, 3.94], "prom": 2.11}, "educacion": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "sedes": [140, 49, 14, 8, 24, 21], "cob": [97.77, 89.82, 84.08, 75.0, 92.61, 95.81], "pob": [36954, 8111, 3776, 744, 5726, 8112], "sector": [["Oficial", 186], ["No oficial", 70]], "zona": [["Rural", 146], ["Urbana", 110]], "anios": [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], "serie": {"Yopal": [168427, 173316, 178549, 182573, 185962, 189187, 192468, 195600, 198423], "Aguazul": [36916, 37507, 38174, 38537, 38790, 38978, 39218, 39364, 39480], "Monterrey": [17521, 17858, 18215, 18428, 18576, 18706, 18836, 18955, 19042], "Sabanalarga": [3634, 3678, 3735, 3786, 3783, 3811, 3836, 3855, 3882], "Tauramena": [23525, 24050, 24635, 25009, 25334, 25625, 25904, 26170, 26371], "Villanueva": [35313, 36416, 37579, 38521, 39322, 40090, 40889, 41658, 42337]}}, "salud": {"mun": ["Yopal", "Tauramena", "Aguazul", "Sabanalarga", "Monterrey", "Villanueva"], "sedes": [5.97, 1.81, 2.36, 2.39, 5.0, 2.9], "camas": [5.06, 2.1, 1.37, 0.95, 0.5, 0.36], "accMun": ["Sabanalarga", "Villanueva", "Yopal", "Monterrey", "Aguazul", "Tauramena"], "acc": [11.44, 10.93, 9.78, 9.14, 8.1, 3.33], "nat": [["Privada", 127], ["Sin dato", 18], ["Pública", 12]], "anios": ["2017", "2018", "2019", "2020", "2021", "2022"], "serie": [["Camas adultos (2022 incl. obstetricia reclasificada)", [260, 287, 283, 274, null, 335]], ["Camas UCI adulto", [17, 17, 17, 26, null, 43]], ["Camas obstetricia", [50, 64, 63, 67, null, null]], ["Salas de quirófano / cirugía", [15, 16, 16, 15, null, 15]]]}, "sociales": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "cats": ["BIBLIOTECA", "CENTRO_CULT", "CULTO", "DEPORTIVO", "MUSEO", "TEATRO"], "stack": {"BIBLIOTECA": [8, 1, 2, 2, 2, 3], "CENTRO_CULT": [8, 5, 2, 3, 2, 7], "CULTO": [15, 4, 2, 2, 1, 2], "DEPORTIVO": [120, 33, 13, 8, 41, 38], "MUSEO": [3, 0, 0, 0, 0, 0], "TEATRO": [9, 2, 0, 0, 2, 0]}, "tasa": [10.386, 13.456, 12.814, 49.245, 22.11, 15.759], "comp": [["DEPORTIVO", 253], ["CENTRO_CULT", 27], ["CULTO", 26], ["BIBLIOTECA", 18], ["TEATRO", 13], ["MUSEO", 3]], "total": 340, "geo": [34, 15, 13, 4, 11, 20], "ofi": [1, 0, 0, 0, 0, 0]}, "institucional": {"mun": ["Yopal", "Villanueva", "Tauramena", "Monterrey", "Aguazul", "Sabanalarga"], "tipos": ["Alcaldías", "Notarías", "Fiscalías / justicia", "Policía", "Bomberos", "Defensa Civil / Cruz Roja", "Militar", "Terminales terrestres"], "mat": [[1, 1, 3, 11, 1, 3, 3, 2], [1, 0, 0, 1, 2, 1, 0, 0], [3, 0, 0, 1, 1, 0, 1, 0], [1, 0, 0, 1, 1, 0, 0, 0], [2, 0, 0, 1, 0, 0, 0, 1], [1, 0, 0, 1, 0, 0, 0, 0]], "tot": [["Alcaldías", 9], ["Notarías", 1], ["Fiscalías / justicia", 3], ["Policía", 16], ["Bomberos", 5], ["Defensa Civil / Cruz Roja", 4], ["Militar", 4], ["Terminales terrestres", 3]], "idx": [1.0, 0.5, 0.5, 0.375, 0.375, 0.25], "ncat": [8, 4, 4, 3, 3, 2]}, "transporte": {"anios": ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"], "sin": [368, 395, 334, 419, 236, 193, 285, 173, 157, 140], "mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "fal": [346, 107, 48, 11, 44, 72], "les": [1190, 347, 106, 14, 226, 189], "grav": [["Lesionado", 2116], ["Fallecido", 637]], "od": [["Monterrey - Tauramena", 18.57], ["Sabanalarga - Villanueva", 37.83], ["Monterrey - Sabanalarga", 40.84], ["Yopal - Aguazul", 42.13], ["Aguazul - Tauramena", 42.27], ["Monterrey - Villanueva", 54.44], ["Sabanalarga - Tauramena", 59.42], ["Aguazul - Monterrey", 60.84], ["Tauramena - Villanueva", 73.01], ["Yopal - Tauramena", 84.39], ["Aguazul - Sabanalarga", 101.68], ["Yopal - Monterrey", 102.96], ["Aguazul - Villanueva", 115.27], ["Yopal - Sabanalarga", 143.81], ["Yopal - Villanueva", 157.4]]}, "vias": {"lab": ["sep 2015", "oct 2015", "nov 2015", "dic 2015", "ene 2016", "feb 2016", "mar 2016", "abr 2016", "may 2016", "jun 2016", "jul 2016", "ago 2016", "sep 2016", "oct 2016", "nov 2016", "dic 2016", "ene 2017", "feb 2017", "mar 2017", "abr 2017", "may 2017", "jun 2017", "jul 2017", "ago 2017", "sep 2017", "oct 2017", "nov 2017", "dic 2017", "ene 2018", "feb 2018", "mar 2018", "abr 2018", "may 2018", "jun 2018", "jul 2018", "ago 2018", "sep 2018", "oct 2018", "nov 2018", "dic 2018", "ene 2019", "feb 2019", "mar 2019", "abr 2019", "may 2019", "jun 2019", "jul 2019", "ago 2019", "sep 2019", "oct 2019", "nov 2019", "dic 2019", "ene 2020", "feb 2020", "mar 2020", "abr 2020", "may 2020", "jun 2020", "jul 2020", "ago 2020", "sep 2020", "oct 2020", "nov 2020", "dic 2020", "ene 2021", "feb 2021", "mar 2021", "abr 2021", "may 2021", "jun 2021", "jul 2021", "ago 2021", "sep 2021", "oct 2021", "nov 2021", "dic 2021", "ene 2022", "feb 2022", "mar 2022", "abr 2022", "may 2022", "jun 2022", "jul 2022", "ago 2022", "sep 2022", "oct 2022", "nov 2022", "dic 2022", "ene 2023", "feb 2023", "mar 2023", "abr 2023", "may 2023", "jun 2023", "jul 2023", "ago 2023", "sep 2023", "oct 2023", "nov 2023", "dic 2023", "ene 2024", "feb 2024", "mar 2024", "abr 2024", "may 2024", "jun 2024", "jul 2024", "ago 2024", "sep 2024", "oct 2024", "nov 2024", "dic 2024", "ene 2025", "feb 2025", "mar 2025", "abr 2025", "may 2025", "jun 2025", "jul 2025", "ago 2025", "sep 2025", "oct 2025", "nov 2025", "dic 2025", "ene 2026", "feb 2026", "mar 2026", "abr 2026", "may 2026"], "traf": [59001, 79698, 75140, 85309, 84610, 65099, 73902, 65222, 67849, 69524, 70482, 73966, 66307, 72980, 71108, 82974, 83976, 63578, 72939, 76583, 76406, 75465, 75346, 83614, 81354, 77310, 75402, 87271, 86278, 66446, 75815, 71901, 76676, 76100, 80477, 87307, 77036, 79857, 78618, 90917, 92991, 69052, 79612, 82185, 86286, 128727, 146756, 140445, 108968, 84939, 72829, 79803, 77506, 57630, 49688, 26342, 32915, 36799, 43970, 43280, 49943, 52175, 52758, 61635, 60873, 48611, 54751, 50400, 30839, 50787, 55609, 61334, 55484, 61266, 71415, 83117, 85146, 59599, 69824, 76316, 78041, 80580, 86240, 85022, 78704, 86670, 82919, 95351, 100883, 76432, 83599, 83634, 79714, 83528, 119810, 117083, 94960, 93962, 91764, 108044, 110607, 78216, 89111, 87075, 91520, 94825, 104358, 104553, 91350, 98788, 94294, 104707, 113088, 83704, 92100, 99432, 91585, 86423, 87406, 99413, 112850, 106097, 92882, 105354, 31913, 74874, 88555, 85609, 86283], "comp": [["Autos", 60.83], ["Buses", 2.65], ["Camiones", 36.51]], "kmMun": ["Aguazul", "Yopal"], "km": {"Bueno": [4.35, 24.96], "Regular": [16.55, 10.84], "Malo": [6.59, 0.0]}, "vc": [["Tramo 65130", "Yopal - Paz de Ariporo", 4527.0, 0.201, "B"], ["Tramo 65110", "Barranca de Upía - Monterrey", 3138.9, 0.144, "A"]]}, "ep": {"mun": ["Yopal", "Aguazul", "Monterrey", "Sabanalarga", "Tauramena", "Villanueva"], "bruto": [6.647, 195.725, 48.712, 272.569, 80.014, 14.797], "cons": [3.292, 7.679, 27.803, 62.854, 11.046, 4.771], "fun": [["Escenario", 68.86], ["Parque", 1189.13], ["Ronda hídrica", 141.9]], "a300": [58.52, 43.48, 46.83, 69.93, 78.69, 74.77], "a500": [75.68, 51.69, 67.68, 96.72, 86.57, 89.18], "km": [18.52, 3.85, 0.16, 0.68, 1.08, 2.19]}};
   var C = {d:'#0A1931', a:'#1A3D63', m:'#4A7FA7', b:'#B3CFE5', p:'#F6FAFD'};
   function rgba(h,a){var n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
   /* Serie categórica: solo tonos de la paleta oficial, con variantes de opacidad cuando hay >4 series */
@@ -1472,30 +1477,32 @@ html,body{max-width:100%;overflow-x:clip}
 
   /* 01 General */
   var g=DATA.general;
-  stacked('c-g1',g.mun,g.cats.map(function(c,i){return ds(c.charAt(0)+c.slice(1).toLowerCase(),g.stack[c],SERIE[i],{borderColor:C.p,borderWidth:1,maxBarThickness:48});}),'N.° equipamientos');
-  pie('c-g2',g.comp.map(function(p){return [p[0].charAt(0)+p[0].slice(1).toLowerCase(),p[1]];}),g.comp.map(function(p){return SERIE[g.cats.indexOf(p[0])];}),' equip.');
+  var CATLBL={EDUCACION:'Educación'};
+  var catLbl=function(c){return CATLBL[c]||(c.charAt(0)+c.slice(1).toLowerCase());};
+  stacked('c-g1',g.mun,g.cats.map(function(c,i){return ds(catLbl(c),g.stack[c],SERIE[i],{borderColor:C.p,borderWidth:1,maxBarThickness:48});}),'N.° equipamientos');
+  pie('c-g2',g.comp.map(function(p){return [catLbl(p[0]),p[1]];}),g.comp.map(function(p){return SERIE[g.cats.indexOf(p[0])];}),' equip.');
   bar('c-g3',g.mun,[ds('Urbano',g.urb,C.d),ds('Rural',g.rur,C.b)],'N.° equipamientos',{dec:0});
-  bar('c-g4',g.mun,[ds('Equip. / 1.000 hab',g.tasa,C.m,{borderColor:C.d,borderWidth:1}),refLine('Promedio corredor = '+fmt(g.prom),g.prom,g.mun.length,C.d)],'Equip. / 1.000 hab',{legend:true});
+  bar('c-g4',g.mun,[ds('Equip. / 1.000 hab',g.tasa,C.m,{borderColor:C.d,borderWidth:1}),refLine('Media de los 6 municipios = '+fmt(g.prom),g.prom,g.mun.length,C.d)],'Equip. / 1.000 hab',{legend:true});
 
   /* 02 Educación */
   var e=DATA.educacion;
   bar('c-e1',e.mun,[ds('Sedes',e.sedes,C.d)],'N.° de sedes',{dec:0});
-  bar('c-e2',e.mun,[ds('Cobertura neta',e.cob,C.a),refLine('100 %',100,e.mun.length,C.d)],'Cobertura neta (%)',{suf:' %',legend:true,y:{max:100}});
+  bar('c-e2',e.mun,[ds('Cobertura neta',e.cob,C.a),refLine('Cobertura plena (100 %)',100,e.mun.length,C.d)],'Cobertura neta (%)',{suf:' %',legend:true,y:{max:100}});
   bar('c-e3',e.mun,[ds('Habitantes 5-16 años',e.pob,C.m)],'Habitantes 5-16 años',{dec:0});
   pie('c-e4',e.sector,[C.a,C.b],' sedes');
   pie('c-e5',e.zona,[C.d,C.m],' sedes');
   mk('c-e6',{type:'line',data:{labels:e.anios,datasets:Object.keys(e.serie).map(function(m,i){return {label:m,data:e.serie[m],borderColor:SERIE[i],backgroundColor:SERIE[i],borderWidth:2,pointRadius:2.5};})},options:{interaction:{mode:'index',intersect:false},scales:axes('Población total',{y:{beginAtZero:false}}),plugins:{tooltip:tipSuffix(' hab',0)}}});
   /* Matrícula por sede: Sedes_Educativas_NivelEdu_Casanare6.shp, campo MATRICULA (>0) / n.° sedes con dato */
-  var matSede=[40339/130,8456/44,3721/14,1100/11,8513/28,7685/19].map(function(v){return Math.round(v*10)/10;});
-  bar('c-e7',e.mun,[ds('Alumnos por sede',matSede,C.b,{borderColor:C.d,borderWidth:1}),refLine('Promedio corredor = 283.8',283.8,e.mun.length,C.d)],'Alumnos / sede',{suf:' alumnos',dec:1,legend:true});
+  var matSede=[40339/130,8275/43,3721/14,633/7,5872/24,7685/19].map(function(v){return Math.round(v*10)/10;});
+  bar('c-e7',e.mun,[ds('Alumnos por sede',matSede,C.b,{borderColor:C.d,borderWidth:1}),refLine('Promedio corredor = 280,7 alumnos/sede',280.7,e.mun.length,C.d)],'Alumnos / sede',{suf:' alumnos',dec:1,legend:true});
 
   /* 03 Salud */
   var s=DATA.salud;
-  bar('c-s1',s.mun,[ds('Sedes IPS / 10.000 hab',s.sedes,C.a),ds('Camas / 1.000 hab',s.camas,C.m),refLine('Colombia 1,7 camas/1.000 (BM 2020)',1.7,s.mun.length,C.d)],'Índice');
+  bar('c-s1',s.mun,[ds('Sedes IPS por 10.000 hab. (2026)',s.sedes,C.a),ds('Camas por 1.000 hab. (camas 2022)',s.camas,C.m),refLine('Colombia 1,7 camas/1.000 (BM 2020)',1.7,s.mun.length,C.d)],'Tasa (unidad en la leyenda)');
   bar('c-s2',s.accMun,[ds('Área ≤30 min',s.acc,C.d)],'% del área municipal',{suf:' %'});
   var natC={'Privada':C.a,'Pública':C.d,'Sin dato':C.b};
   pie('c-s3',s.nat,s.nat.map(function(p){return natC[p[0]]||C.b;}),' sedes');
-  mk('c-s4',{type:'line',data:{labels:s.anios,datasets:s.serie.map(function(r,i){return {label:r[0],data:r[1],borderColor:[C.d,C.a,C.m,C.b][i],backgroundColor:[C.d,C.a,C.m,C.b][i],borderWidth:2,pointRadius:3};})},options:{interaction:{mode:'index',intersect:false},scales:axes('Cantidad (Casanare, depto.)'),plugins:{tooltip:tipSuffix('',0)}}});
+  mk('c-s4',{type:'line',data:{labels:s.anios,datasets:s.serie.map(function(r,i){return {label:r[0],data:r[1],borderColor:[C.d,C.a,C.m,C.b][i],backgroundColor:[C.d,C.a,C.m,C.b][i],borderWidth:2,pointRadius:3,spanGaps:false};})},options:{spanGaps:false,interaction:{mode:'index',intersect:false},scales:axes('Cantidad (Casanare, depto.)'),plugins:{tooltip:{filter:function(){return true;},callbacks:{label:function(c){return ' '+c.dataset.label+': '+(c.raw==null?'sin dato':fmt(c.raw,0));}}}}}});
 
   /* 04 Sociales */
   var o=DATA.sociales;
