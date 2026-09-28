@@ -1,0 +1,5 @@
+anio,camas_adultos,uci_adulto,obstetricia,quirofanos,fuente,dataset_id
+2020,274,26,67,15,"MinSalud REPS - Cantidad de ambulancias, camas y salas trazadoras por departamento (referencia)",fa2g-cdft
+2021,sin dato,sin dato,sin dato,sin dato,"No publicado en fa2g-cdft ni s2ru-bqt6",
+2022,335,43,sin dato (Res.3100/2019 elimina la categoria; TPR=60 + Atencion del Parto=2),15,"MinSalud REPS - Relacion de IPS segun nivel y capacidad instalada, corte 5-nov-2022 (Casanare, categorias Adultos / Intensiva Adultos / Sala de Cirugia)",s2ru-bqt6
+2023,sin dato,sin dato,sin dato,sin dato,"No publicado en datos.gov.co a nivel departamental",

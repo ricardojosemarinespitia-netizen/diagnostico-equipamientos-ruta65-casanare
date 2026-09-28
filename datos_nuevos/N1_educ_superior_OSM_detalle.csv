@@ -1,0 +1,23 @@
+﻿OSM_ID,NOMBRE,AMENITY,OPERATOR,INSTITUCION,MUNX
+node/1648011865,SENA,university,,SENA,YOPAL
+node/5012489021,Bethel,college,,OTRO/NO IES (colegio o sin nombre),YOPAL
+node/5368687221,Colegio Tecnico Empresarial EL YOPAL,college,,OTRO/NO IES (colegio o sin nombre),YOPAL
+node/5411991025,Divino salvador sede la niata,college,,OTRO/NO IES (colegio o sin nombre),YOPAL
+node/6381522585,El Triunfo,college,,OTRO/NO IES (colegio o sin nombre),YOPAL
+node/8600019517,Cascada los Balcones,college,,OTRO/NO IES (colegio o sin nombre),TAURAMENA
+node/8978532567,Corporación MINUTO DE DIOS,university,,UNIMINUTO,YOPAL
+node/9105923050,Sede administrativa,university,Unisangil,UNISANGIL,YOPAL
+node/10196279318,UNAD,college,,UNAD,YOPAL
+node/11280598088,Universidad Abierta y a Distancia - UNAD,university,,UNAD,YOPAL
+node/11896949936,Entrada Colegio San Agustin,university,,OTRO/NO IES (colegio o sin nombre),AGUAZUL
+node/12050154408,SIN NOMBRE,university,,OTRO/NO IES (colegio o sin nombre),AGUAZUL
+node/13455345471,Universidad de la Salle,university,,U. DE LA SALLE,YOPAL
+node/13455345476,Utopía Universidad de la Salle,university,,U. DE LA SALLE,YOPAL
+way/151936364,ESAP,university,,ESAP,YOPAL
+way/165542990,UNISANGIL,university,,UNISANGIL,YOPAL
+way/222836424,Universidad Santo Tomás,university,,U. SANTO TOMAS,YOPAL
+way/452485576,Fundación Universitaria de San Gil,university,Unisangil,UNISANGIL,YOPAL
+way/618046903,Uniminuto,university,,UNIMINUTO,YOPAL
+way/1281960532,INSTITUCION EDUCATIVA JORGE ELIECER GAITAN,college,,OTRO/NO IES (colegio o sin nombre),AGUAZUL
+way/1361819289,Centro Investigativo Unitropico,university,Unitropico,UNITROPICO,YOPAL
+way/1553040142,UPTC sede Aguazul,university,Universidad Pedagógica y Tecnológica de Colombia,UPTC,AGUAZUL

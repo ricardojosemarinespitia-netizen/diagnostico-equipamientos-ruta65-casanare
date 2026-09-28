@@ -1,0 +1,8 @@
+archivo,capa_origen,fuente,nota
+L07_km_vias_densidad_municipio.csv,"07_VIAS/Red_Vial_INVIAS + RED_VIAL_OFICIAL_SEC_TER + RED_VIAL_OSM; Municipios_Corredor_11 (DANE MGN)","INVIAS OpenData; inventario sec-ter oficial; OpenStreetMap (ODbL); DANE MGN","km recalculados en EPSG:9377 tras recorte por municipio. Red sec-ter oficial INCOMPLETA (Sabanalarga 0 km, Aguazul 15 km): no usar para densidad"
+L07_km_OSM_por_clase.csv,07_VIAS/RED_VIAL_OSM_Casanare6.shp,OpenStreetMap contributors (ODbL),"clase segun tag highway; no oficial"
+L07_km_OSM_superficie.csv,07_VIAS/RED_VIAL_OSM_Casanare6.shp,OpenStreetMap contributors (ODbL),"tag surface; 47-66 % sin dato: no graficar"
+L07_km_sec_ter_por_categoria.csv,07_VIAS/RED_VIAL_OFICIAL_SEC_TER_Casanare6.shp,inventario vial oficial (CATEGORIA 3/4),"cobertura desigual"
+L06_puentes_por_municipio.csv,07_VIAS/Puentes_Casanare6.shp,INVIAS/ANI inventario de puentes (campo l_total en m),"80 puentes, solo red nacional"
+L08_parques_por_municipio.csv,08_ESPACIO_PUBLICO/PARQUES_RECREACION_6M_Casanare6.shp,OpenStreetMap (leisure=park),"Area Aguazul 652.9 ha anomala - NO VERIFICADA"
+L08_escenarios_por_municipio.csv; L08_escenarios_por_tipo.csv,08_ESPACIO_PUBLICO/ESCENARIOS_LIBRES_6M_Casanare6.shp,"OpenStreetMap (pitch/sports_centre/stadium); poblacion DANE CNPV 2018 (T1_SUFICIENCIA)",""
