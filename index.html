@@ -371,6 +371,33 @@ html,body{max-width:100%;overflow-x:clip}
 .hero-meta .label{color:var(--az-200)}
 
 /* ===== v9: animación granular por gráfica y por cifra (se repite en cada entrada) ===== */
+
+/* ===== MÓVIL / TABLET (solo ≤860 / ≤768 / ≤480 — escritorio intacto) ===== */
+@media (max-width:860px){.hero-meta > div:last-child:nth-child(odd){grid-column:1/-1}}
+@media (max-width:768px){
+  .lamina-body{grid-template-columns:minmax(0,1fr)}
+  .lamina-body > *{grid-column:1/-1!important}
+  .sheetbar nav a{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+  .sheetbar .wrap{height:auto;min-height:52px}
+  .hero-index a{min-height:44px}
+  .label,.cartela .label,.hero-meta .label{font-size:.6875rem}
+  .lamina-num .ln-k,.cartela .c-sub,.hero-illus .hi-tag{font-size:.6875rem}
+  .dim .dim-txt{font-size:.75rem}
+  .chart-matrix{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .chart-matrix table{font-size:.75rem}
+  .chart-matrix tbody th,.chart-matrix thead th:first-child{position:sticky;left:0;z-index:1;background:var(--paper);box-shadow:1px 0 0 var(--rule)}
+  .chart-matrix td,.chart-matrix th{min-width:44px}
+  canvas{touch-action:pan-y}
+}
+@media (max-width:480px){
+  .chart-panel{padding:calc(var(--u)*1.5) calc(var(--u)*1.25) var(--u)}
+  .chart-box{height:280px}
+  .chart-panel--tall .chart-box{height:340px}
+  .stat--wide{flex-wrap:wrap}
+  .stat--wide .stat-val{white-space:normal}
+  .lamina{padding:calc(var(--u)*6) 0 calc(var(--u)*5)}
+  .lamina-body{margin-top:calc(var(--u)*4)}
+}
 </style>
 </head>
 <body>
@@ -1346,6 +1373,33 @@ html,body{max-width:100%;overflow-x:clip}
 
   /* Render diferido: cada gráfica anima al entrar en pantalla */
   var ids=Object.keys(made);
+  /* ===== Ajustes responsive de Chart.js (solo ≤768 px; en escritorio la config queda intacta) ===== */
+  var mqM=window.matchMedia?matchMedia('(max-width:768px)'):null, mqS=window.matchMedia?matchMedia('(max-width:480px)'):null;
+  function cl(o){if(Array.isArray(o))return o.map(cl);if(o&&typeof o==='object'&&Object.getPrototypeOf(o)===Object.prototype){var r={};for(var k in o)r[k]=cl(o[k]);return r;}return o;}
+  ids=Object.keys(made);
+  ids.forEach(function(id){made[id].base=cl(made[id].cfg.options||{});});
+  function mobOpts(m){var o=cl(m.base),xs=mqS&&mqS.matches,fs=xs?10:11;
+    o.plugins=o.plugins||{};var L=o.plugins.legend=o.plugins.legend||{};
+    if(m.cfg.type==='doughnut'){L.position='bottom';L.align='center';}
+    L.labels=Object.assign({},L.labels,{boxWidth:8,boxHeight:8,padding:xs?6:8,font:{size:fs}});
+    o.plugins.tooltip=Object.assign({},o.plugins.tooltip,{bodyFont:{size:11},titleFont:{size:11,weight:'700'},padding:8});
+    if(o.scales)Object.keys(o.scales).forEach(function(k){var s=o.scales[k];
+      s.ticks=Object.assign({},s.ticks,{font:Object.assign({size:fs},s.ticks&&s.ticks.font&&s.ticks.font.size?{size:Math.min(fs,s.ticks.font.size)}:{})});
+      if(s.title&&s.title.display)s.title=Object.assign({},s.title,{font:Object.assign({},s.title.font,{size:fs})});
+      if(k==='x'&&o.indexAxis!=='y'&&s.ticks.maxRotation==null)s.ticks.maxRotation=40;});
+    /* táctil: tocar cerca de la barra/punto basta (no exige acertar el píxel) */
+    if(m.cfg.type!=='doughnut'&&!o.interaction)o.interaction={mode:'nearest',intersect:false,axis:o.indexAxis==='y'?'y':'x'};
+    return o;}
+  function isMob(){return !!(mqM&&mqM.matches);}
+  function respAll(){ids.forEach(function(id){var m=made[id];var opts=isMob()?mobOpts(m):cl(m.base);
+    if(m.chart){m.chart.options=opts;m.chart.update('none');}else m.cfg.options=opts;});}
+  if(isMob())ids.forEach(function(id){made[id].cfg.options=mobOpts(made[id]);});
+  if(mqM){var onMQ=function(){respAll();};(mqM.addEventListener?mqM.addEventListener('change',onMQ):mqM.addListener(onMQ));
+    if(mqS)(mqS.addEventListener?mqS.addEventListener('change',onMQ):mqS.addListener(onMQ));}
+  /* tooltip fantasma en táctil: tocar fuera de una gráfica lo cierra */
+  document.addEventListener('pointerdown',function(e){if(e.pointerType==='mouse')return;
+    Object.keys(made).forEach(function(id){var c=made[id].chart;if(!c||c.canvas===e.target)return;
+      if(c.getActiveElements().length||(c.tooltip&&c.tooltip.opacity>0)){c.setActiveElements([]);c.tooltip&&c.tooltip.setActiveElements([],{x:0,y:0});c.update('none');}});},{passive:true});
   function draw(id){if(!made[id]||made[id].chart)return;made[id].chart=new Chart(made[id].el,made[id].cfg);}
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(en){en.forEach(function(x){if(window.__rvCharts)return;if(x.isIntersecting){draw(x.target.id);io.unobserve(x.target);}});},{rootMargin:'0px 0px -10% 0px'});
