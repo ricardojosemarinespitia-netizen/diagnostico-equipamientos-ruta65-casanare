@@ -398,6 +398,19 @@ html,body{max-width:100%;overflow-x:clip}
   .lamina{padding:calc(var(--u)*6) 0 calc(var(--u)*5)}
   .lamina-body{margin-top:calc(var(--u)*4)}
 }
+/* Referentes oficiales bajo cifras clave: estado por forma + texto (sin rojo/verde) */
+.ref-note{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin-top:8px;padding-top:6px;border-top:1px dashed var(--az-500);font-family:var(--f-mono);font-size:.6875rem;line-height:1.45;color:var(--az-700);overflow-wrap:anywhere}
+.ref-note .ref-st{display:inline-flex;align-items:center;gap:5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--az-900)}
+.ref-note .ref-st::before{content:"";width:9px;height:9px;flex:none;box-sizing:border-box;border:1.5px solid var(--az-900)}
+.ref-note .ref-st.is-bajo::before{background:repeating-linear-gradient(45deg,var(--az-900) 0 1.5px,transparent 1.5px 4px)}
+.ref-note .ref-st.is-cumple::before{background:var(--az-900);border-radius:50%}
+.ref-note .ref-st.is-na::before{border-style:dashed}
+.stat--lead .ref-note{color:var(--az-200);border-top-color:var(--az-200)}
+.stat--lead .ref-note .ref-st{color:var(--az-050)}
+.stat--lead .ref-note .ref-st::before{border-color:var(--az-050)}
+.stat--lead .ref-note .ref-st.is-bajo::before{background:repeating-linear-gradient(45deg,var(--az-050) 0 1.5px,transparent 1.5px 4px)}
+.ref-fuentes{margin:calc(var(--u)*2) 0 0;padding:10px 12px;border-left:2px solid var(--az-500);background:var(--az-050);font-family:var(--f-mono);font-size:.6875rem;line-height:1.55;color:var(--az-700);overflow-wrap:anywhere}
+.ref-fuentes a{color:var(--az-900)}
 </style>
 </head>
 <body>
@@ -809,13 +822,13 @@ html,body{max-width:100%;overflow-x:clip}
             <span class="stat-lbl">Camas en Yopal, de 1.153 del corredor</span>
           </div>
           <div class="stat"><span class="stat-val">157</span><span class="stat-lbl">Sedes IPS: 127 privadas, 12 públicas, 18 sin dato</span></div>
-          <div class="stat"><span class="stat-val">0.36</span><span class="stat-lbl">Camas/1.000 hab. — Villanueva</span></div>
+          <div class="stat"><span class="stat-val">0.36</span><span class="stat-lbl">Camas/1.000 hab. — Villanueva</span><span class="ref-note"><span class="ref-st is-bajo">Por debajo</span><span>Promedio Colombia 1,7 camas/1.000 hab. — Banco Mundial, 2020</span></span></div>
           <div class="stat stat--wide"><span class="stat-lbl">Área a ≤30 min de IPS — Tauramena</span><span class="stat-val">3.33 %</span></div>
         </div>
         <div class="notes-block">
           <span class="label">Hallazgos</span>
           <ul class="notes">
-            <li>Villanueva (0.36) y Monterrey (0.50) están muy por debajo de la referencia de 1.5–2 camas por 1.000 hab.</li>
+            <li>Villanueva (0.36) y Monterrey (0.50) están muy por debajo del promedio nacional de 1,7 camas por 1.000 hab. (Banco Mundial, 2020); solo Yopal (5.06) y Tauramena (2.10) lo superan.</li>
             <li>Casanare: camas UCI de adultos pasaron de 17 a 26 entre 2017 y 2020.</li>
           </ul>
         </div>
@@ -832,6 +845,7 @@ html,body{max-width:100%;overflow-x:clip}
         <figcaption>Sedes, camas y accesibilidad por municipio</figcaption>
       </figure>
     </div>
+    <p class="ref-fuentes"><b>Fuente del referente:</b> Banco Mundial, indicador SH.MED.BEDS.ZS «Camas hospitalarias (por cada 1.000 personas)», Colombia 2020 = 1,7 (base OMS/OCDE) — <a href="https://datos.bancomundial.org/indicador/SH.MED.BEDS.ZS?locations=CO" target="_blank" rel="noopener">datos.bancomundial.org</a>. Es un promedio nacional, no una norma: la OMS no publica un mínimo oficial de camas por habitante. Las sedes IPS/10.000 hab. no tienen referente oficial.</p>
 
     <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.03</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
     <div class="cartela" aria-label="Cajetín de la lámina">
@@ -876,11 +890,12 @@ html,body{max-width:100%;overflow-x:clip}
           <div class="stat stat--lead">
             <span class="label">Cifra clave</span>
             <span class="stat-val">10.39</span>
-            <span class="stat-lbl">Tasa/10.000 hab. — Yopal (la menor)</span>
+            <span class="stat-lbl">Equip. sociales/10.000 hab. (pob. DANE 2018) — Yopal (la menor)</span>
+            <span class="ref-note"><span class="ref-st is-na">Sin referente oficial</span><span>No se halló norma OMS/OPS ni nacional para este indicador agregado</span></span>
           </div>
           <div class="stat"><span class="stat-val">253</span><span class="stat-lbl">Escenarios deportivos</span></div>
           <div class="stat"><span class="stat-val">3 de 3</span><span class="stat-lbl">Museos del corredor, todos en Yopal</span></div>
-          <div class="stat stat--wide"><span class="stat-lbl">Tasa/10.000 hab. — Sabanalarga</span><span class="stat-val">49.25</span></div>
+          <div class="stat stat--wide"><span class="stat-lbl">Equip. sociales/10.000 hab. — Sabanalarga</span><span class="stat-val">49.25</span></div>
           <div class="stat stat--wide"><span class="stat-lbl">Municipios sin teatro</span><span class="stat-val">3 de 6</span></div>
         </div>
         <div class="notes-block">
@@ -1160,6 +1175,7 @@ html,body{max-width:100%;overflow-x:clip}
             <span class="label">Cifra clave</span>
             <span class="stat-val">3.29</span>
             <span class="stat-lbl">m²/hab conservador — Yopal (21.9 % del estándar)</span>
+            <span class="ref-note"><span class="ref-st is-bajo">Por debajo</span><span>Mínimo nacional 15 m²/hab — Decreto 1504/1998, art. 14</span></span>
           </div>
           <div class="stat"><span class="stat-val">4 de 6</span><span class="stat-lbl">Municipios bajo 15 m²/hab</span></div>
           <div class="stat"><span class="stat-val">51.69 %</span><span class="stat-lbl">Área urbana a 500 m — Aguazul (la peor)</span></div>
@@ -1185,6 +1201,7 @@ html,body{max-width:100%;overflow-x:clip}
         <figcaption>EPE por municipio y accesibilidad a 300/500 m</figcaption>
       </figure>
     </div>
+    <p class="ref-fuentes"><b>Fuente del referente:</b> Decreto 1504 de 1998 (Presidencia de la República), art. 14: índice mínimo de espacio público efectivo de 15 m² por habitante — <a href="https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=1259" target="_blank" rel="noopener">funcionpublica.gov.co</a>. No se usa el «9 m²/hab de la OMS»: no aparece en ningún documento oficial de la OMS.</p>
 
     <div class="dim" role="separator" aria-hidden="true"><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg><span class="dim-line"></span><span class="dim-txt">Fin de lámina · PL.08</span><span class="dim-line"></span><svg viewBox="0 0 14 22" aria-hidden="true"><path d="M7 0v22" stroke="currentColor"/><path d="M2 16 L12 6" stroke="currentColor" stroke-width="1.6"/></svg></div>
     <div class="cartela" aria-label="Cajetín de la lámina">
@@ -1313,7 +1330,7 @@ html,body{max-width:100%;overflow-x:clip}
 
   /* 03 Salud */
   var s=DATA.salud;
-  bar('c-s1',s.mun,[ds('Sedes IPS / 10.000 hab',s.sedes,C.a),ds('Camas / 1.000 hab',s.camas,C.m)],'Índice');
+  bar('c-s1',s.mun,[ds('Sedes IPS / 10.000 hab',s.sedes,C.a),ds('Camas / 1.000 hab',s.camas,C.m),refLine('Colombia 1,7 camas/1.000 (BM 2020)',1.7,s.mun.length,C.d)],'Índice');
   bar('c-s2',s.accMun,[ds('Área ≤30 min',s.acc,C.d)],'% del área municipal',{suf:' %'});
   var natC={'Privada':C.a,'Pública':C.d,'Sin dato':C.b};
   pie('c-s3',s.nat,s.nat.map(function(p){return natC[p[0]]||C.b;}),' sedes');
@@ -1351,7 +1368,7 @@ html,body{max-width:100%;overflow-x:clip}
 
   /* 08 Espacio público */
   var p=DATA.ep;
-  mk('c-p1',{type:'bar',data:{labels:p.mun,datasets:[ds('EPE bruto',p.bruto,C.m),ds('EPE conservador (<5 ha)',p.cons,C.d),refLine('Estándar 15 m²/hab',15,p.mun.length,C.a)]},options:{scales:{x:{grid:nogrid,border:{color:C.b}},y:{type:'logarithmic',min:1,grid:grid,border:{display:false},title:{display:true,text:'m² / habitante (log)',color:C.a,font:{weight:'600'}},ticks:{callback:function(val){return [1,10,100,1000].indexOf(val)>=0?fmt(val):'';}}}},plugins:{tooltip:tipSuffix(' m²/hab',3)}}});
+  mk('c-p1',{type:'bar',data:{labels:p.mun,datasets:[ds('EPE bruto',p.bruto,C.m),ds('EPE conservador (<5 ha)',p.cons,C.d),refLine('Mín. 15 m²/hab (Dec. 1504/98)',15,p.mun.length,C.a)]},options:{scales:{x:{grid:nogrid,border:{color:C.b}},y:{type:'logarithmic',min:1,grid:grid,border:{display:false},title:{display:true,text:'m² / habitante (log)',color:C.a,font:{weight:'600'}},ticks:{callback:function(val){return [1,10,100,1000].indexOf(val)>=0?fmt(val):'';}}}},plugins:{tooltip:tipSuffix(' m²/hab',3)}}});
   pie('c-p2',p.fun,[C.m,C.d,C.b],' ha');
   bar('c-p3',p.mun,[ds('Banda 300 m',p.a300,C.m),ds('Banda 500 m',p.a500,C.d)],'% área urbana cubierta',{suf:' %',y:{max:100}});
   bar('c-p4',p.mun,[ds('EP de tránsito',p.km,C.a)],'km',{suf:' km'});
