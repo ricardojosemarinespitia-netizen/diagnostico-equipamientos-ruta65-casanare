@@ -752,6 +752,7 @@ html,body{max-width:100%;overflow-x:clip}
           <div class="stat"><span class="stat-val">153 / 117</span><span class="stat-lbl">Sedes rurales / urbanas</span></div>
           <div class="stat stat--wide"><span class="stat-lbl">Sedes/1.000 hab. 5–16 — Villanueva (la menor)</span><span class="stat-val">2.59</span></div>
           <div class="stat stat--wide"><span class="stat-lbl">Educación superior (IES/SENA, OSM)</span><span class="stat-val">23 puntos</span></div>
+          <div class="stat stat--wide"><span class="stat-val">69.814</span><span class="stat-lbl">Alumnos matriculados en las sedes del corredor, <b>284 por sede</b> (246 de 270 sedes con dato; SISE 2023, 52 sedes 2019). Matrícula, no cupos: no hay capacidad instalada pública</span></div>
         </div>
         <div class="notes-block">
           <span class="label">Hallazgos</span>
@@ -771,6 +772,7 @@ html,body{max-width:100%;overflow-x:clip}
         <div class="chart-panel"><h3 class="chart-title">Sedes educativas por sector (n=270)</h3><div class="chart-box"><canvas id="c-e4" role="img" aria-label="Sedes educativas por sector (n=270)"></canvas></div></div>
         <div class="chart-panel"><h3 class="chart-title">Sedes educativas por zona (n=270)</h3><div class="chart-box"><canvas id="c-e5" role="img" aria-label="Sedes educativas por zona (n=270)"></canvas></div></div>
         <div class="chart-panel"><h3 class="chart-title">Población total anual por municipio (2018-2026, proyecciones DANE)</h3><div class="chart-box"><canvas id="c-e6" role="img" aria-label="Población total anual por municipio (2018-2026, proyecciones DANE)"></canvas></div></div>
+        <div class="chart-panel" style="grid-column:1/-1"><h3 class="chart-title">Alumnos matriculados por sede, por municipio (SISE 2023/2019, sedes con dato)</h3><div class="chart-box"><canvas id="c-e7" role="img" aria-label="Alumnos matriculados por sede, por municipio"></canvas></div></div>
         </div>
         <figcaption>Sedes, dotación por población escolar y cobertura neta por municipio</figcaption>
       </figure>
@@ -1327,6 +1329,9 @@ html,body{max-width:100%;overflow-x:clip}
   pie('c-e4',e.sector,[C.a,C.b],' sedes');
   pie('c-e5',e.zona,[C.d,C.m],' sedes');
   mk('c-e6',{type:'line',data:{labels:e.anios,datasets:Object.keys(e.serie).map(function(m,i){return {label:m,data:e.serie[m],borderColor:SERIE[i],backgroundColor:SERIE[i],borderWidth:2,pointRadius:2.5};})},options:{interaction:{mode:'index',intersect:false},scales:axes('Población total',{y:{beginAtZero:false}}),plugins:{tooltip:tipSuffix(' hab',0)}}});
+  /* Matrícula por sede: Sedes_Educativas_NivelEdu_Casanare6.shp, campo MATRICULA (>0) / n.° sedes con dato */
+  var matSede=[40339/130,8456/44,3721/14,1100/11,8513/28,7685/19].map(function(v){return Math.round(v*10)/10;});
+  bar('c-e7',e.mun,[ds('Alumnos por sede',matSede,C.b,{borderColor:C.d,borderWidth:1}),refLine('Promedio corredor = 283.8',283.8,e.mun.length,C.d)],'Alumnos / sede',{suf:' alumnos',dec:1,legend:true});
 
   /* 03 Salud */
   var s=DATA.salud;
