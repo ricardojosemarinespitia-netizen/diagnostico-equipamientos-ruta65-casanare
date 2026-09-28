@@ -1232,7 +1232,7 @@ html,body{max-width:100%;overflow-x:clip}
   Chart.defaults.font.size=11;
   Chart.defaults.color=C.a;
   Chart.defaults.borderColor=rgba(C.b,.6);
-  Chart.defaults.animation.duration=700;
+  Chart.defaults.animation.duration=950;
   Chart.defaults.animation.easing='easeOutQuart';
   Chart.defaults.maintainAspectRatio=false;
   Chart.defaults.responsive=true;
@@ -1348,11 +1348,12 @@ html,body{max-width:100%;overflow-x:clip}
   var ids=Object.keys(made);
   function draw(id){if(!made[id]||made[id].chart)return;made[id].chart=new Chart(made[id].el,made[id].cfg);}
   if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){draw(x.target.id);io.unobserve(x.target);}});},{rootMargin:'0px 0px -10% 0px'});
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(window.__rvCharts)return;if(x.isIntersecting){draw(x.target.id);io.unobserve(x.target);}});},{rootMargin:'0px 0px -10% 0px'});
     ids.forEach(function(id){io.observe(made[id].el);});
   } else ids.forEach(draw);
   window.addEventListener('beforeprint',function(){ids.forEach(draw);});
   window.__charts=made;
+  window.__drawChart=draw;
 })();
 </script>
 <script>
@@ -1388,8 +1389,32 @@ html,body{max-width:100%;overflow-x:clip}
   }
   /* enter: solo cuando el bloque está BIEN dentro de la pantalla (no al tocar el borde),
      y nunca durante un salto de navegación (scroll suave por ancla): se espera a que el scroll se asiente. */
-  function enter(el){if(el.__in)return;el.__in=true;hideTips(el);el.classList.remove('rv-play','rv-wait');void el.offsetWidth;el.classList.add('rv-play');}
-  function leave(el){if(!el.__in)return;el.__in=false;el.classList.remove('rv-play');el.classList.add('rv-wait');}
+  /* Reanimación de Chart.js en CADA entrada: las barras crecen de cero, la dona se redibuja, las líneas se trazan. */
+  window.__rvCharts=true;
+  function chartsIn(el){return [].slice.call(el.querySelectorAll('canvas[id]')).concat(el.matches&&el.matches('canvas[id]')?[el]:[]);}
+  function replayCharts(el){var ch=window.__charts;if(!ch)return;
+    chartsIn(el).forEach(function(cv){var m=ch[cv.id];if(!m)return;
+      if(!m.chart){window.__drawChart&&window.__drawChart(cv.id);return;}   /* primera vez: la creación ya anima */
+      try{m.chart.stop();m.chart.reset();m.chart.update();}catch(e){}});}
+  function parkCharts(el){var ch=window.__charts;if(!ch)return;
+    chartsIn(el).forEach(function(cv){var m=ch[cv.id];if(m&&m.chart){try{m.chart.stop();m.chart.reset();}catch(e){}}});}
+  /* Conteo animado de cifras simples (conserva formato; textos compuestos quedan igual) */
+  function parseNum(t){var mt=/^(\d[\d.,]*)(\s*[%A-Za-zÁÉÍÓÚáéíóúñÑ²]*)$/.exec(t.trim());if(!mt)return null;
+    var n=mt[1],th=/^\d{1,3}(\.\d{3})+$/.test(n),dec=0,v;
+    if(th)v=parseFloat(n.replace(/\./g,''));
+    else if(/^\d+([.,]\d+)?$/.test(n)){var sp=n.split(/[.,]/);dec=sp[1]?sp[1].length:0;v=parseFloat(n.replace(',','.'));}
+    else return null;
+    return {v:v,dec:dec,th:th,sep:n.indexOf(',')>=0?',':'.',suf:mt[2],txt:t};}
+  function fmtNum(p,x){var s;if(p.th){s=String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');}else s=x.toFixed(p.dec).replace('.',p.sep);return s+p.suf;}
+  document.querySelectorAll('.stat-val').forEach(function(sv){var p=parseNum(sv.textContent);if(!p)return;sv.__num=p;
+    sv.setAttribute('aria-label',p.txt);sv.style.fontVariantNumeric='tabular-nums';});
+  function countUp(el){[].forEach.call(el.querySelectorAll('.stat-val'),function(sv){var p=sv.__num;if(!p)return;
+    cancelAnimationFrame(sv.__raf);clearTimeout(sv.__to);var t0=performance.now(),D=950;
+    sv.__to=setTimeout(function(){cancelAnimationFrame(sv.__raf);sv.textContent=p.txt;},D+150); /* respaldo: nunca queda a medias */
+    (function st(now){var k=Math.min(1,(now-t0)/D),e=1-Math.pow(1-k,4);sv.textContent=k<1?fmtNum(p,p.v*e):p.txt;if(k<1)sv.__raf=requestAnimationFrame(st);})(t0);});}
+  function countPark(el){[].forEach.call(el.querySelectorAll('.stat-val'),function(sv){if(sv.__num){cancelAnimationFrame(sv.__raf);clearTimeout(sv.__to);sv.textContent=sv.__num.txt;}});}
+  function enter(el){if(el.__in)return;el.__in=true;hideTips(el);el.classList.remove('rv-play','rv-wait');void el.offsetWidth;el.classList.add('rv-play');replayCharts(el);countUp(el);}
+  function leave(el){if(!el.__in)return;el.__in=false;el.classList.remove('rv-play');el.classList.add('rv-wait');parkCharts(el);countPark(el);}
   var jumping=false,jumpT=null,lastJY=-1;
   function check(){
     var h=window.innerHeight,m=h*0.15;
